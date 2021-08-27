@@ -20,16 +20,16 @@
 	<!-- Turn on specific debugging levels for our program packages -->
 	<!--  When using the notation package.application.* like in the Javalin setting it did not work
 			so use without the .* and it should work the way we want. -->
-	<logger name="com.tlw8253.app" level="TRACE" />
-	<logger name="com.tlw8253.controller" level="TRACE" />
-	<logger name="com.tlw8253.dao" level="TRACE" />
-	<logger name="com.tlw8253.dto" level="TRACE" />
-	<logger name="com.tlw8253.execption" level="TRACE" />
-	<logger name="com.tlw8253.javalin" level="TRACE" />
-	<logger name="com.tlw8253.javalin.requests" level="TRACE" />
-	<logger name="com.tlw8253.model" level="TRACE" />
-	<logger name="com.tlw8253.service" level="TRACE" />
-	<logger name="com.tlw8253.util" level="INFO" />
+	<logger name="com.amt.app" level="TRACE" />
+	<logger name="com.amt.controller" level="TRACE" />
+	<logger name="com.amt.dao" level="TRACE" />
+	<logger name="com.amt.dto" level="TRACE" />
+	<logger name="com.amt.execption" level="TRACE" />
+	<logger name="com.amt.javalin" level="TRACE" />
+	<logger name="com.amt.javalin.requests" level="TRACE" />
+	<logger name="com.amt.model" level="TRACE" />
+	<logger name="com.amt.service" level="TRACE" />
+	<logger name="com.amt.util" level="INFO" />
 	
 	<!--  take off the include all notation: Javalin.*
 	

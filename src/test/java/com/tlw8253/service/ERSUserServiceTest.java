@@ -22,13 +22,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.tlw8253.app.Constants;
-import com.tlw8253.dao.GenericDAO;
-import com.tlw8253.dto.UserDTO;
-import com.tlw8253.exception.BadParameterException;
-import com.tlw8253.exception.DatabaseException;
-import com.tlw8253.model.Reimbursement;
-import com.tlw8253.model.User;
+import com.amt.app.Constants;
+import com.amt.dao.GenericDAO;
+import com.amt.dto.UserDTO;
+import com.amt.exception.BadParameterException;
+import com.amt.exception.DatabaseException;
+import com.amt.model.Reimbursement;
+import com.amt.model.User;
+import com.amt.service.ERSUserService;
 
 public class ERSUserServiceTest implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(ERSUserServiceTest.class);
