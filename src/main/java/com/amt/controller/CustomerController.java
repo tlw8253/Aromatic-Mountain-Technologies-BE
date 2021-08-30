@@ -12,15 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
-import com.amt.model.Reimbursement;
+import com.amt.model.Order;
 import com.amt.model.User;
-import com.amt.service.ERSReimbService;
-import com.amt.service.ERSUserService;
+import com.amt.service.UserService;
 
 public class CustomerController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(CustomerController.class);
-	private ERSUserService objERSUserService;
-	private ERSReimbService objERSReimbService;
+	private UserService objERSUserService;
 	
 
 	Map<String, String> mPathParmaMap;
@@ -30,8 +28,7 @@ public class CustomerController implements Controller, Constants {
 	boolean bmQueryParmaMapIsEmpty = true;
 
 	public CustomerController() {		
-		this.objERSUserService = new ERSUserService();
-		this.objERSReimbService = new ERSReimbService();
+		this.objERSUserService = new UserService();
 	}
 
 	//
@@ -138,98 +135,8 @@ public class CustomerController implements Controller, Constants {
 	};
 
 
-	//
-	// ### 
-	private Handler getUserReimbursementByReimbId = (objCtx) -> {
-		String sMethod = "getUserReimbursementByReimbId(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		Reimbursement objReimbursement = new Reimbursement();
-		
-		String sParamUsername = "";
-		String sParamReimbId = "";
-
-		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 2) {			
-			//Check for body params before erroring here		
-			
-			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber + " received: [" + imPathParmaMapSize + "] expected 2.");
-			objCtx.status(ciStatusCodeErrorBadRequest);
-			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-			
-		} else {
-			
-			sParamUsername = objCtx.pathParam(csParamUserName);
-			objLogger.debug(sMethod + "Context path parameter user name: [" + sParamUsername + "]");
-
-			sParamReimbId = objCtx.pathParam(csParamPathReimbId);
-			objLogger.debug(sMethod + "Context path parameter reimbursement id: [" + sParamReimbId + "]");
-			
-			bContinue = true;
-			
-		}
-
-		if(bContinue) {
-			//objUser = objERSUserService.getUsersById(sParamUserId);
-			//objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-			
-			objReimbursement = objERSReimbService.getUserReimbursementByReimbId(sParamReimbId, sParamUsername);
-
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(objReimbursement);
-		}
-		
-	};
 
 	
-	//
-	// ### 
-	private Handler getUserReimbursementByStatus = (objCtx) -> {
-		String sMethod = "getUserReimbursementByStatus(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		List <Reimbursement> lstReimbursement = new ArrayList();
-		
-		String sParamUsername = "";
-		String sParamReimStatus = "";
-
-		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 2) {			
-			//Check for body params before erroring here		
-			
-			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber + " received: [" + imPathParmaMapSize + "] expected 2.");
-			objCtx.status(ciStatusCodeErrorBadRequest);
-			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-			
-		} else {
-			
-			sParamUsername = objCtx.pathParam(csParamUserName);
-			objLogger.debug(sMethod + "Context path parameter user name: [" + sParamUsername + "]");
-
-			sParamReimStatus = objCtx.pathParam(csParamReimStatus);
-			objLogger.debug(sMethod + "Context path parameter reimbursement status: [" + sParamReimStatus + "]");
-			
-			bContinue = true;
-			
-		}
-
-		if(bContinue) {
-			
-			lstReimbursement = objERSReimbService.getFilteredUserReimbursement(sParamUsername, sParamReimStatus);
-			objLogger.debug(sMethod + "setting return list in json statement lstReimbursement: [" + lstReimbursement.toString() + "]");
-
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(lstReimbursement);
-		}
-		
-	};
-
 
 	
 	@Override
@@ -239,8 +146,6 @@ public class CustomerController implements Controller, Constants {
 		//app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId, getERSUserRole);
 		app.get("/ers_user_role/:user_id/role", getERSUserRole);
 		app.get("/ers/:user_id", getERSUserById);
-		app.get("/ers_user_reimb_rec/:" + csParamUserName + "/:" + csParamPathReimbId, getUserReimbursementByReimbId);
-		app.get("/ers_user_reimb_filter/:"  + csParamUserName + "/:" + csParamReimStatus, getUserReimbursementByStatus);
 	}
 
 }

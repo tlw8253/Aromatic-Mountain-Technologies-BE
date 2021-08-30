@@ -28,6 +28,14 @@ public interface Constants {
 
 	int ciStatusCodeInternalServerError = 500;	//The server has encountered a situation it doesn't know how to handle.
 	
+	//password special characters allowed for this program
+	String csPasswordAllowedSpecialChars = "~$^_!#%+-<>";
+	String csAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	String csNumeric = "0123456789";
+	String csAllPasswordCharacters = csNumeric + csAlphabet + csPasswordAllowedSpecialChars;
+
+	
+	
 	//system parameters
 	String csClientStaticFolder = "AMT-Client";
 	int ciListingPort = 3025;
@@ -59,19 +67,19 @@ public interface Constants {
 	int ciUserMaxPassword = 15;
 	
 	//database constants 
-	String csDatabaseName = "exp_reimb_sys";							//database name
+	String csDatabaseName = "amt_online_sys";							//database name
 	
 	
 		
 	//table constants these must match the table attributes
 
 	//  table: Reimbursement Status
-	String csReimbStatusTable				= "amt_reimbursement_status";	//table name
-	String csDBReimbStatusTable = csDatabaseName + "." +csReimbStatusTable; //qualified table name
+	String csOrderStatusTable				= "amt_order_status";	//table name
+	String csDBReimbStatusTable = csDatabaseName + "." +csOrderStatusTable; //qualified table name
 	
-	String csReimbStatusTblReimbStatusId 	= "reimb_status_id";		//PK primary key
-	String csReimbStatusTblReimbStatus	 	= "reimb_status";			//String
-	String csReimbStatusTblReimbStatusDesc 	= "reimb_status_desc";		//String
+	String csOrderStatusTblOrderStatusId 	= "order_status_id";		//PK primary key
+	String csReimbStatusTblReimbStatus	 	= "order_status";			//String
+	String csReimbStatusTblReimbStatusDesc 	= "order_status_desc";		//String
 	String csReimbStatusTblReimbStatusDenyReason 	= "reimb_status_deny";		//String
 	String[] csReimbStatus = {"PENDING", "APPROVED", "DENIED"};
 	int ciReimbStatusPending = 0;
@@ -79,33 +87,36 @@ public interface Constants {
 	int ciReimbStatusDenied = 2;
 
 	//  table: Reimbursement Status
-	String csReimbTypeTable					= "amt_reimbursement_type";	//table name
-	String csDBReimbTypeTable = csDatabaseName + "." +csReimbTypeTable; //qualified table name
+	String csUserTypeTable					= "amt_user_type";	//table name
+	String csDBUserTypeTable = csDatabaseName + "." +csUserTypeTable; //qualified table name
 	
-	String csReimbTypeTblReimbTypeId 		= "reimb_type_id";		//PK primary key
-	String csReimbTypeTblReimbType	 		= "reimb_type";			//String
-	String csReimbTypeTblReimbTypeDesc	 	= "reimb_type_desc";	//String
-	String[] csReimbType = {"LODGING", "TRAVEL", "FOOD" ,"OTHER"};
-	int ciReimbTypeLodging = 0;
-	int ciReimbTypeTravel = 1;
-	int ciReimbTypeFood = 2;
-	int ciReimbTypeOther = 3;
+	String csUserTypeTblUserTypeId 			= "user_type_id";		//PK primary key
+	String csUserTypeTblUserType	 		= "user_type";			//String
+	String csUserTypeTblUserTypeDesc	 	= "user_type_desc";		//String
+	String[] csUserType = {"EMPLOYEE", "CUSTOMER"};
+	int ciUserTypeEmployee = 0;
+	int ciUserTypeCustomer = 1;
+	String[] csUserTypeDesc = {"EMPLOYEE: This user type is an active employee of the AMT system.", 
+								"CUSTOMER: This user type is an external customer viewing the catalog and buying merchandise."};
 	
 	//  table: User Roles
 	String csUserRolesTable 				= "amt_user_roles";		//table name
-	String csDBReimbRolesTable = csDatabaseName + "." + csUserRolesTable; //qualified table name
+	String csDBUserRolesTable = csDatabaseName + "." + csUserRolesTable; //qualified table name
 	
-	String csUserRolesTblUserRoleId 		= "amt_user_role_id";	//PK primary key
+	String csUserRolesTblUserRoleId 		= "user_role_id";	//PK primary key
 	String csUserRolesTblUserRole	 		= "user_role";			//String
 	String csUserRolesTblUserRoleDesc 		= "user_role_desc";			//String
-	String[] csUserRoles = {"EMPLOYEE", "FINANCEMGR", "SUPERMAN"};
+	String[] csEmployeeRoles = {"EMPLOYEE", "CATALOG ADMIN", "CATALOG EMPLOYEE"};
 	int ciUserRoleEmployee = 0;
-	int ciUserRoleFinanceMgr = 1;
-	int ciUserRoleAdmin = 2;
+	int ciUserRoleCatalogAmdin = 1;
+	int ciUserRoleCatalogeEmployee = 2;
+	String[] csEmployeeRolesDesc = {"EMPLOYEE: Any person actively employeed by the company with a valid username.", 
+								"CATALOG ADMIN: A Catalog Admin controls publishing of Employee catalog items and pages.", 
+								"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages."};
 	
 	//  table: Reimbursement
-	String csReimburstementTable 		= "amt_reimbursement";	//table name		
-	String csDBReimburstementTable = csDatabaseName + "." + csReimburstementTable; //qualified table name
+	String csCatalogTable 		= "amt_catalog";	//table name		
+	String csDBCatalogTable = csDatabaseName + "." + csCatalogTable; //qualified table name
 	
 	String csReimbTblReimbId 			= "reimb_id";			//PK primary key
 	String csReimbTblReimbAmount 		= "reimb_amount";		//number / double
@@ -131,6 +142,7 @@ public interface Constants {
 	String csUserTblId = "amt_user_id";
 	String csUserTblUsername = "amt_username";
 	String csUserTblPassword = "amt_password";
+	String csUserTblPasswordSalt = "ers_password_salt";
 	String csUserTblFirstName = "amt_first_name";
 	String csUsrTblLastName = "amt_last_name";
 	String csUserTblEmail = "amt_email";

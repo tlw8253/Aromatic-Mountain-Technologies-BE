@@ -1,25 +1,17 @@
-CREATE USER 'exp_reimb_sys2'@localhost IDENTIFIED BY 'exp_reimb_sys2';
+-- amt_online_sys
+
+-- DROP TABLE IF EXISTS ers_reimbursement;
+DROP TABLE IF EXISTS amt_users;
+-- DROP TABLE IF EXISTS ers_user_roles;
+-- DROP TABLE IF EXISTS ers_reimbursement_status;
+-- DROP TABLE IF EXISTS ers_reimbursement_type;
 
 
-DROP TABLE IF EXISTS employee;
-
--- create exp_reimb_sys table
-CREATE TABLE employee(
-emp_username VARCHAR(10) PRIMARY KEY NOT NULL,
-emp_password VARCHAR(20) NOT NULL CHECK(LENGTH(emp_password)>= 6),
-emp_first_name VARCHAR(60) NOT NULL,
-emp_last_name VARCHAR(60) NOT NULL,
-emp_email VARCHAR(60) NOT NULL
-);
-
-INSERT INTO employee (emp_username, emp_password, emp_first_name, emp_last_name, emp_email)
-VALUES 
-('tlw874', '12345678','Tomas', 'Ykel', 'tlw874@wwms.com'),
-('zwz123', '12345678','Zack', 'Brow', 'zwz123@wwms.com');
+SELECT * FROM amt_users;
+SELECT * FROM amt_user_roles;
+-- SELECT * FROM ers_reimbursement;
+-- SELECT * FROM ers_reimbursement_status;
+-- SELECT * FROM ers_reimbursement_type;
 
 
-SELECT * FROM employee;
-
-
-
-
+SELECT * FROM ers_user_roles ur WHERE ur.user_role = 'SUPERMAN';

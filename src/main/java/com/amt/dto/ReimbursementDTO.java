@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 import javax.sql.rowset.serial.SerialBlob;
 
 import com.amt.app.Constants;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.User;
 
 public class ReimbursementDTO extends AddOrEditDTO implements Constants{

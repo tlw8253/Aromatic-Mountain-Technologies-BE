@@ -14,20 +14,19 @@ import org.slf4j.LoggerFactory;
 import com.amt.dto.LoginDTO;
 import com.amt.dto.ReimbursementDTO;
 import com.amt.dto.ReimbursementStatusDTO;
-import com.amt.dto.ReimbursementTypeDTO;
+import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.AuthenticationFailureException;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.User;
 import com.amt.model.UserRole;
-import com.amt.service.ERSAdminService;
-import com.amt.service.ERSLoginService;
-import com.amt.service.ERSReimbService;
-import com.amt.service.ERSUserService;
+import com.amt.service.AdminService;
+import com.amt.service.LoginService;
+import com.amt.service.UserService;
 import com.amt.util.*;
 
 /**
@@ -41,7 +40,7 @@ import com.amt.util.*;
 
 public class LoginDriver implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(LoginDriver.class);
-	private static ERSLoginService objERSLoginService = new ERSLoginService();
+	private static LoginService objERSLoginService = new LoginService();
 	private static LoginDTO objLoginDTO = new LoginDTO();
 
 	public LoginDriver() {

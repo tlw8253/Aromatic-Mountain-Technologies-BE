@@ -27,18 +27,18 @@ import com.amt.dao.GenericDAO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
-import com.amt.model.Reimbursement;
+import com.amt.model.Order;
 import com.amt.model.User;
-import com.amt.service.ERSUserService;
+import com.amt.service.UserService;
 
 public class ERSUserServiceTest implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(ERSUserServiceTest.class);
 
-	private ERSUserService objMockERSServiceUser;
-	private ERSUserService objMockERSServiceReimbursement;
+	private UserService objMockERSServiceUser;
+	private UserService objMockERSServiceReimbursement;
 
 	private GenericDAO<User> objMockUserDAO;
-	private GenericDAO<Reimbursement> objMockReimbursementDAO;
+	private GenericDAO<Order> objMockReimbursementDAO;
 
 	public ERSUserServiceTest() {
 		super();
@@ -59,7 +59,7 @@ public class ERSUserServiceTest implements Constants {
 		objLogger.trace("setUp()");
 		// fake DAO using the GenericDAO<T> interface class
 		this.objMockUserDAO = mock(GenericDAO.class);
-		this.objMockERSServiceUser = new ERSUserService().getMockUserDAO(objMockUserDAO);
+		this.objMockERSServiceUser = new UserService().getMockUserDAO(objMockUserDAO);
 		this.objMockReimbursementDAO = mock(GenericDAO.class);
 //		this.objMockERSServiceReimbursement = new ERSUserService().getMockReimbursementDAO(objMockReimbursementDAO);
 	}
@@ -75,7 +75,7 @@ public class ERSUserServiceTest implements Constants {
 
 		User mockRetValues = new User("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com");
 		UserDTO objUserDTO = new UserDTO("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com",
-				csUserRoles[ciUserRoleEmployee]);
+				csEmployeeRoles[ciUserRoleEmployee]);
 		when(objMockUserDAO.addRecord(objUserDTO)).thenReturn(mockRetValues);
 
 		User objActualValues = objMockERSServiceUser.addNewUser(objUserDTO);
@@ -93,7 +93,7 @@ public class ERSUserServiceTest implements Constants {
 
 		//This is a service level test, no Mock DAO involved.
 		UserDTO objUserDTO = new UserDTO("tlw8253", "a_pass12345", "Tomas", "Ykel", "tlw8253@wws.com",
-				csUserRoles[ciUserRoleEmployee]);
+				csEmployeeRoles[ciUserRoleEmployee]);
 		try {
 			objMockERSServiceUser.addNewUser(objUserDTO);
 		} catch (BadParameterException e) {

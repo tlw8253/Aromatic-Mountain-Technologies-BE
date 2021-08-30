@@ -16,11 +16,11 @@ import com.amt.app.Constants;
 import com.amt.dto.LoginDTO;
 import com.amt.dto.MessageDTO;
 import com.amt.model.User;
-import com.amt.service.ERSLoginService;
+import com.amt.service.LoginService;
 
 public class LoginController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(LoginController.class);
-	private ERSLoginService objERSLoginService = new ERSLoginService();
+	private LoginService objERSLoginService = new LoginService();
 	private LoginDTO objLoginDTO = new LoginDTO();
 
 	Map<String, String> mPathParmaMap;
@@ -30,7 +30,7 @@ public class LoginController implements Controller, Constants {
 	boolean bmQueryParmaMapIsEmpty = true;
 
 	public LoginController() {
-		this.objERSLoginService = new ERSLoginService();
+		this.objERSLoginService = new LoginService();
 	}
 
 	//
@@ -40,20 +40,25 @@ public class LoginController implements Controller, Constants {
 		objLogger.trace(sMethod + "Entered");
 
 		objLoginDTO = objCtx.bodyAsClass(LoginDTO.class);
-		User objUser = objERSLoginService.login(objLoginDTO);
+		objLogger.debug(sMethod + "objLoginDTO: [" + objLoginDTO.toString() + "]");
+		
+		User objUser = objERSLoginService.login(objLoginDTO);		
 		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
 
 		HttpSession httpSession = objCtx.req.getSession();
 		httpSession.setAttribute(csSessionCurrentUser, objUser);
+		
 		if (httpSession.getAttribute(csSessionCurrentUser) == null) {
 			objLogger.debug(sMethod + csSessionCurrentUser + " is null");
+			objCtx.json(csMsgAutenticationFailed);
+			objCtx.status(401);
 		}else {
 			objLogger.debug(sMethod + csSessionCurrentUser + " is not null");
+			objCtx.json(objUser);
+			objCtx.status(200);
 		}
-		
 
-		objCtx.json(objUser);
-		objCtx.status(200);
+	
 	};
 
 	//

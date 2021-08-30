@@ -17,19 +17,19 @@ import com.amt.dao.UserDAOImpl;
 import com.amt.dto.ReimbursementDTO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.*;
-import com.amt.model.Reimbursement;
+import com.amt.model.Order;
 import com.amt.model.User;
 import com.amt.util.Validate;
 
-public class ERSUserService implements Constants {
-	private Logger objLogger = LoggerFactory.getLogger(ERSUserService.class);
+public class UserService implements Constants {
+	private Logger objLogger = LoggerFactory.getLogger(UserService.class);
 	private GenericDAO<User> objUserDAO;
 
-	public ERSUserService() {
+	public UserService() {
 		this.objUserDAO = new UserDAOImpl();
 	}
 
-	public ERSUserService getMockUserDAO(GenericDAO<User> objMockUserDAO) {
+	public UserService getMockUserDAO(GenericDAO<User> objMockUserDAO) {
 		this.objUserDAO = objMockUserDAO;
 		return this;
 	}
@@ -200,7 +200,7 @@ public class ERSUserService implements Constants {
 		
 		boolean bFirstNameIsAlpha = Validate.isAlpha(sFirstName);
 		boolean bLastNameIsAlpha = Validate.isAlphaPlusLastname(sLastName);
-		boolean bUserRoleNameIsValid = Validate.isValidValueInArray(sUserRoleName, csUserRoles);
+		boolean bUserRoleNameIsValid = Validate.isValidValueInArray(sUserRoleName, csEmployeeRoles);
 		
 		if (bFirstNameIsAlpha && bLastNameIsAlpha && bUserRoleNameIsValid) {
 			isValid=true;

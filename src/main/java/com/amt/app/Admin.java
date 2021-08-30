@@ -13,18 +13,17 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.dto.ReimbursementDTO;
 import com.amt.dto.ReimbursementStatusDTO;
-import com.amt.dto.ReimbursementTypeDTO;
+import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.User;
 import com.amt.model.UserRole;
-import com.amt.service.ERSAdminService;
-import com.amt.service.ERSReimbService;
-import com.amt.service.ERSUserService;
+import com.amt.service.AdminService;
+import com.amt.service.UserService;
 import com.amt.util.*;
 
 /**
@@ -38,8 +37,7 @@ import com.amt.util.*;
 
 public class Admin implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(Admin.class);
-	private static ERSUserService objERSService = new ERSUserService();
-	private static ERSReimbService objERSReimbursementService = new ERSReimbService();
+	private static UserService objERSService = new UserService();
 	private static UserDTO objUserDTO = new UserDTO();
 	private static ReimbursementDTO objReimbDTO = new ReimbursementDTO();
 
@@ -58,47 +56,11 @@ public class Admin implements Constants {
 		 // addNewUser("smp8253", "A_Pass12345", "Sam", "Smith", "smp8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);
 		 // addNewReimbursement("2");	//add Reimbursement for above user
 		
-		 addNewUser("cwg8253", "A_Pass12345", "Clark", "Griswold", "cwg8253@wws.com", csUserRoles[ciUserRoleEmployee]);
-		 addNewUser("cqe8253", "A_Pass12345", "Cousin", "Eddy", "cqe8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);
+		 //addNewUser("cwg8253", "A_Pass12345", "Clark", "Griswold", "cwg8253@wws.com", csUserRoles[ciUserRoleEmployee]);
+		 //addNewUser("cqe8253", "A_Pass12345", "Cousin", "Eddy", "cqe8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);
 
 	}
 
-	//
-	// ###
-	public static void addNewReimbursement(String sUser) {
-		String sMethod = "\n\t addNewReimbursement(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		byte[] b = { 15, 16, 17, 18 };
-		SerialBlob sbBlob = null;
-
-		boolean bContinue = false;
-		try {
-			sbBlob = new SerialBlob(b);
-			bContinue = true;
-		} catch (SerialException e) {
-			objLogger.error(sMethod + "SerialException: [" + e.getMessage() + "]");
-		} catch (SQLException e) {
-			objLogger.error(sMethod + "SQLException: [" + e.getMessage() + "]");
-		}
-
-		if (bContinue) {
-			objReimbDTO.setReimbAmount("100.23");
-			objReimbDTO.setReimbDescription("Food bought while traveling for business.");
-			objReimbDTO.setReimbReceipt(sbBlob);
-			objReimbDTO.setReimbAuthorId(sUser);
-			objReimbDTO.setReimbType(csReimbType[ciReimbTypeFood]);
-			// other DTO values set in add routine as defaults for processing type
-			try {
-				objERSReimbursementService.addNewReimbursement(objReimbDTO);
-			} catch (DatabaseException e) {
-				objLogger.error(sMethod + "DatabaseException: [" + e.getMessage() + "]");
-			} catch (BadParameterException e) {
-				objLogger.error(sMethod + "BadParameterException: [" + e.getMessage() + "]");
-			}
-		}
-
-	}
 
 	//
 	// ###
@@ -138,7 +100,7 @@ public class Admin implements Constants {
 	// ###
 	private static void ersAdminAddStaticTableValues() {
 		addReimbursementStatus();
-		addReimbursementType();
+		addUserType();
 		addUserRole();
 	}
 
@@ -170,14 +132,14 @@ public class Admin implements Constants {
 		String sMethod = "\n\t addReimbStatus(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		ERSAdminService objAdminService = new ERSAdminService();
+		AdminService objAdminService = new AdminService();
 		ReimbursementStatusDTO objReimbStatusDTO = new ReimbursementStatusDTO();
 
 		objReimbStatusDTO.setReimbStatus(sStatus);
 		objReimbStatusDTO.setReimbStatusDescription(sStatusDesc);
 
 		try {
-			ReimbursementStatus objReimbStatus = objAdminService.addReimbursementStatus(objReimbStatusDTO);
+			OrderStatus objReimbStatus = objAdminService.addReimbursementStatus(objReimbStatusDTO);
 			objLogger.debug(sMethod + "objReimbStatus: [" + objReimbStatus.toString() + "]");
 		} catch (Exception e) {
 			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
@@ -185,20 +147,39 @@ public class Admin implements Constants {
 		}
 	}
 
+
 	//
 	// ###
-	private static void addReimbType(String sType, String sTypeDesc) {
-		String sMethod = "\n\t addReimbType(): ";
+	private static void addUserType() {
+		String sMethod = "\n\t addUserType(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		ERSAdminService objAdminService = new ERSAdminService();
-		ReimbursementTypeDTO objReimbTypeDTO = new ReimbursementTypeDTO();
+		
+		for (int iCtr = 0; iCtr <csUserType.length; iCtr++) {
+			String sType = csUserType[iCtr];
+			String sTypeDesc = csUserTypeDesc[iCtr];
+			
+			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
+			addUserType(sType, sTypeDesc);
+		}
 
-		objReimbTypeDTO.setReimbType(sType);
-		objReimbTypeDTO.setReimbTypeDescription(sTypeDesc);
+	}
+
+	
+	//
+	// ###
+	private static void addUserType(String sType, String sTypeDesc) {
+		String sMethod = "\n\t addUserType(): ";
+		objLogger.trace(sMethod + "Entered:");
+
+		AdminService objAdminService = new AdminService();
+		UserTypeDTO objReimbTypeDTO = new UserTypeDTO();
+
+		objReimbTypeDTO.setUserType(sType);
+		objReimbTypeDTO.setUserTypeDescription(sTypeDesc);
 
 		try {
-			ReimbursementType objReimbType = objAdminService.addReimbursementType(objReimbTypeDTO);
+			UserType objReimbType = objAdminService.addReimbursementType(objReimbTypeDTO);
 			objLogger.debug(sMethod + "objReimbType: [" + objReimbType.toString() + "]");
 		} catch (Exception e) {
 			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
@@ -206,62 +187,27 @@ public class Admin implements Constants {
 		}
 	}
 
-	//
-	// ###
-	private static void addReimbursementType() {
-		String sMethod = "\n\t addReimbursementType(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		String sType = csReimbType[ciReimbTypeLodging];
-		String sTypeDesc = "Reimbursement expense related to overnight stays related to business travel.";
-		objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-		addReimbType(sType, sTypeDesc);
-
-		sType = csReimbType[ciReimbTypeTravel];
-		sTypeDesc = "Reimbursement expense related to planes, trains, automobiles, etc.";
-		objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-		addReimbType(sType, sTypeDesc);
-
-		sType = csReimbType[ciReimbTypeFood];
-		sTypeDesc = "Reimbursement expense related to meals related to business travel.";
-		objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-		addReimbType(sType, sTypeDesc);
-
-		sType = csReimbType[ciReimbTypeOther];
-		sTypeDesc = "Reimbursement expense related to other expenses related to the business.";
-		objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-		addReimbType(sType, sTypeDesc);
-
-	}
-
+	
+	
 	private static void addUserRole() {
 		String sMethod = "\n\t addUserRole(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		String sUserRole = csUserRoles[ciUserRoleEmployee];
-		String sUserRoleDesc = "Any person actively employeed by the company with a valid username.";
-		objLogger.debug(sMethod + "Adding type: [" + sUserRole + "] description: [" + sUserRoleDesc + "]");
-		addUsrRole(sUserRole, sUserRoleDesc);
-
-		sUserRole = csUserRoles[ciUserRoleFinanceMgr];
-		sUserRoleDesc = "Finance managers are authorized to approve and deny requests for expense reimbursement.";
-		objLogger.debug(sMethod + "Adding type: [" + sUserRole + "] description: [" + sUserRoleDesc + "]");
-		addUsrRole(sUserRole, sUserRoleDesc);
-
-		sUserRole = csUserRoles[ciUserRoleAdmin];
-		sUserRoleDesc = "A super user of the system.  A system admin.";
-		objLogger.debug(sMethod + "Adding type: [" + sUserRole + "] description: [" + sUserRoleDesc + "]");
-		addUsrRole(sUserRole, sUserRoleDesc);
-
+		for (int iCtr = 0; iCtr <csEmployeeRoles.length; iCtr++) {
+			String sUserRole = csEmployeeRoles[iCtr];
+			String sUserRoleDesc = csEmployeeRolesDesc[iCtr];
+			objLogger.debug(sMethod + "Adding user role: [" + sUserRole + "] description: [" + sUserRoleDesc + "]");
+			addUsrRole(sUserRole, sUserRoleDesc);			
+		}
 	}
 
 	//
 	// ###
 	private static void addUsrRole(String sUserRole, String sUserRoleDesc) {
-		String sMethod = "\n\t addReimbType(): ";
+		String sMethod = "\n\t addUsrRole(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		ERSAdminService objAdminService = new ERSAdminService();
+		AdminService objAdminService = new AdminService();
 		UserRoleDTO objUserRoleDTO = new UserRoleDTO();
 
 		objLogger.debug(sMethod + "Setting DTO: sUserRole: [" + sUserRole + "] sUserRoleDesc: [" + sUserRoleDesc + "]");

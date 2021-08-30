@@ -15,11 +15,11 @@ import com.amt.exception.DatabaseException;
 import com.amt.model.User;
 
 
-public class ERSLoginService implements Constants {
-	private Logger objLogger = LoggerFactory.getLogger(ERSLoginService.class);
+public class LoginService implements Constants {
+	private Logger objLogger = LoggerFactory.getLogger(LoginService.class);
 	private GenericDAO<User> objUserDAO;
 
-	public ERSLoginService() {
+	public LoginService() {
 		objUserDAO = new UserDAOImpl();
 	}
 	

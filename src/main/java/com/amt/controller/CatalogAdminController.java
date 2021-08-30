@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
-import com.amt.model.ReimbursementStatus;
-import com.amt.service.ERSAdminService;
+import com.amt.model.OrderStatus;
+import com.amt.service.AdminService;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -16,7 +16,7 @@ import io.javalin.http.Handler;
 
 public class CatalogAdminController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(CatalogAdminController.class);
-	private ERSAdminService objERSAdminService = new ERSAdminService();
+	private AdminService objERSAdminService = new AdminService();
 	
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
@@ -67,7 +67,7 @@ public class CatalogAdminController implements Controller, Constants {
 		setContextMaps(objCtx);
 		String sParamReimStatus = "";
 		String sParamReimStatusDesc = "";
-		ReimbursementStatus objReimbStatus = null;
+		OrderStatus objReimbStatus = null;
 		
 		//expect 2 query parameters with login request
 		if (imQueryParmaMap != 2) {			

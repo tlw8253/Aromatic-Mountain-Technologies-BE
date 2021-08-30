@@ -25,10 +25,10 @@ public class ReimbursementStatusDTO extends AddOrEditDTO implements Constants{
 	}
 
 	public String getReimbStatusId() {
-		return super.getDataElement(csReimbStatusTblReimbStatusId);
+		return super.getDataElement(csOrderStatusTblOrderStatusId);
 	}
 	public int getReimbStatusIdAsInt() {
-		return super.getIntDataElement(csReimbStatusTblReimbStatusId);
+		return super.getIntDataElement(csOrderStatusTblOrderStatusId);
 	}
 
 	public String getReimbStatus() {
@@ -40,10 +40,10 @@ public class ReimbursementStatusDTO extends AddOrEditDTO implements Constants{
 	}
 
 	public void setReimbStatusId(int reimbStatusId) {
-		super.setDataElement(csReimbStatusTblReimbStatusId, reimbStatusId);
+		super.setDataElement(csOrderStatusTblOrderStatusId, reimbStatusId);
 	}
 	public void setReimbStatusId(String reimbStatusId) {
-		super.setDataElement(csReimbStatusTblReimbStatusId, reimbStatusId);
+		super.setDataElement(csOrderStatusTblOrderStatusId, reimbStatusId);
 	}
 
 	public void setReimbStatus(String reimbStatus) {

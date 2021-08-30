@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.controller.Controller;
+import com.amt.controller.CustomerController;
 import com.amt.controller.CatalogAdminController;
 import com.amt.controller.LoginController;
 import com.amt.controller.EmployeeController;
@@ -13,17 +14,17 @@ import io.javalin.Javalin;
 
 
 /**
- * This project is a Maven / JUnit / Logback / JDBC template / shell
  * 
- * This is the main driver for this project.
+ * 
+ * This is the main driver for this project when using Javalin technologies.
  * 
  * 
  * 
  * @author tlw8253
  *
  */
-public class Application implements Constants {
-	private final static Logger objLogger = LoggerFactory.getLogger(Application.class);
+public class AppJavalin implements Constants {
+	private final static Logger objLogger = LoggerFactory.getLogger(AppJavalin.class);
 	private static Javalin objJavalinApp;
 	
 	public static void main(String[] args) {
@@ -38,8 +39,8 @@ public class Application implements Constants {
 
 //		objJavalinApp = Javalin.create();		
 		
-		objLogger.debug(sMethod + "mapControllers(new ExceptionController(), new EmployeeController(), new CatalogAdminController(), new LoginController() );");
-		mapControllers(/*new TestController(),*/ new ExceptionController(), new EmployeeController(), 
+		objLogger.debug(sMethod + "mapControllers(new ExceptionController(), new EmployeeController(), new CustomerController(), new CatalogAdminController(), new LoginController() );");
+		mapControllers(/*new TestController(),*/ new ExceptionController(), new EmployeeController(), new CustomerController(), 
 				new CatalogAdminController(), new LoginController() );
 		
 		objLogger.info(sMethod + "Starting listening on port: [" + ciListingPort + "]");
@@ -55,7 +56,7 @@ public class Application implements Constants {
 		objLogger.trace(sMethod + "Entered");
 
 		for (Controller c : controllers) {
-			c.mapEndpoints(Application.objJavalinApp);
+			c.mapEndpoints(AppJavalin.objJavalinApp);
 		}
 	}
 

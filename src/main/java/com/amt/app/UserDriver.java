@@ -17,21 +17,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.dao.ReimbursementStatusDAOImpl;
-import com.amt.dao.ReimbursementTypeDAOImpl;
+import com.amt.dao.UserTypeDAOImpl;
 import com.amt.dao.UserDAOImpl;
 import com.amt.dao.UserRoleDAOImpl;
 import com.amt.dto.ReimbursementStatusDTO;
-import com.amt.dto.ReimbursementTypeDTO;
+import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.User;
 import com.amt.model.UserRole;
-import com.amt.service.ERSAdminService;
-import com.amt.service.ERSUserService;
+import com.amt.service.AdminService;
+import com.amt.service.UserService;
 import com.amt.util.*;
 
 
@@ -45,7 +45,7 @@ import com.amt.util.*;
  */
 public class UserDriver implements Constants {
 	private final static Logger objLogger = LoggerFactory.getLogger(UserDriver.class);
-	private static ERSUserService objERSService = new ERSUserService();
+	private static UserService objERSService = new UserService();
 	private static UserDTO objUserDTO = new UserDTO();
 
 	public static void main(String[] args) {
@@ -183,10 +183,10 @@ public class UserDriver implements Constants {
 		String sMethod = "\n\t testReimbursementTypeDAOImpl_getByRecordIdentifer(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		ReimbursementTypeDAOImpl objReimbursementTypeDAOImpl = new ReimbursementTypeDAOImpl();
+		UserTypeDAOImpl objReimbursementTypeDAOImpl = new UserTypeDAOImpl();
 		
 		try {
-			ReimbursementType objReimbursementType = objReimbursementTypeDAOImpl.getByRecordIdentifer(sID);
+			UserType objReimbursementType = objReimbursementTypeDAOImpl.getByRecordIdentifer(sID);
 			objLogger.debug(sMethod + "objUser: [" + objReimbursementType.toString() + "]");
 		} catch (Exception e) {
 			objLogger.debug(sMethod + "Exception: [" + e.toString() + "] [" + e.getMessage() + "]");		
@@ -203,7 +203,7 @@ public class UserDriver implements Constants {
 		ReimbursementStatusDAOImpl objReimbursementStatusDAOImpl = new ReimbursementStatusDAOImpl();
 		
 		try {
-			ReimbursementStatus objReimbursementStatus = objReimbursementStatusDAOImpl.getByRecordIdentifer(sID);
+			OrderStatus objReimbursementStatus = objReimbursementStatusDAOImpl.getByRecordIdentifer(sID);
 			objLogger.debug(sMethod + "objUser: [" + objReimbursementStatus.toString() + "]");
 		} catch (Exception e) {
 			objLogger.debug(sMethod + "Exception: [" + e.toString() + "] [" + e.getMessage() + "]");		
@@ -221,7 +221,7 @@ public class UserDriver implements Constants {
 		ReimbursementStatusDAOImpl objReimbursementStatusDAOImpl = new ReimbursementStatusDAOImpl();
 		
 		try {
-			ReimbursementStatus objReimbursementStatus = objReimbursementStatusDAOImpl.getByRecordId(iID);
+			OrderStatus objReimbursementStatus = objReimbursementStatusDAOImpl.getByRecordId(iID);
 			objLogger.debug(sMethod + "objUser: [" + objReimbursementStatus.toString() + "]");
 		} catch (Exception e) {
 			objLogger.debug(sMethod + "Exception: [" + e.toString() + "] [" + e.getMessage() + "]");		
@@ -286,7 +286,7 @@ public class UserDriver implements Constants {
 		
 		UserRoleDAOImpl objUserRoleDAOImpl = new UserRoleDAOImpl();
 		try {
-			UserRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(csUserRoles[ciUserRoleAdmin]);
+			UserRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(csEmployeeRoles[ciUserRoleCatalogAmdin]);
 			objLogger.debug(sMethod + "objUserRole: [" + objUserRole.toString() + "]");
 		} catch (SQLException e) {
 			objLogger.debug(sMethod + "SQLException: [" + e.toString() + "] [" + e.getMessage() + "]");

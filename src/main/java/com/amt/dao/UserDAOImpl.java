@@ -18,6 +18,7 @@ import com.amt.dto.AddOrEditDTO;
 import com.amt.model.User;
 import com.amt.model.UserRole;
 import com.amt.util.SessionFactorySingleton;
+import com.amt.util.PasswordUtil;
 
 public class UserDAOImpl implements GenericDAO<User>, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(UserDAOImpl.class);
@@ -270,7 +271,7 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 			// delete fk records in Reimbursement table
 			// encountered issues when trying to set user object as a parameter, sure it is
 			// syntax related
-			sHQL = "DELETE FROM Reimbursement WHERE reimbAuthor.userId = " + objUserToDelete.getId();
+			sHQL = "DELETE FROM Reimbursement WHERE reimbAuthor.userId = " + objUserToDelete.getUserId();
 			int iResult = session.createQuery(sHQL).executeUpdate();
 			objLogger.debug(sMethod + "Number of dependent Reimbursement records deleted: [" + iResult + "]");
 
@@ -302,12 +303,27 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 		try {
 			objLogger.debug(sMethod + "Authenticating username: [" + sUsername + "] with password provided.");
 			String sHQL = "FROM User u WHERE u.username = :username AND u.password = :password";
-			objLogger.debug(sMethod + "sHQL: [" + sHQL + "] with parameter username: [" + sUsername + "] and password provided.");
-			
-			User user = (User) session
-					.createQuery(sHQL).setParameter("username", sUsername).setParameter("password", sPassword).getSingleResult();
+			// can no longer do a direct compare in the database
+			// need to retrieve the record with password and salt then validate through
+			// password utility.
+			sHQL = "FROM User u WHERE u.username = :username";
 
-			return user;
+			objLogger.debug(sMethod + "sHQL: [" + sHQL + "] with parameter username: [" + sUsername + "]");
+
+			User objUser = (User) session.createQuery(sHQL).setParameter("username", sUsername).getSingleResult();
+
+			objLogger.debug(sMethod + "found user: [" + objUser.toString() + "] in database now validate password.");
+			String sEncryptedPwd = objUser.getPassword();
+			String sSalt = objUser.getPasswordSalt();
+			boolean bPasswordValid = PasswordUtil.verifyUserPassword(sPassword, sEncryptedPwd, sSalt);
+
+			if (bPasswordValid) {
+				objLogger.debug(sMethod + "user: [" + objUser.toString() + "] DID pass encrypted password validation with salt key.");
+				return objUser;
+			} else {
+				objLogger.warn(sMethod + "user: [" + objUser.toString() + "] DID NOT pass encrypted password validation with salt key.");
+				return null;
+			}
 
 		} catch (NoResultException e) {
 			objLogger.debug(sMethod + "NoResultException: [" + e.getMessage() + "]");

@@ -16,9 +16,9 @@ import javax.sql.rowset.serial.SerialBlob;
 import com.amt.app.Constants;
 
 @Entity
-@Table(name = Constants.csReimburstementTable)
+@Table(name = Constants.csCatalogTable)
 
-public class Reimbursement implements Constants {
+public class Order implements Constants {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,16 +57,16 @@ public class Reimbursement implements Constants {
 
 	//this is set internally so should not make not null due to body as class errors
 	@ManyToOne
-	@JoinColumn(name = csReimbStatusTblReimbStatusId)	//, nullable = false) // 
-	private ReimbursementStatus reimbStatus;
+	@JoinColumn(name = csOrderStatusTblOrderStatusId)	//, nullable = false) // 
+	private OrderStatus reimbStatus;
 
 	//this is set internally so should not make not null due to body as class errors
 	@ManyToOne
-	@JoinColumn(name = csReimbTypeTblReimbTypeId)	//, nullable = false) // 
-	private ReimbursementType reimbType;
+	@JoinColumn(name = csUserTypeTblUserTypeId)	//, nullable = false) // 
+	private UserType reimbType;
 
 	
-	public Reimbursement() {
+	public Order() {
 		//use when setting the timestamp values:
 		//Timestamp objTimestamp = Timestamp.valueOf(LocalDateTime.now());
 		
@@ -74,7 +74,7 @@ public class Reimbursement implements Constants {
 		reimbResolved = new Timestamp(0);
 	}
 
-	public Reimbursement(double dReimAmount, Timestamp tsReimbSubmitted, Timestamp tsReimbResolved, String sReimbDescription, SerialBlob sbReimbReceipt) {
+	public Order(double dReimAmount, Timestamp tsReimbSubmitted, Timestamp tsReimbResolved, String sReimbDescription, SerialBlob sbReimbReceipt) {
 		this.reimbAmount = dReimAmount;
 		this.reimbSubmitted = tsReimbSubmitted;
 		this.reimbResolved = tsReimbResolved;
@@ -122,12 +122,12 @@ public class Reimbursement implements Constants {
 	}
 
 
-	public ReimbursementStatus getReimbStatus() {
+	public OrderStatus getReimbStatus() {
 		return reimbStatus;
 	}
 
 
-	public ReimbursementType getReimbType() {
+	public UserType getReimbType() {
 		return reimbType;
 	}
 
@@ -172,12 +172,12 @@ public class Reimbursement implements Constants {
 	}
 
 
-	public void setReimbStatus(ReimbursementStatus reimbStatus) {
+	public void setReimbStatus(OrderStatus reimbStatus) {
 		this.reimbStatus = reimbStatus;
 	}
 
 
-	public void setReimbType(ReimbursementType reimbType) {
+	public void setReimbType(UserType reimbType) {
 		this.reimbType = reimbType;
 	}
 
@@ -203,7 +203,7 @@ public class Reimbursement implements Constants {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Reimbursement other = (Reimbursement) obj;
+		Order other = (Order) obj;
 		return Double.doubleToLongBits(reimbAmount) == Double.doubleToLongBits(other.reimbAmount)
 				&& Objects.equals(reimbAuthor, other.reimbAuthor)
 				&& Objects.equals(reimbDescription, other.reimbDescription) && reimbId == other.reimbId

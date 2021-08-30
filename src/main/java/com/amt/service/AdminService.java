@@ -10,55 +10,55 @@ import org.slf4j.LoggerFactory;
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
 import com.amt.dao.ReimbursementStatusDAOImpl;
-import com.amt.dao.ReimbursementTypeDAOImpl;
+import com.amt.dao.UserTypeDAOImpl;
 import com.amt.dao.UserRoleDAOImpl;
 import com.amt.dto.ReimbursementStatusDTO;
-import com.amt.dto.ReimbursementTypeDTO;
+import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.*;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.UserRole;
 import com.amt.util.Validate;
 
-public class ERSAdminService implements Constants {
-	private Logger objLogger = LoggerFactory.getLogger(ERSAdminService.class);
-	private GenericDAO<ReimbursementStatus> objReimbStatusDAO;
-	private GenericDAO<ReimbursementType> objReimbTypeDAO;
+public class AdminService implements Constants {
+	private Logger objLogger = LoggerFactory.getLogger(AdminService.class);
+	private GenericDAO<OrderStatus> objCatalogTypeDAO;
+	private GenericDAO<UserType> objUserTypeDAO;
 	private GenericDAO<UserRole> objUserRoleDAO;
 
-	public ERSAdminService() {
-		this.objReimbStatusDAO = new ReimbursementStatusDAOImpl();
-		this.objReimbTypeDAO = new ReimbursementTypeDAOImpl();
+	public AdminService() {
+		this.objCatalogTypeDAO = new ReimbursementStatusDAOImpl();
+		this.objUserTypeDAO = new UserTypeDAOImpl();
 		this.objUserRoleDAO = new UserRoleDAOImpl();
 	}
 
 	// Cannot overload constructor with different signatures of GenericDAO<T> so
 	// provide get methods
-	public ERSAdminService getMockReimbStatusDAO(GenericDAO<ReimbursementStatus> objMockReimbStatusDAO) {
-		this.objReimbStatusDAO = objMockReimbStatusDAO;
+	public AdminService getMockReimbStatusDAO(GenericDAO<OrderStatus> objMockReimbStatusDAO) {
+		this.objCatalogTypeDAO = objMockReimbStatusDAO;
 		return this;
 	}
 
-	public ERSAdminService getMockReimbTypeDAO(GenericDAO<ReimbursementType> objMockReimbTypeDAO) {
-		this.objReimbTypeDAO = objMockReimbTypeDAO;
+	public AdminService getMockReimbTypeDAO(GenericDAO<UserType> objMockUserTypeDAO) {
+		this.objUserTypeDAO = objMockUserTypeDAO;
 		return this;
 	}
 
-	public ERSAdminService getMockUserRoleDAO(GenericDAO<UserRole> objMockUserRoleDAO) {
+	public AdminService getMockUserRoleDAO(GenericDAO<UserRole> objMockUserRoleDAO) {
 		this.objUserRoleDAO = objMockUserRoleDAO;
 		return this;
 	}
 
 	//
 	// ###
-	public List<ReimbursementStatus> getAllReimbursementStatus() throws DatabaseException {
-		String sMethod = "getAllReimbursementStatus(): ";
+	public List<OrderStatus> getAllCatalogType() throws DatabaseException {
+		String sMethod = "getAllCatalogType(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		try {
 
-			List<ReimbursementStatus> lstReimbStatus = objReimbStatusDAO.getAllRecords();
+			List<OrderStatus> lstReimbStatus = objCatalogTypeDAO.getAllRecords();
 			objLogger.debug(sMethod + "lstReimbStatus: [" + lstReimbStatus.toString() + "]");
 			return lstReimbStatus;
 
@@ -77,13 +77,13 @@ public class ERSAdminService implements Constants {
 
 	//
 	// ###
-	public List<ReimbursementType> getAllReimbursementType() throws DatabaseException {
+	public List<UserType> getAllReimbursementType() throws DatabaseException {
 		String sMethod = "getAllReimbursementType(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		try {
 
-			List<ReimbursementType> lstReimbType = objReimbTypeDAO.getAllRecords();
+			List<UserType> lstReimbType = objUserTypeDAO.getAllRecords();
 			objLogger.debug(sMethod + "lstReimbStatus: [" + lstReimbType.toString() + "]");
 			return lstReimbType;
 
@@ -126,7 +126,7 @@ public class ERSAdminService implements Constants {
 
 	//
 	// ###
-	public ReimbursementStatus addReimbursementStatus(ReimbursementStatusDTO objReimbStatusDTO)
+	public OrderStatus addReimbursementStatus(ReimbursementStatusDTO objReimbStatusDTO)
 			throws DatabaseException, BadParameterException {
 		String sMethod = "addReimbStatusTableStatus(): ";
 		objLogger.trace(sMethod + "Entered");
@@ -142,7 +142,7 @@ public class ERSAdminService implements Constants {
 
 		try {
 
-			ReimbursementStatus objReimbStatus = objReimbStatusDAO.addRecord(objReimbStatusDTO);
+			OrderStatus objReimbStatus = objCatalogTypeDAO.addRecord(objReimbStatusDTO);
 			return objReimbStatus;
 
 		} catch (SQLException e) {
@@ -161,7 +161,7 @@ public class ERSAdminService implements Constants {
 
 	//
 	// ###
-	public ReimbursementStatus getReimbursementStatusByName(String sStatusName)
+	public OrderStatus getReimbursementStatusByName(String sStatusName)
 			throws DatabaseException, BadParameterException {
 		String sMethod = "getReimbursementStatusByName(): ";
 		objLogger.trace(sMethod + "Entered");
@@ -178,7 +178,7 @@ public class ERSAdminService implements Constants {
 
 		try {
 			objLogger.debug(sMethod + "Getting status by name sStatus: [" + sStatusName + "]");
-			ReimbursementStatus objReimbStatus = objReimbStatusDAO.getByRecordIdentifer(sStatusName);
+			OrderStatus objReimbStatus = objCatalogTypeDAO.getByRecordIdentifer(sStatusName);
 			return objReimbStatus;
 
 		} catch (SQLException e) {
@@ -198,13 +198,13 @@ public class ERSAdminService implements Constants {
 	
 	//
 	// ###
-	public ReimbursementType addReimbursementType(ReimbursementTypeDTO objReimbTypeDTO)
+	public UserType addReimbursementType(UserTypeDTO objReimbTypeDTO)
 			throws DatabaseException, BadParameterException {
 		String sMethod = "addReimbStatusTableStatus(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		String sType = objReimbTypeDTO.getReimbType();
-		String sTypeDesc = objReimbTypeDTO.getReimbTypeDescription();
+		String sType = objReimbTypeDTO.getUserType();
+		String sTypeDesc = objReimbTypeDTO.getUserTypeDescription();
 
 		if ((sType.length() == 0) || (sTypeDesc.length() == 0)) {
 			objLogger.debug(
@@ -214,7 +214,7 @@ public class ERSAdminService implements Constants {
 
 		try {
 
-			ReimbursementType objReimbType = objReimbTypeDAO.addRecord(objReimbTypeDTO);
+			UserType objReimbType = objUserTypeDAO.addRecord(objReimbTypeDTO);
 			return objReimbType;
 
 		} catch (SQLException e) {

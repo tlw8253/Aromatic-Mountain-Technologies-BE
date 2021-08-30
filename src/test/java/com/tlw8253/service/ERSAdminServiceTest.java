@@ -25,25 +25,25 @@ import org.mockito.Mockito;
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
 import com.amt.dto.ReimbursementStatusDTO;
-import com.amt.dto.ReimbursementTypeDTO;
+import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.*;
-import com.amt.model.ReimbursementStatus;
-import com.amt.model.ReimbursementType;
+import com.amt.model.OrderStatus;
+import com.amt.model.UserType;
 import com.amt.model.UserRole;
-import com.amt.service.ERSAdminService;
+import com.amt.service.AdminService;
 
 
 
 public class ERSAdminServiceTest implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(ERSAdminServiceTest.class);
 	
-	private ERSAdminService objMockAdminServiceReimbStatus;
-	private ERSAdminService objMockAdminServiceReimbType;
-	private ERSAdminService objMockAdminServiceUserRole;
+	private AdminService objMockAdminServiceReimbStatus;
+	private AdminService objMockAdminServiceReimbType;
+	private AdminService objMockAdminServiceUserRole;
 	
-	private GenericDAO<ReimbursementStatus> objMockReimbStatusDAO;
-	private GenericDAO<ReimbursementType> objMockReimbTypeDAO;
+	private GenericDAO<OrderStatus> objMockReimbStatusDAO;
+	private GenericDAO<UserType> objMockReimbTypeDAO;
 	private GenericDAO<UserRole> objMockUserRoleDAO;
 
 	public ERSAdminServiceTest() {
@@ -65,11 +65,11 @@ public class ERSAdminServiceTest implements Constants {
 		objLogger.trace("setUp()");
 		//fake DAO using the GenericDAO<T> interface class		
 		this.objMockReimbStatusDAO = mock(GenericDAO.class);
-		this.objMockAdminServiceReimbStatus = new ERSAdminService().getMockReimbStatusDAO(objMockReimbStatusDAO);
+		this.objMockAdminServiceReimbStatus = new AdminService().getMockReimbStatusDAO(objMockReimbStatusDAO);
 		this.objMockReimbTypeDAO = mock(GenericDAO.class);
-		this.objMockAdminServiceReimbType = new ERSAdminService().getMockReimbTypeDAO(objMockReimbTypeDAO);
+		this.objMockAdminServiceReimbType = new AdminService().getMockReimbTypeDAO(objMockReimbTypeDAO);
 		this.objMockUserRoleDAO = mock(GenericDAO.class);
-		this.objMockAdminServiceUserRole = new ERSAdminService().getMockUserRoleDAO(objMockUserRoleDAO);
+		this.objMockAdminServiceUserRole = new AdminService().getMockUserRoleDAO(objMockUserRoleDAO);
 	}
 
 	@After
@@ -81,13 +81,13 @@ public class ERSAdminServiceTest implements Constants {
 	public void testAddReimbursementStatusSuccess() throws SQLException, BadParameterException, DatabaseException {
 		objLogger.trace("testAddReimbursementStatusSuccess()");
 		
-		ReimbursementStatus mockRetValues = new ReimbursementStatus("REJECTED","The request was rejected.");
+		OrderStatus mockRetValues = new OrderStatus("REJECTED","The request was rejected.");
 		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("REJECTED","The request was rejected.");
 		when(objMockReimbStatusDAO.addRecord(objReimStatusDTO)).thenReturn(mockRetValues);
 	
-		ReimbursementStatus objActualValues = objMockAdminServiceReimbStatus.addReimbursementStatus(objReimStatusDTO);
+		OrderStatus objActualValues = objMockAdminServiceReimbStatus.addReimbursementStatus(objReimStatusDTO);
 		
-		ReimbursementStatus objExpectedValues = new ReimbursementStatus("REJECTED","The request was rejected.");
+		OrderStatus objExpectedValues = new OrderStatus("REJECTED","The request was rejected.");
 		
 		assertEquals(objExpectedValues, objActualValues);
 	}
@@ -143,18 +143,18 @@ public class ERSAdminServiceTest implements Constants {
 	public void testGetAllReimbursementStatusSuccess() throws SQLException{
 		objLogger.trace("testGetAllReimbursementStatusSuccess()");
 
-		List<ReimbursementStatus> mockRetValues = new ArrayList<>();		
-		mockRetValues.add(new ReimbursementStatus("PENDING", "The status when a reimbursement request is first created and submitted by an user."));
-		mockRetValues.add(new ReimbursementStatus("APPROVED", "The status when a reimbursement request is reviewed and approved by the Finance Manager."));
-		mockRetValues.add(new ReimbursementStatus("DENIED", "The status when a reimbursement request is reviewed and denied by the Finance Manager."));
+		List<OrderStatus> mockRetValues = new ArrayList<>();		
+		mockRetValues.add(new OrderStatus("PENDING", "The status when a reimbursement request is first created and submitted by an user."));
+		mockRetValues.add(new OrderStatus("APPROVED", "The status when a reimbursement request is reviewed and approved by the Finance Manager."));
+		mockRetValues.add(new OrderStatus("DENIED", "The status when a reimbursement request is reviewed and denied by the Finance Manager."));
 		when(objMockReimbStatusDAO.getAllRecords()).thenReturn(mockRetValues);
 		
-		List<ReimbursementStatus> lstActualValues = objMockReimbStatusDAO.getAllRecords();		
+		List<OrderStatus> lstActualValues = objMockReimbStatusDAO.getAllRecords();		
 		
-		List<ReimbursementStatus> lstExpectedValues = new ArrayList<>();
-		lstExpectedValues.add(new ReimbursementStatus("PENDING", "The status when a reimbursement request is first created and submitted by an user."));
-		lstExpectedValues.add(new ReimbursementStatus("APPROVED", "The status when a reimbursement request is reviewed and approved by the Finance Manager."));
-		lstExpectedValues.add(new ReimbursementStatus("DENIED", "The status when a reimbursement request is reviewed and denied by the Finance Manager."));
+		List<OrderStatus> lstExpectedValues = new ArrayList<>();
+		lstExpectedValues.add(new OrderStatus("PENDING", "The status when a reimbursement request is first created and submitted by an user."));
+		lstExpectedValues.add(new OrderStatus("APPROVED", "The status when a reimbursement request is reviewed and approved by the Finance Manager."));
+		lstExpectedValues.add(new OrderStatus("DENIED", "The status when a reimbursement request is reviewed and denied by the Finance Manager."));
 		
 		assertEquals(lstExpectedValues, lstActualValues);
 
@@ -168,7 +168,7 @@ public class ERSAdminServiceTest implements Constants {
 		when(objMockReimbStatusDAO.getAllRecords()).thenThrow(SQLException.class);
 
 		try {
-			objMockAdminServiceReimbStatus.getAllReimbursementStatus();
+			objMockAdminServiceReimbStatus.getAllCatalogType();
 			fail();
 			
 		}catch(DatabaseException e) {		
@@ -181,13 +181,13 @@ public class ERSAdminServiceTest implements Constants {
 	public void testAddReimbursementTypeSuccess() throws SQLException, BadParameterException, DatabaseException {
 		objLogger.trace("testAddReimbursementTypeSuccess()");
 		
-		ReimbursementType mockRetValues = new ReimbursementType("MOVIE","Expenses related to watching movies.");
-		ReimbursementTypeDTO objReimbTypeDTO = new ReimbursementTypeDTO("MOVIE","Expenses related to watching movies.");
+		UserType mockRetValues = new UserType("MOVIE","Expenses related to watching movies.");
+		UserTypeDTO objReimbTypeDTO = new UserTypeDTO("MOVIE","Expenses related to watching movies.");
 		when(objMockReimbTypeDAO.addRecord(objReimbTypeDTO)).thenReturn(mockRetValues);
 	
-		ReimbursementType objActualValues = objMockAdminServiceReimbType.addReimbursementType(objReimbTypeDTO);
+		UserType objActualValues = objMockAdminServiceReimbType.addReimbursementType(objReimbTypeDTO);
 		
-		ReimbursementType objExpectedValues = new ReimbursementType("MOVIE","Expenses related to watching movies.");
+		UserType objExpectedValues = new UserType("MOVIE","Expenses related to watching movies.");
 		
 		assertEquals(objExpectedValues, objActualValues);
 	}
@@ -197,20 +197,20 @@ public class ERSAdminServiceTest implements Constants {
 	public void testGetAllReimbursementTypeSuccess() throws SQLException{
 		objLogger.trace("testGetAllReimbursementTypeSuccess()");
 
-		List<ReimbursementType> mockRetValues = new ArrayList<>();		
-		mockRetValues.add(new ReimbursementType("LODGING", "Reimbursement expense related to overnight stays related to business travel."));
-		mockRetValues.add(new ReimbursementType("TRAVEL", "Reimbursement expense related to planes, trains, automobiles, etc."));
-		mockRetValues.add(new ReimbursementType("FOOD", "Reimbursement expense related to meals related to business travel."));
-		mockRetValues.add(new ReimbursementType("OTHER", "Reimbursement expense related to other expenses related to the business."));
+		List<UserType> mockRetValues = new ArrayList<>();		
+		mockRetValues.add(new UserType("LODGING", "Reimbursement expense related to overnight stays related to business travel."));
+		mockRetValues.add(new UserType("TRAVEL", "Reimbursement expense related to planes, trains, automobiles, etc."));
+		mockRetValues.add(new UserType("FOOD", "Reimbursement expense related to meals related to business travel."));
+		mockRetValues.add(new UserType("OTHER", "Reimbursement expense related to other expenses related to the business."));
 		when(objMockReimbTypeDAO.getAllRecords()).thenReturn(mockRetValues);
 		
-		List<ReimbursementType> lstActualValues = objMockReimbTypeDAO.getAllRecords();		
+		List<UserType> lstActualValues = objMockReimbTypeDAO.getAllRecords();		
 		
-		List<ReimbursementType> lstExpectedValues = new ArrayList<>();
-		lstExpectedValues.add(new ReimbursementType("LODGING", "Reimbursement expense related to overnight stays related to business travel."));
-		lstExpectedValues.add(new ReimbursementType("TRAVEL", "Reimbursement expense related to planes, trains, automobiles, etc."));
-		lstExpectedValues.add(new ReimbursementType("FOOD", "Reimbursement expense related to meals related to business travel."));
-		lstExpectedValues.add(new ReimbursementType("OTHER", "Reimbursement expense related to other expenses related to the business."));
+		List<UserType> lstExpectedValues = new ArrayList<>();
+		lstExpectedValues.add(new UserType("LODGING", "Reimbursement expense related to overnight stays related to business travel."));
+		lstExpectedValues.add(new UserType("TRAVEL", "Reimbursement expense related to planes, trains, automobiles, etc."));
+		lstExpectedValues.add(new UserType("FOOD", "Reimbursement expense related to meals related to business travel."));
+		lstExpectedValues.add(new UserType("OTHER", "Reimbursement expense related to other expenses related to the business."));
 		
 		assertEquals(lstExpectedValues, lstActualValues);
 

@@ -21,7 +21,7 @@ public class UserRole implements Constants {
 	@Column(name = csUserRolesTblUserRoleId)
 	private int userRoleId = 0;
 
-	@Column(name = csUserRolesTblUserRole, length = 10, nullable = false, unique = true)
+	@Column(name = csUserRolesTblUserRole, length = 50, nullable = false, unique = true)
 	private String userRole = "";
 	
 	@Column(name = csUserRolesTblUserRoleDesc, length = 150, nullable = false)
