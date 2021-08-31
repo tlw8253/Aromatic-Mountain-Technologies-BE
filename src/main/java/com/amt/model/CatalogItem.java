@@ -30,6 +30,9 @@ public class CatalogItem implements Constants {
 	@Column(name = csCatalogItemPrice, length = 255, nullable = false)
 	private double itemPrice = 0.0;
 	
+	@Column(name = csCatalogItemInStockQty, length = 255, nullable = false)
+	private int itemInStockQty = 0;
+
 	@ManyToOne
 	@JoinColumn(name = csCatalogTblCatalogTypeId, nullable = false)
 	private CatalogType catalogType;

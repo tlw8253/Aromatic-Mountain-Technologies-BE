@@ -48,7 +48,7 @@ public class Admin implements Constants {
 		objLogger.trace(sMethod + "Entered");
 
 		  createTablesViaHibernate(); //NOTE: change configuration file to create
-		 // ersAdminAddStaticTableValues();
+//		  ersAdminAddStaticTableValues();
 		 // addNewUser("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com", csUserRoles[ciUserRoleEmployee]);
 		 // addNewReimbursement("1");	//add Reimbursement for above user
 		 // addNewUser("smp8253", "A_Pass12345", "Sam", "Smith", "smp8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);

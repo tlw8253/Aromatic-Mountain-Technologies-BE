@@ -28,6 +28,9 @@ public class OrderItems implements Constants {
 	@Column(name = csOrderItemsTblOrderPrice)
 	private double orderPrice = 0.0;
 	
+	@Column(name = csOrderItemsTblItemQty)
+	private int orderQty = 0;
+
 	@ManyToOne
 	@JoinColumn(name = csCatalogTblCatalogId)	//, nullable = false) // 
 	private CatalogItem catalogItem;

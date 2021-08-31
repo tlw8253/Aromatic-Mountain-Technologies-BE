@@ -42,7 +42,7 @@ public interface Constants {
 	String csEnvironmentDB_UsernameVarible = "p0_db_username";
 
 	// End Points
-	String csRootEndpointERS = "/ers";
+	String csRootEndpoint = "/amt";
 
 	String csRootEndpointLogin = "/amt_login";
 	String csRootEndpointLogout = "/amt_logout";
@@ -107,15 +107,17 @@ public interface Constants {
 	String csDBOrderItemsTable = csDatabaseName + "." + csOrderItemsTable; // qualified table name
 	String csOrderItemsTblOrderItemsId = "order_items_id"; // PK primary key
 	String csOrderItemsTblOrderPrice = "order_items_price";
+	String csOrderItemsTblItemQty = "order_items_qty";
 
 
 	// table: Catalog
-	String csCatalogTable = "amt_catalog"; // table name
+	String csCatalogTable = "amt_catalog_item"; // table name
 	String csDBCatalogTable = csDatabaseName + "." + csCatalogTable; // qualified table name
 	String csCatalogTblCatalogId = "catalog_id"; // PK primary key
 	String csCatalogItem = "catalog_item";
 	String csCatalogItemDesc = "catalog_item_description";
 	String csCatalogItemPrice = "catalog_item_price";
+	String csCatalogItemInStockQty = "catalog_item_in_stock_qty";
 	String csCatalogTblCatalogTypeId = "catalog_type_id";
 
 	// table: Catalog Type
@@ -171,6 +173,35 @@ public interface Constants {
 			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages." };
 
 
+	// table: Address Type
+	String csAddressTypeTable = "amt_address_type"; // table name
+	String csDBAddressTypeTable = csDatabaseName + "." + csAddressTypeTable; // qualified table name
+	String csAddressTypeTblAddressTypeId = "address_type_id"; // PK primary key
+	String csAddressTypeTblAddressType = "address_type"; // String
+	String csAddressTypeTblAddressTypeDesc = "address_type_desc"; // String
+	String[] carrAddressType = { "BILLING", "SHIPPING", "MAILING"}; //
+	String[] carrAddressTypeDesc = {"BILLING: The address where the bill of credit card used is mailed.",
+									"SHIPPING: The address where the customer wants the merchandise shipped.",
+									"MAILING: The home or mailing address where the customer resides."};
+
+	enum enumAddressType {
+		BILLING(0), SHIPPING(1), MAILING(2);
+
+		int pos;
+
+		enumAddressType(int pos) {
+			this.pos = pos;
+		}
+
+		int pos() {
+			return pos;
+		}
+	};
+
+
+	
+	
+	
 	// table: user
 	String csUserTable = "amt_users"; // table name
 	String csDBUserTable = csDatabaseName + "." + csUserTable; // if using JDBC
