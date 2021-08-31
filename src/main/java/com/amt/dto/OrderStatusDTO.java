@@ -2,7 +2,7 @@ package com.amt.dto;
 
 import com.amt.app.Constants;
 
-public class ReimbursementStatusDTO extends AddOrEditDTO implements Constants{
+public class OrderStatusDTO extends AddOrEditDTO implements Constants{
 	//Class attributes are store in the parent in HashMap tables.	
 
 	/*Stored in hashmaps in the super class
@@ -15,11 +15,11 @@ public class ReimbursementStatusDTO extends AddOrEditDTO implements Constants{
 	
 	//
 	//###
-	public ReimbursementStatusDTO() {
+	public OrderStatusDTO() {
 		super();
 	}
 
-	public ReimbursementStatusDTO(String sReimbStatus, String sReimbStatusDesc) {
+	public OrderStatusDTO(String sReimbStatus, String sReimbStatusDesc) {
 		setReimbStatus(sReimbStatus);
 		setReimbStatusDescription(sReimbStatusDesc);
 	}

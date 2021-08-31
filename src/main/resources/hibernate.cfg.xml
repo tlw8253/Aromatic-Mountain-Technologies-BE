@@ -33,12 +33,15 @@
 		<!-- <property name="hbm2ddl.auto">create</property>  -->	
 		
 		<!-- Specify our entity/class mappings here -->
-		<mapping class="com.tlw8253.model.UserRole"></mapping>
-		<mapping class="com.tlw8253.model.User"></mapping>
+		<mapping class="com.amt.model.UserRole"></mapping>
+		<mapping class="com.amt.model.UserType"></mapping>
+		<mapping class="com.amt.model.User"></mapping>
+		<mapping class="com.amt.model.CatalogType"></mapping>
+		<mapping class="com.amt.model.CatalogItem"></mapping>
+		<mapping class="com.amt.model.OrderStatus"></mapping>
+		<mapping class="com.amt.model.OrderItems"></mapping>
+		<mapping class="com.amt.model.Order"></mapping>
 <!-- 	
-		<mapping class="com.tlw8253.model.ReimbursementStatus"></mapping>
-		<mapping class="com.tlw8253.model.ReimbursementType"></mapping>	
-		<mapping class="com.tlw8253.model.Reimbursement"></mapping>		
  -->			
 		
 		

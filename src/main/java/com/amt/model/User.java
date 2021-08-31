@@ -47,8 +47,8 @@ public class User implements Constants {
 	private UserRole userRole;
 
 	@ManyToOne
-	@JoinColumn(name = csUserRolesTblUserRoleId, nullable = false)
-	private UserRole userType;		//employee or customer
+	@JoinColumn(name = csUserTypeTblUserTypeId, nullable = false)
+	private UserType userType;		//employee or customer
 
 	
 	public User() {

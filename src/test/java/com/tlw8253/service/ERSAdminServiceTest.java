@@ -24,7 +24,7 @@ import org.mockito.Mockito;
 
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
-import com.amt.dto.ReimbursementStatusDTO;
+import com.amt.dto.OrderStatusDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.*;
@@ -82,7 +82,7 @@ public class ERSAdminServiceTest implements Constants {
 		objLogger.trace("testAddReimbursementStatusSuccess()");
 		
 		OrderStatus mockRetValues = new OrderStatus("REJECTED","The request was rejected.");
-		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("REJECTED","The request was rejected.");
+		OrderStatusDTO objReimStatusDTO = new OrderStatusDTO("REJECTED","The request was rejected.");
 		when(objMockReimbStatusDAO.addRecord(objReimStatusDTO)).thenReturn(mockRetValues);
 	
 		OrderStatus objActualValues = objMockAdminServiceReimbStatus.addReimbursementStatus(objReimStatusDTO);
@@ -96,7 +96,7 @@ public class ERSAdminServiceTest implements Constants {
 	public void testAddReimbursementStatusDuplicate() throws SQLException, BadParameterException, DatabaseException {
 		objLogger.trace("testAddReimbursementStatusDuplicate()");		
 		
-		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("REJECTED","The request was rejected.");
+		OrderStatusDTO objReimStatusDTO = new OrderStatusDTO("REJECTED","The request was rejected.");
 		when(objMockReimbStatusDAO.addRecord(objReimStatusDTO)).thenThrow(SQLException.class);
 
 		try {
@@ -113,7 +113,7 @@ public class ERSAdminServiceTest implements Constants {
 		objLogger.trace("testAddReimbursementStatusBadParamStatus()");		
 		
 		// invalid status length
-		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("","The request was rejected.");
+		OrderStatusDTO objReimStatusDTO = new OrderStatusDTO("","The request was rejected.");
 		try {
 			objMockAdminServiceReimbStatus.addReimbursementStatus(objReimStatusDTO);
 			fail();
@@ -128,7 +128,7 @@ public class ERSAdminServiceTest implements Constants {
 		objLogger.trace("testAddReimbursementStatusBadParamStatusDesc()");		
 		
 		//invalid status description length
-		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("REJECT","");
+		OrderStatusDTO objReimStatusDTO = new OrderStatusDTO("REJECT","");
 		try {
 			objMockAdminServiceReimbStatus.addReimbursementStatus(objReimStatusDTO);
 			fail();
@@ -164,7 +164,7 @@ public class ERSAdminServiceTest implements Constants {
 	public void testGetAllReimbursementStatusException() throws SQLException, BadParameterException, DatabaseException {
 		objLogger.trace("testGetAllReimbursementStatusException()");		
 		
-		ReimbursementStatusDTO objReimStatusDTO = new ReimbursementStatusDTO("REJECTED","The request was rejected.");
+		OrderStatusDTO objReimStatusDTO = new OrderStatusDTO("REJECTED","The request was rejected.");
 		when(objMockReimbStatusDAO.getAllRecords()).thenThrow(SQLException.class);
 
 		try {

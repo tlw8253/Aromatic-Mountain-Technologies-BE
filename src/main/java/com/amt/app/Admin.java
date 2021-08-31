@@ -11,8 +11,7 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amt.dto.ReimbursementDTO;
-import com.amt.dto.ReimbursementStatusDTO;
+import com.amt.dto.OrderStatusDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
 import com.amt.dto.UserRoleDTO;
@@ -39,7 +38,6 @@ public class Admin implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(Admin.class);
 	private static UserService objERSService = new UserService();
 	private static UserDTO objUserDTO = new UserDTO();
-	private static ReimbursementDTO objReimbDTO = new ReimbursementDTO();
 
 	public Admin() {
 		// TODO Auto-generated constructor stub
@@ -49,7 +47,7 @@ public class Admin implements Constants {
 		String sMethod = "\n\t main(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		 // createTablesViaHibernate(); //NOTE: change configuration file to create
+		  createTablesViaHibernate(); //NOTE: change configuration file to create
 		 // ersAdminAddStaticTableValues();
 		 // addNewUser("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com", csUserRoles[ciUserRoleEmployee]);
 		 // addNewReimbursement("1");	//add Reimbursement for above user
@@ -61,6 +59,22 @@ public class Admin implements Constants {
 
 	}
 
+	//
+	// ###
+	private static void createTablesViaHibernate() {
+		String sMethod = "\n\t createTablesViaHibernate(): ";
+		objLogger.trace(sMethod + "Entered");
+
+		// need to set the config.xm property to: <property
+		// name="hbm2ddl.auto">create</property>
+		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		tx.commit();
+
+	}
+
+	
 
 	//
 	// ###
@@ -81,71 +95,14 @@ public class Admin implements Constants {
 
 	}
 
-	//
-	// ###
-	private static void createTablesViaHibernate() {
-		String sMethod = "\n\t createTablesViaHibernate(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		// need to set the config.xm property to: <property
-		// name="hbm2ddl.auto">create</property>
-		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-		tx.commit();
-
-	}
 
 	//
 	// ###
 	private static void ersAdminAddStaticTableValues() {
-		addReimbursementStatus();
 		addUserType();
 		addUserRole();
 	}
 
-	//
-	// ###
-	private static void addReimbursementStatus() {
-		String sMethod = "\n\t addReimbursementStatus(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		String sStatus = csReimbStatus[ciReimbStatusPending];
-		String sStatusDesc = "The status when a reimbursement request is first created and submitted by an user.";
-		objLogger.debug(sMethod + "Adding status: [" + sStatus + "] description: [" + sStatusDesc + "]");
-		addReimbStatus(sStatus, sStatusDesc);
-
-		sStatus = csReimbStatus[ciReimbStatusApproved];
-		sStatusDesc = "The status when a reimbursement request is reviewed and approved by the Finance Manager.";
-		objLogger.debug(sMethod + "Adding status: [" + sStatus + "] description: [" + sStatusDesc + "]");
-		addReimbStatus(sStatus, sStatusDesc);
-
-		sStatus = csReimbStatus[ciReimbStatusDenied];
-		sStatusDesc = "The status when a reimbursement request is reviewed and denied by the Finance Manager.";
-		addReimbStatus(sStatus, sStatusDesc);
-
-	}
-
-	//
-	// ###
-	private static void addReimbStatus(String sStatus, String sStatusDesc) {
-		String sMethod = "\n\t addReimbStatus(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		AdminService objAdminService = new AdminService();
-		ReimbursementStatusDTO objReimbStatusDTO = new ReimbursementStatusDTO();
-
-		objReimbStatusDTO.setReimbStatus(sStatus);
-		objReimbStatusDTO.setReimbStatusDescription(sStatusDesc);
-
-		try {
-			OrderStatus objReimbStatus = objAdminService.addReimbursementStatus(objReimbStatusDTO);
-			objLogger.debug(sMethod + "objReimbStatus: [" + objReimbStatus.toString() + "]");
-		} catch (Exception e) {
-			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
-			// throw new DatabaseException(e.getMessage());
-		}
-	}
 
 
 	//

@@ -12,7 +12,7 @@ import com.amt.dao.GenericDAO;
 import com.amt.dao.ReimbursementStatusDAOImpl;
 import com.amt.dao.UserTypeDAOImpl;
 import com.amt.dao.UserRoleDAOImpl;
-import com.amt.dto.ReimbursementStatusDTO;
+import com.amt.dto.OrderStatusDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserRoleDTO;
 import com.amt.exception.*;
@@ -126,7 +126,7 @@ public class AdminService implements Constants {
 
 	//
 	// ###
-	public OrderStatus addReimbursementStatus(ReimbursementStatusDTO objReimbStatusDTO)
+	public OrderStatus addReimbursementStatus(OrderStatusDTO objReimbStatusDTO)
 			throws DatabaseException, BadParameterException {
 		String sMethod = "addReimbStatusTableStatus(): ";
 		objLogger.trace(sMethod + "Entered");

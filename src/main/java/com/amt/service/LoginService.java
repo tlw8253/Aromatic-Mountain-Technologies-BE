@@ -36,7 +36,7 @@ public class LoginService implements Constants {
 			throw new BadParameterException(csMsgBadParamLoginUsernamePwdBlank);
 		}
 		
-		if (sUsername.length() != ciUsernameLength || sPassword.length() < ciUserMinPassword || sPassword.length() > ciUserMaxPassword) {
+		if (sUsername.length() != ciUsernameMinLength || sPassword.length() < ciUserMinPassword || sPassword.length() > ciUserMaxPassword) {
 			objLogger.debug(sMethod + "Invalid parameters sUsername: [" + sUsername + "] and/ or Password length is invalid.");
 			throw new BadParameterException(csMsgBadParamLoginUsernamePwdLength);
 		}

@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
 import com.amt.dao.UserDAOImpl;
-import com.amt.dto.ReimbursementDTO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.*;
 import com.amt.model.Order;
@@ -87,7 +86,7 @@ public class UserService implements Constants {
 		String sMethod = "\n\t getUsersByUsername(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		if (Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameLength) {			
+		if (Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameMinLength) {			
 			try {
 				User objUser = objUserDAO.getByRecordIdentifer(sUsername);
 				objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
@@ -228,7 +227,7 @@ public class UserService implements Constants {
 
 		isValid = isValidUserDTOEditAttributes(objUserDTO);
 		
-		boolean bUsernameIsAlphaNumeric = Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameLength;
+		boolean bUsernameIsAlphaNumeric = Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameMinLength;
 		boolean bPasswordIsInFormat = Validate.isPasswordFormat(sPassword, ciUserMinPassword, ciUserMaxPassword);
 		boolean bEmailIsInFormat = Validate.isValidEmailAddress(sEmail);
 
