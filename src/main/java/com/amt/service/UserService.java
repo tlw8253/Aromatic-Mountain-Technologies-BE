@@ -18,6 +18,7 @@ import com.amt.dto.UserDTO;
 import com.amt.exception.*;
 import com.amt.model.Order;
 import com.amt.model.User;
+import com.amt.util.PasswordUtil;
 import com.amt.util.Validate;
 
 public class UserService implements Constants {
@@ -35,10 +36,6 @@ public class UserService implements Constants {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public User getErsLogin(String sParamUserName, String sParamPassword) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	//
 	// ###
@@ -106,13 +103,20 @@ public class UserService implements Constants {
 	//
 	// ###
 	public User addNewUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
-		String sMethod = "\n\t addNewEmployee(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = "\n\t addNewUser(): ";
+		objLogger.trace(sMethod + "Entered: objUserDTO: [" + objUserDTO.toString() + "]");
 
 		if (isValidUserDTO(objUserDTO)) {
 			try {
-				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");
+				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");				
+				
+				//Encrypt and set password values
+				String sPwdSalt = PasswordUtil.getSalt(30);
+				String sSecurePassword = PasswordUtil.generateSecurePassword(objUserDTO.getPassword(), sPwdSalt);				
+				objUserDTO.setPassword(sSecurePassword);
+				objUserDTO.setPasswordSalt(sPwdSalt);
 
+				objLogger.debug(sMethod + "calling addRecord with objUserDTO: [" + objUserDTO.toString() + "]");	
 				User objUser = objUserDAO.addRecord(objUserDTO);
 				objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
 				return objUser;
@@ -120,7 +124,7 @@ public class UserService implements Constants {
 			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
 				objLogger.error(sMethod + "Exception adding User record with username: [" + objUserDTO.getUsername()
 						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
-				throw new DatabaseException(csMsgDB_ErrorAddingEmployee);
+				throw new DatabaseException(csMsgDB_ErrorAddingUser);
 			}
 
 		} else {
@@ -195,7 +199,7 @@ public class UserService implements Constants {
 		
 		String sFirstName = objUserDTO.getFirstName();
 		String sLastName = objUserDTO.getLastName();
-		String sUserRoleName = objUserDTO.getUserRoleName();
+		String sUserRoleName = objUserDTO.getEmployeeRole();
 		
 		boolean bFirstNameIsAlpha = Validate.isAlpha(sFirstName);
 		boolean bLastNameIsAlpha = Validate.isAlphaPlusLastname(sLastName);
@@ -227,7 +231,9 @@ public class UserService implements Constants {
 
 		isValid = isValidUserDTOEditAttributes(objUserDTO);
 		
-		boolean bUsernameIsAlphaNumeric = Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameMinLength;
+		boolean bUsernameIsAlphaNumeric = Validate.isAlphaNumeric(sUsername) 
+											&& sUsername.length() >= ciUsernameMinLength 
+											&& sUsername.length() <= ciUsernamMaxLength;
 		boolean bPasswordIsInFormat = Validate.isPasswordFormat(sPassword, ciUserMinPassword, ciUserMaxPassword);
 		boolean bEmailIsInFormat = Validate.isValidEmailAddress(sEmail);
 

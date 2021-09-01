@@ -21,13 +21,14 @@ import com.amt.dto.AddOrEditDTO;
 //DAO - Data Access Object
 public interface GenericDAO<T> {
 
+	// have no idea what exceptions hibernate throws and when but it is not Exception
 	public abstract List<T> getAllRecords() throws SQLException;
 	
 	/**
 	 * This method returns a model from the database
 	 * 
 	 */
-	//public abstract T getByRecordId(int iRecordId) throws SQLException;
+	//public abstract T getByRecordId(int iRecordId) throws Exception;
 	//		using string so called method can convert to type needed
 
 	public abstract T getByRecordId(int sRecordId) throws SQLException;

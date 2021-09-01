@@ -92,7 +92,7 @@ public class PasswordDriver {
     
     // Protect user's password. The generated value can be stored in DB.
     private static String test_PasswordUtil_generateSecurePassword(String sPwd, String sSalt) {
-       	String sMethod = "test_PasswordUtil_getSalt(): ";
+       	String sMethod = "test_PasswordUtil_generateSecurePassword(): ";
     	objLogger.trace(sMethod + "Entered: sPwd: [" + sPwd + "] sSalt: [" + sSalt + "]");   	
 
     	String sSecurePassword = PasswordUtil.generateSecurePassword(sPwd, sSalt);

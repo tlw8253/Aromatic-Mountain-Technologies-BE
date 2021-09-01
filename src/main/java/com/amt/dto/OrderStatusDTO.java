@@ -7,9 +7,9 @@ public class OrderStatusDTO extends AddOrEditDTO implements Constants{
 
 	/*Stored in hashmaps in the super class
 	//ers_reimbursement_status table
-	private int reimbStatusId;
-	private String reimbStatus;
-	private String reimbStatusDesc;
+	private int OrderStatusId;
+	private String OrderStatus;
+	private String OrderStatusDesc;
 	
 	*/
 	
@@ -19,39 +19,39 @@ public class OrderStatusDTO extends AddOrEditDTO implements Constants{
 		super();
 	}
 
-	public OrderStatusDTO(String sReimbStatus, String sReimbStatusDesc) {
-		setReimbStatus(sReimbStatus);
-		setReimbStatusDescription(sReimbStatusDesc);
+	public OrderStatusDTO(String sOrderStatus, String sOrderStatusDesc) {
+		setOrderStatus(sOrderStatus);
+		setOrderStatusDescription(sOrderStatusDesc);
 	}
 
-	public String getReimbStatusId() {
+	public String getOrderStatusId() {
 		return super.getDataElement(csOrderStatusTblOrderStatusId);
 	}
-	public int getReimbStatusIdAsInt() {
+	public int getOrderStatusIdAsInt() {
 		return super.getIntDataElement(csOrderStatusTblOrderStatusId);
 	}
 
-	public String getReimbStatus() {
-		return super.getDataElement(csReimbStatusTblReimbStatus);
+	public String getOrderStatus() {
+		return super.getDataElement(csOrderStatusTblOrderStatus);
 	}
 
-	public String getReimbStatusDescription() {
-		return super.getDataElement(csReimbStatusTblReimbStatusDesc);
+	public String getOrderStatusDescription() {
+		return super.getDataElement(csOrderStatusTblOrderStatusDesc);
 	}
 
-	public void setReimbStatusId(int reimbStatusId) {
-		super.setDataElement(csOrderStatusTblOrderStatusId, reimbStatusId);
+	public void setOrderStatusId(int OrderStatusId) {
+		super.setDataElement(csOrderStatusTblOrderStatusId, OrderStatusId);
 	}
-	public void setReimbStatusId(String reimbStatusId) {
-		super.setDataElement(csOrderStatusTblOrderStatusId, reimbStatusId);
-	}
-
-	public void setReimbStatus(String reimbStatus) {
-		super.setDataElement(csReimbStatusTblReimbStatus, reimbStatus);
+	public void setOrderStatusId(String OrderStatusId) {
+		super.setDataElement(csOrderStatusTblOrderStatusId, OrderStatusId);
 	}
 
-	public void setReimbStatusDescription(String reimbStatusDesc) {
-		super.setDataElement(csReimbStatusTblReimbStatusDesc, reimbStatusDesc);
+	public void setOrderStatus(String OrderStatus) {
+		super.setDataElement(csOrderStatusTblOrderStatus, OrderStatus);
+	}
+
+	public void setOrderStatusDescription(String OrderStatusDesc) {
+		super.setDataElement(csOrderStatusTblOrderStatusDesc, OrderStatusDesc);
 	}
 
 	@Override

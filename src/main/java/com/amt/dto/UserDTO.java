@@ -2,12 +2,18 @@ package com.amt.dto;
 
 import com.amt.app.Constants;
 
-public class UserDTO extends AddOrEditDTO implements Constants{
+public class UserDTO extends AddOrEditDTO implements Constants {
 	//Class attributes are store in the parent in HashMap tables.	
 
-	/*Stored in hashmaps in the super class
-	//ers_user_role table
-	*/
+	//private int userId = 0;
+	//private String username = "";
+	//private String password = "";
+	//private String passwordSalt = "";
+	//private String firstName = "";
+	//private String lastName = "";
+	//private String email = "";	
+	//private String userType = "";
+	//private String employeeRole = "";
 
 	//
 	//###
@@ -15,13 +21,14 @@ public class UserDTO extends AddOrEditDTO implements Constants{
 		super();
 	}
 
-	public UserDTO(String username, String password, String firstName, String lastName, String email, String userRole) {
+	public UserDTO(String username, String password, String firstName, String lastName, String email, String userType, String employeeRole) {
 		setUsername(username);
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
-		setUserRoleName(userRole);
+		setUserType(userType);
+		setEmployeeRole(employeeRole);
 	}
 
 	public String getUserId() {
@@ -38,6 +45,9 @@ public class UserDTO extends AddOrEditDTO implements Constants{
 	public String getPassword() {
 		return super.getDataElement(csUserTblPassword);
 	}
+	public String getPasswordSalt() {
+		return super.getDataElement(csUserTblPasswordSalt);
+	}
 
 	public String getFirstName() {
 		return super.getDataElement(csUserTblFirstName);
@@ -51,13 +61,26 @@ public class UserDTO extends AddOrEditDTO implements Constants{
 		return super.getDataElement(csUserTblEmail);
 	}
 
-	public String getUserRoleName() {
-		return super.getDataElement(csUserTblRoleName);
-	}
-	public int getUserRoleId() {
-		return super.getIntDataElement(csUserTblRoleId);
+	public String getUserType() {
+		return super.getDataElement(csUserTblUserType);
 	}
 
+	public String getUserTypeId() {
+		return super.getDataElement(csUserTblUserTypeId);
+	}
+	public int getUserTypeIdByInt() {
+		return super.getIntDataElement(csUserTblUserTypeId);
+	}
+	
+	
+	public String getEmployeeRole() {
+		return super.getDataElement(csEmployeeRolesTblEmployeeRole);
+	}
+	public int getEmployeeRoleId() {
+		return super.getIntDataElement(csEmployeeRolesTblEmployeeRoleId);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
 	public void setUserId(int userId) {
 		super.setDataElement(csUserTblId, userId);
 	}
@@ -68,6 +91,9 @@ public class UserDTO extends AddOrEditDTO implements Constants{
 
 	public void setPassword(String password) {
 		super.setDataElement(csUserTblPassword, password);
+	}
+	public void setPasswordSalt(String passwordSalt) {
+		super.setDataElement(csUserTblPasswordSalt, passwordSalt);
 	}
 
 	public void setFirstName(String firstName) {
@@ -82,12 +108,23 @@ public class UserDTO extends AddOrEditDTO implements Constants{
 		super.setDataElement(csUserTblEmail, email);
 	}
 
-	public void setUserRoleId(int userRoleId) {
-		super.setDataElement(csUserTblRoleId, userRoleId);
+	public void setEmployeeRoleId(int userRoleId) {
+		super.setDataElement(csEmployeeRolesTblEmployeeRoleId, userRoleId);
 	}
 
-	public void setUserRoleName(String userRoleName) {
-		super.setDataElement(csUserTblRoleName, userRoleName.toUpperCase());
+	public void setEmployeeRole(String employeeRole) {
+		super.setDataElement(csEmployeeRolesTblEmployeeRole, employeeRole.toUpperCase());
+	}
+
+	public String setUserTypeId(String userTypeId) {
+		return super.getDataElement(csUserTblUserType);
+	}
+	public String setUserTypeId(int userTypeId) {
+		return super.getDataElement(csUserTblUserType);
+	}
+
+	public String setUserType(String userType) {
+		return super.getDataElement(csUserTblUserType);
 	}
 
 	

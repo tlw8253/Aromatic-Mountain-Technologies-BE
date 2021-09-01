@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.amt.app.Constants;
 import com.amt.dto.AddOrEditDTO;
 import com.amt.model.User;
+import com.amt.model.UserType;
 import com.amt.model.EmployeeRole;
 import com.amt.util.SessionFactorySingleton;
 import com.amt.util.PasswordUtil;
@@ -147,25 +148,39 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 
 		// by this time the service layer would have validated the parameters
 		String sUsername = objAddOrEditDTO.getDataElement(csUserTblUsername);
-		String sPassword = objAddOrEditDTO.getDataElement(csUserTblPassword);
 		String sFirstName = objAddOrEditDTO.getDataElement(csUserTblFirstName);
 		String sLastName = objAddOrEditDTO.getDataElement(csUsrTblLastName);
-		String sEmail = objAddOrEditDTO.getDataElement(csUserTblEmail);
-		String sRoleName = objAddOrEditDTO.getDataElement(csUserTblRoleName);
+		String sPassword = objAddOrEditDTO.getDataElement(csUserTblPassword);
+		String sPasswordSalt = objAddOrEditDTO.getDataElement(csUserTblPasswordSalt);
+		String sEmail = objAddOrEditDTO.getDataElement(csUserTblEmail);		
+		String sUserType = objAddOrEditDTO.getDataElement(csUserTblUserType);
+		String sEmployeeRole = objAddOrEditDTO.getDataElement(csEmployeeRolesTblEmployeeRole);
 
-		User objUser = new User(sUsername, sPassword, sFirstName, sLastName, sEmail);
+		User objNewUser = new User(sUsername, sPassword, sPasswordSalt, sFirstName, sLastName, sEmail);
+		objLogger.debug(sMethod + "objNewUser: [" + objNewUser.toString() + "]");
 
 		try {
-			// get UserRole object
-			EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
-			EmployeeRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
-			objUser.setUserRole(objUserRole);
+			// get UserType object
+			UserTypeDAOImpl objUserTypeDAOImpl = new UserTypeDAOImpl();
+			UserType objUserType = objUserTypeDAOImpl.getByRecordIdentifer(sUserType);
+			objNewUser.setUserType(objUserType);
+			objLogger.debug(sMethod + "objUserType: [" + objUserType.toString() + "]");
+			
+			if (objUserType.getUserType().equalsIgnoreCase(csarUserType[enumUserType.EMPLOYEE.pos])) {
+				// get EmployeeRole object
+				EmployeeRoleDAOImpl objEmployeeRoleDAOImpl = new EmployeeRoleDAOImpl();
+				EmployeeRole objEmployeeRole = objEmployeeRoleDAOImpl.getByRecordIdentifer(sEmployeeRole);
+				objNewUser.setEmployeeRole(objEmployeeRole);
+				objLogger.debug(sMethod + "objEmployeeRole: [" + objEmployeeRole.toString() + "]");				
+			} else {
+				objNewUser.setEmployeeRole(new EmployeeRole());
+			}
+			
+			objLogger.debug(sMethod + "Adding final objNewUser: [" + objNewUser.toString() + "] to the database.");
 
-			objLogger.debug(sMethod + "objUserRole: [" + objUser.toString() + "]");
-
-			session.persist(objUser);
+			//session.persist(objNewUser);
 			tx.commit();
-			return objUser;
+			return objNewUser;
 
 		} catch (Exception e) {
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName()
@@ -189,7 +204,7 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 		objLogger.debug(sMethod + "objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
 
 		// get UserRole object
-		String sRoleName = objAddOrEditDTO.getDataElement(csUserTblRoleName);
+		String sRoleName = objAddOrEditDTO.getDataElement(csEmployeeRolesTblEmployeeRole);
 		EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
 		EmployeeRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
 
@@ -223,7 +238,7 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 			// The only fields allowed to change
 			objUserToEdit.setFirstName(sFirstName);
 			objUserToEdit.setLastName(sLastName);
-			objUserToEdit.setUserRole(objUserRole);
+			objUserToEdit.setEmployeeRole(objUserRole);
 
 			objLogger.debug(sMethod + "DB update with objUserToEdit: [" + objUserToEdit.toString() + "]");
 

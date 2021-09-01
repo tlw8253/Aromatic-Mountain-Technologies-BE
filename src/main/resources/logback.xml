@@ -30,6 +30,7 @@
 	<logger name="com.amt.model" level="TRACE" />
 	<logger name="com.amt.service" level="TRACE" />
 	<logger name="com.amt.util" level="INFO" />
+	<logger name="com.amt.test.service" level="TRACE" />
 	
 	<!--  take off the include all notation: Javalin.*
 	

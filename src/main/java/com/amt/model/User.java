@@ -44,7 +44,7 @@ public class User implements Constants {
 
 	@ManyToOne
 	@JoinColumn(name = csEmployeeRolesTblEmployeeRoleId, nullable = false)
-	private EmployeeRole userRole;
+	private EmployeeRole employeeRole;
 
 	@ManyToOne
 	@JoinColumn(name = csUserTypeTblUserTypeId, nullable = false)
@@ -53,7 +53,7 @@ public class User implements Constants {
 	
 	public User() {
 		super();
-		setUserRole(new EmployeeRole());
+		setEmployeeRole(new EmployeeRole());
 	}
 	
 	public User(String sUsername, String sPassword, String sFirstName, String sLastName, String sEmail) {
@@ -62,6 +62,15 @@ public class User implements Constants {
 		this.firstName = sFirstName;
 		this.lastName = sLastName;
 		this.email = sEmail;
+	}
+
+	public User(String username, String password, String passwordSalt, String firstName, String lastName, String email) {
+		this.username = username;
+		this.password = password;
+		this.passwordSalt = passwordSalt;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 
 	public int getUserId() {
@@ -92,10 +101,16 @@ public class User implements Constants {
 		return email;
 	}
 
-	public EmployeeRole getUserRole() {
-		return userRole;
+	public UserType getUserType() {
+		return userType;
 	}
 
+	public EmployeeRole getEmployeeRole() {
+		return employeeRole;
+	}
+
+	
+	/////////////////////////////////////////////////////////////////////////////////////////
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
@@ -124,13 +139,18 @@ public class User implements Constants {
 		this.email = email;
 	}
 
-	public void setUserRole(EmployeeRole userRole) {
-		this.userRole = userRole;
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+	public void setEmployeeRole(EmployeeRole employeeRole) {
+		this.employeeRole = employeeRole;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, lastName, password, passwordSalt, userId, userRole, username);
+		return Objects.hash(email, employeeRole, firstName, lastName, password, passwordSalt, userId, userType,
+				username);
 	}
 
 	@Override
@@ -142,17 +162,18 @@ public class User implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
-				&& Objects.equals(passwordSalt, other.passwordSalt) && userId == other.userId
-				&& Objects.equals(userRole, other.userRole) && Objects.equals(username, other.username);
+		return Objects.equals(email, other.email) && Objects.equals(employeeRole, other.employeeRole)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(password, other.password) && Objects.equals(passwordSalt, other.passwordSalt)
+				&& userId == other.userId && Objects.equals(userType, other.userType)
+				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + "********" + ", passwordSalt="
-				+ "********" + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", userRole=" + userRole + "]";
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", passwordSalt="
+				+ passwordSalt + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", employeeRole=" + employeeRole + ", userType=" + userType + "]";
 	}
 
 

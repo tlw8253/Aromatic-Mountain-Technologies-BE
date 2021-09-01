@@ -79,7 +79,7 @@ public class CatalogAdminController implements Controller, Constants {
 		} else {
 			sParamReimStatus = objCtx.queryParam(csParamReimStatus);
 			objLogger.debug(sMethod + "Context query parameter reimbursement status: [" + sParamReimStatus + "]");
-			sParamReimStatusDesc = objCtx.queryParam(csReimbStatusTblReimbStatusDesc);
+			sParamReimStatusDesc = objCtx.queryParam(csOrderStatusTblOrderStatusDesc);
 			objLogger.debug(sMethod + "Context query parameter reimbursement status description: [" + sParamReimStatusDesc + "]");
 		}
 

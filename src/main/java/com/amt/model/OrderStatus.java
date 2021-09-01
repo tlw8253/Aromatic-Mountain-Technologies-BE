@@ -21,10 +21,10 @@ public class OrderStatus implements Constants {
 	@Column(name = csOrderStatusTblOrderStatusId)
 	private int orderStatusId = 0;
 
-	@Column(name = csReimbStatusTblReimbStatus, length = 10, nullable = false, unique = true)
+	@Column(name = csOrderStatusTblOrderStatus, length = 10, nullable = false, unique = true)
 	private String orderStatus = "";
 
-	@Column(name = csReimbStatusTblReimbStatusDesc, length = 150, nullable = false)
+	@Column(name = csOrderStatusTblOrderStatusDesc, length = 150, nullable = false)
 	private String orderStatusDesc = "";
 	
 	public OrderStatus() {

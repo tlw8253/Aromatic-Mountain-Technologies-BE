@@ -12,16 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.dto.OrderStatusDTO;
+import com.amt.dto.PhoneNumberTypeDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
 import com.amt.dto.AddressTypeDTO;
+import com.amt.dto.CatalogItemTypeDTO;
 import com.amt.dto.EmployeeRoleDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
 import com.amt.model.OrderStatus;
+import com.amt.model.PhoneNumber;
+import com.amt.model.PhoneNumberType;
 import com.amt.model.UserType;
 import com.amt.model.User;
 import com.amt.model.AddressType;
+import com.amt.model.CatalogItemType;
 import com.amt.model.EmployeeRole;
 import com.amt.service.AdminService;
 import com.amt.service.UserService;
@@ -41,24 +46,15 @@ public class AdminDriver implements Constants {
 	private static UserService objERSService = new UserService();
 	private static UserDTO objUserDTO = new UserDTO();
 
-	public AdminDriver() {
-		// TODO Auto-generated constructor stub
-	}
 
+	//
+	// ###
 	public static void main(String[] args) {
 		String sMethod = csCRT + "main(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		  //createTablesViaHibernate(); //NOTE: change configuration file to create
-		  amtAdminAddStaticTableValues();
-
-		  // addNewUser("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com", csUserRoles[ciUserRoleEmployee]);
-		 // addNewReimbursement("1");	//add Reimbursement for above user
-		 // addNewUser("smp8253", "A_Pass12345", "Sam", "Smith", "smp8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);
-		 // addNewReimbursement("2");	//add Reimbursement for above user
-		
-		 //addNewUser("cwg8253", "A_Pass12345", "Clark", "Griswold", "cwg8253@wws.com", csUserRoles[ciUserRoleEmployee]);
-		 //addNewUser("cqe8253", "A_Pass12345", "Cousin", "Eddy", "cqe8253@wws.com", csUserRoles[ciUserRoleFinanceMgr]);
+		  //amtAdminAddStaticTableValues();
 
 	}
 
@@ -81,17 +77,130 @@ public class AdminDriver implements Constants {
 	// ###
 	private static void amtAdminAddStaticTableValues() {
 
-		addAddressTypes();
-
+		adminAddAddressTypes();
+		adminAddCatalogItemTypes();
+		adminAddEmployeeRoles();
+		adminAddOrderStatuses();
+		adminAddPhoneNumberTypes();
+		adminAddUserTypes();
 		
-		//addUserTypes();
-		//addEmployeeRoles();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// ###
-	private static void addAddressTypes() {
-		String sMethod = csCRT + "addAddressTypes(): ";
+	private static void adminAddPhoneNumberTypes() {
+		String sMethod = csCRT + "adminAddPhoneNumberTypes(): ";
+		objLogger.trace(sMethod + "Entered");
+
+		
+		for (int iCtr = 0; iCtr < csarrPhoneNumberType.length; iCtr++) {
+			String sType = csarrPhoneNumberType[iCtr];
+			String sTypeDesc = csarrPhoneNumberTypeDesc[iCtr];
+			
+			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
+			adminAddPhoneNumberType(sType, sTypeDesc);
+			//break;
+		}
+
+	}
+	
+	//
+	// ###
+	private static void adminAddPhoneNumberType(String sType, String sTypeDesc) {
+		String sMethod = csCRT + "adminAddPhoneNumberType(): ";
+		objLogger.trace(sMethod + "Entered: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+
+		AdminService objAdminService = new AdminService();
+		PhoneNumberTypeDTO objPhoneNumberTypeDTO = new PhoneNumberTypeDTO(sType, sTypeDesc);
+
+		try {
+			PhoneNumberType objPhoneNumberType = objAdminService.addPhoneNumberType(objPhoneNumberTypeDTO);
+			objLogger.debug(sMethod + "objPhoneNumber: [" + objPhoneNumberType.toString() + "]");
+		} catch (Exception e) {
+			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
+		}
+	}
+
+
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// ###
+	private static void adminAddOrderStatuses() {
+		String sMethod = csCRT + "adminAddOrderStatuses(): ";
+		objLogger.trace(sMethod + "Entered");
+
+		
+		for (int iCtr = 0; iCtr < csarrOrderStatus.length; iCtr++) {
+			String sType = csarrOrderStatus[iCtr];
+			String sTypeDesc = csarrOrderStatusDesc[iCtr];
+			
+			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
+			adminAddOrderStatus(sType, sTypeDesc);
+			//break;
+		}
+
+	}
+	
+	//
+	// ###
+	private static void adminAddOrderStatus(String sType, String sTypeDesc) {
+		String sMethod = csCRT + "adminAddOrderStatus(): ";
+		objLogger.trace(sMethod + "Entered: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+
+		AdminService objAdminService = new AdminService();
+		OrderStatusDTO objOrderStatusDTO = new OrderStatusDTO(sType, sTypeDesc);
+
+		try {
+			OrderStatus objOrderStatus = objAdminService.addOrderStatus(objOrderStatusDTO);
+			objLogger.debug(sMethod + "objOrderStatus: [" + objOrderStatus.toString() + "]");
+		} catch (Exception e) {
+			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
+		}
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// ###
+	private static void adminAddCatalogItemTypes() {
+		String sMethod = csCRT + "adminAddCatalogItemTypes(): ";
+		objLogger.trace(sMethod + "Entered");
+
+		
+		for (int iCtr = 0; iCtr < csarrCatalogItemType.length; iCtr++) {
+			String sType = csarrCatalogItemType[iCtr];
+			String sTypeDesc = csarrCatalogItemTypeDesc[iCtr];
+			
+			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
+			adminAddCatalogItemType(sType, sTypeDesc);
+			//break;
+		}
+
+	}
+	
+	//
+	// ###
+	private static void adminAddCatalogItemType(String sType, String sTypeDesc) {
+		String sMethod = csCRT + "adminAddCatalogItemType(): ";
+		objLogger.trace(sMethod + "Entered: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+
+		AdminService objAdminService = new AdminService();
+		CatalogItemTypeDTO objCatalogItemTypeDTO = new CatalogItemTypeDTO(sType, sTypeDesc);
+
+		try {
+			CatalogItemType objCatalogItemType = objAdminService.addCatalogItemType(objCatalogItemTypeDTO);
+			objLogger.debug(sMethod + "objAddressType: [" + objCatalogItemType.toString() + "]");
+		} catch (Exception e) {
+			objLogger.error(sMethod + "Exception during processing: [" + e.getMessage() + "]");
+		}
+	}
+
+
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	// ###
+	private static void adminAddAddressTypes() {
+		String sMethod = csCRT + "adminAddAddressTypes(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		
@@ -100,16 +209,17 @@ public class AdminDriver implements Constants {
 			String sTypeDesc = carrAddressTypeDesc[iCtr];
 			
 			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-			addAddressType(sType, sTypeDesc);
+			adminAddAddressType(sType, sTypeDesc);
+			//break;
 		}
 
 	}
 	
 	//
 	// ###
-	private static void addAddressType(String sType, String sTypeDesc) {
-		String sMethod = csCRT + "addAddressType(): ";
-		objLogger.trace(sMethod + "Entered:");
+	private static void adminAddAddressType(String sType, String sTypeDesc) {
+		String sMethod = csCRT + "adminAddAddressType(): ";
+		objLogger.trace(sMethod + "Entered: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
 
 		AdminService objAdminService = new AdminService();
 		AddressTypeDTO objAddressTypeDTO = new AddressTypeDTO(sType, sTypeDesc);
@@ -126,21 +236,21 @@ public class AdminDriver implements Constants {
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//###
-	private static void addEmployeeRoles() {
-		String sMethod = csCRT + "addEmployeeRoles(): ";
+	private static void adminAddEmployeeRoles() {
+		String sMethod = csCRT + "adminAddEmployeeRoles(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		for (int iCtr = 0; iCtr <csarEmployeeRoles.length; iCtr++) {
 			String sRole = csarEmployeeRoles[iCtr];
 			String sRoleDesc = csarEmployeeRolesDesc[iCtr];
 			objLogger.debug(sMethod + "Adding employee role: [" + sRole + "] description: [" + sRoleDesc + "]");
-			addEmployeeRole(sRole, sRoleDesc);			
+			adminAddEmployeeRole(sRole, sRoleDesc);			
 		}
 	}
 
 	// ###
-	private static void addEmployeeRole(String sRole, String sRoleDesc) {
-		String sMethod = csCRT + "addEmployeeRole(): ";
+	private static void adminAddEmployeeRole(String sRole, String sRoleDesc) {
+		String sMethod = csCRT + "adminAddEmployeeRole(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		AdminService objAdminService = new AdminService();		
@@ -160,8 +270,8 @@ public class AdminDriver implements Constants {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// ###
-	private static void addUserTypes() {
-		String sMethod = csCRT + "addUserType(): ";
+	private static void adminAddUserTypes() {
+		String sMethod = csCRT + "adminAddUserTypes(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		
@@ -170,16 +280,16 @@ public class AdminDriver implements Constants {
 			String sTypeDesc = csarUserTypeDesc[iCtr];
 			
 			objLogger.debug(sMethod + "Adding type: [" + sType + "] description: [" + sTypeDesc + "]");
-			addUserType(sType, sTypeDesc);
+			adminAddUserType(sType, sTypeDesc);
 		}
 
 	}
 	
 	//
 	// ###
-	private static void addUserType(String sType, String sTypeDesc) {
-		String sMethod = csCRT + "addUserType(): ";
-		objLogger.trace(sMethod + "Entered:");
+	private static void adminAddUserType(String sType, String sTypeDesc) {
+		String sMethod = csCRT + "adminAddUserType(): ";
+		objLogger.trace(sMethod + "Entered: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
 
 		AdminService objAdminService = new AdminService();
 		UserTypeDTO objUserTypeDTO = new UserTypeDTO(sType, sTypeDesc);
@@ -195,28 +305,6 @@ public class AdminDriver implements Constants {
 	
 	
 	
-	
-	
-	
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// ###
-	public static void addNewUser(String sUsername, String sPassword, String sFirstName, String sLastName,
-			String sEmail, String sRole) {
-		String sMethod = "\n\t addNewEmployee(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		objUserDTO = new UserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail, sRole);
-		objLogger.debug(sMethod + "objUserDTO: [" + objUserDTO.toString() + "]");
-
-		try {
-			User objEmployee = objERSService.addNewUser(objUserDTO);
-			objLogger.debug(sMethod + "objEmployee: [" + objEmployee.toString() + "]");
-		} catch (Exception e) {
-			objLogger.debug(sMethod + "Exception: [" + e.getMessage() + "]");
-		}
-
-	}
 
 
 
@@ -226,4 +314,4 @@ public class AdminDriver implements Constants {
 	
 	
 
-}
+}//END Class

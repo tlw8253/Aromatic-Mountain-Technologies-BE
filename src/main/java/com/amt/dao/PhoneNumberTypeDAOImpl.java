@@ -13,41 +13,40 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
 import com.amt.dto.AddOrEditDTO;
-import com.amt.model.OrderStatus;
+import com.amt.model.PhoneNumberType;
 import com.amt.util.SessionFactorySingleton;
 
 
-public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Constants{
-	private Logger objLogger = LoggerFactory.getLogger(ReimbursementStatusDAOImpl.class);
+public class PhoneNumberTypeDAOImpl implements GenericDAO<PhoneNumberType>, Constants{
+	private Logger objLogger = LoggerFactory.getLogger(PhoneNumberTypeDAOImpl.class);
 
-	public ReimbursementStatusDAOImpl() {
+	public PhoneNumberTypeDAOImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public List<OrderStatus> getAllRecords() throws SQLException {
+	public List<PhoneNumberType> getAllRecords() throws SQLException {
 		String sMethod = "\n\t getAllRecords(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		//String sSQL = "SELECT * FROM " + csDBReimbStatusTable + ";";
 		// load a complete persistent objects into memory
-		String sHQL = ""; //"FROM " + csHQL_ModelClassReimbStatus; //fully qualify class name in HQL
+		String sHQL = "FROM "; // + csHQL_ModelClassReimbType; //fully qualify class name in HQL
 		
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
-		List<OrderStatus> lstReimbursementStatus = session.createQuery(sHQL).getResultList();
-		objLogger.debug(sMethod + "lstReimbursementStatus: [" + lstReimbursementStatus.toString() + "]");
+		List<PhoneNumberType> lstReimbursementType = session.createQuery(sHQL).getResultList();
+		objLogger.debug(sMethod + "lstReimbursementType: [" + lstReimbursementType.toString() + "]");
 		
 		tx.commit();
 		session.close();
 		
-		return lstReimbursementStatus;
+		return lstReimbursementType;
 	}
 
 	@Override
-	public OrderStatus getByRecordId(int iRecordId) throws SQLException {
+	public PhoneNumberType getByRecordId(int iRecordId) throws SQLException {
 		String sMethod = "\n\t getByRecordId(): ";
 		objLogger.trace(sMethod + "Entered");
 			
@@ -57,19 +56,19 @@ public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Cons
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementStatus rs WHERE rs.reimbStatusId = :reimbStatusId"; //this works with using setParameter
+		sHQL = "FROM ReimbursementType rt WHERE rt.reimbTypeId = :reimbTypeId"; //this works with using setParameter
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: iRecordId: [" + iRecordId +"]");
 		
 		try {
-			OrderStatus objReimbursementStatus = 
-					(OrderStatus) session.createQuery(sHQL)
-					.setParameter("reimbStatusId", iRecordId)
+			PhoneNumberType ojbReimbursementType = 
+					(PhoneNumberType) session.createQuery(sHQL)
+					.setParameter("reimbTypeId", iRecordId)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementStatus: [" + objReimbursementStatus.toString() + "]");
+			objLogger.debug(sMethod + "ojbReimbursementType: [" + ojbReimbursementType.toString() + "]");
 			
 			
 			tx.commit();
-			return objReimbursementStatus;
+			return ojbReimbursementType;
 			
 		}catch(Exception e) {
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
@@ -78,11 +77,10 @@ public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Cons
 		}finally {
 			session.close();
 		}	
-
 	}
 
 	@Override
-	public OrderStatus getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
+	public PhoneNumberType getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
 		String sMethod = "\n\t getByRecordIdentifer(): ";
 		objLogger.trace(sMethod + "Entered");
 			
@@ -92,21 +90,21 @@ public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Cons
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementStatus rs WHERE rs.reimbStatus = :reimbStatus";
+		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			OrderStatus objReimbursementStatus = 
-					(OrderStatus) session.createQuery(sHQL)
-					.setParameter("reimbStatus", sRecordIdentifier)
+			PhoneNumberType objReimbursementType = 
+					(PhoneNumberType) session.createQuery(sHQL)
+					.setParameter("reimbType", sRecordIdentifier)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementStatus: [" + objReimbursementStatus.toString() + "]");			
+			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
 			
 			tx.commit();
-			return objReimbursementStatus;
+			return objReimbursementType;
 			
 		}catch(Exception e) {
-			objLogger.error(sMethod + "Error getting Reimbursement Status by sRecordIdentifier: [" + sRecordIdentifier + "]");
+			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
 			return null;
@@ -115,30 +113,34 @@ public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Cons
 		}	
 	}
 
+	//
+	//###
 	@Override
-	public OrderStatus addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
-		String sMethod = "\n\t addRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+	public PhoneNumberType addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
+		String sMethod = csCRT + "addRecord(): ";
+		objLogger.trace(sMethod + "Entered: objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
-		String sStatus = objAddOrEditDTO.getDataElement(csReimbStatusTblReimbStatus);
-		String sStatusDesc = objAddOrEditDTO.getDataElement(csReimbStatusTblReimbStatusDesc);
+		String sType = objAddOrEditDTO.getDataElement(csPhoneNumberTypeTblPhoneNumberType);
+		String sTypeDesc = objAddOrEditDTO.getDataElement(csPhoneNumberTypeTblPhoneNumberTypeDesc);
+		objLogger.debug(sMethod + "Extracted from objAddOrEditDTO: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
 		
-		OrderStatus objReimbStatus = new OrderStatus(sStatus, sStatusDesc);
+		PhoneNumberType objPhoneNumberType = new PhoneNumberType(sType, sTypeDesc);
+		objLogger.debug(sMethod + "Adding objPhoneNumberType: [" + objPhoneNumberType.toString() + "]");
 		
-		session.persist(objReimbStatus);
+		session.persist(objPhoneNumberType);
 		
 		tx.commit();
 		session.close();
 
-		return objReimbStatus;
+		return objPhoneNumberType;
 	}
 
 	@Override
-	public OrderStatus editRecord(AddOrEditDTO objGenericEditDTO)
+	public PhoneNumberType editRecord(AddOrEditDTO objAddOrEditDTO)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
@@ -151,13 +153,13 @@ public class ReimbursementStatusDAOImpl implements GenericDAO<OrderStatus>, Cons
 	}
 
 	@Override
-	public OrderStatus getLogin(String sUsername, String sPassword) throws SQLException {
+	public PhoneNumberType getLogin(String sUsername, String sPassword) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<OrderStatus> getListByRecordIdentifer(int iListId, String sRecordIdentifier) throws SQLException {
+	public List<PhoneNumberType> getListByRecordIdentifer(int iListId, String sRecordIdentifier) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

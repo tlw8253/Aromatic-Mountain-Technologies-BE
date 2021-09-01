@@ -59,13 +59,15 @@ public interface Constants {
 	String csParamPathReimbId = "reim_id";
 
 	// other constants
-	int ciUsernameMinLength = 8;
+	int ciUsernameMinLength = 6;
 	int ciUsernamMaxLength = 15;
 	int ciReimbRecByIdentifierAuthor = 10;
 	int ciReimbRecByIdentifierResolver = 20;
 	int ciUserMinPassword = 8;
 	int ciUserMaxPassword = 15;
-	String csCRT = "\n\t ";
+	String csCR = "\n";
+	String csCRT = csCR + "\t ";
+	String csCRCRT = csCR + csCRT;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// database constants
@@ -100,7 +102,7 @@ public interface Constants {
 									"MAILING: The home or mailing address where the customer resides."};
 	enum enumAddressType {
 		BILLING(0), SHIPPING(1), MAILING(2);
-		int pos;
+		public int pos;
 		enumAddressType(int pos) {
 			this.pos = pos;
 		}
@@ -125,13 +127,17 @@ public interface Constants {
 	String csCatalogItemTypeTblCatalogItemTypeId = "catalog_item_type_id"; // PK primary key
 	String csCatalogItemTypeTblCatalogItemType = "catalog_item_type"; // String
 	String csCatalogItemTypeTblCatalogItemTypeDesc = "catalog_item_type_desc"; // String
-	String[] csCatalogType = { "BEANS", "GROUND", "SYRUP", "ACCESSORY", "APPAREL" }; // coffee beans, ground coffee,
-																						// syrups, coffee accessory and
-																						// apparel
-	enum enCatalogType {
+	String[] csarrCatalogItemType = { "BEANS", "GROUND", "SYRUP", "ACCESSORY", "APPAREL" }; 
+	String[] csarrCatalogItemTypeDesc = { "BEANS: coffee beans to grind for coffee makers and espresso machines.", 
+										"GROUND: already ground coffee for coffee makers and espresso machines.", 
+										"SYRUP: sugar and sugar free liquid added to brewed coffee to sweeten", 
+										"ACCESSORY: coffee cups, makers, and other items related to coffee.", 
+										"APPAREL: t-shirts, hats, and other apparel items related to coffee and company logos." }; 
+
+	enum enumCatalogItemType {
 		BEANS(0), GROUND(1), SYRUP(2), ACCESSORY(3), APPAREL(4);
-		int pos;
-		enCatalogType(int pos) {
+		public int pos;
+		enumCatalogItemType(int pos) {
 			this.pos = pos;
 		}
 		int pos() {
@@ -162,10 +168,10 @@ public interface Constants {
 	String csOrderStatusTable = "amt_order_status"; // table name
 	String csDBOrderStatusTable = csDatabaseName + "." + csOrderStatusTable; // qualified table name
 	String csOrderStatusTblOrderStatusId = "order_status_id"; // PK primary key
-	String csReimbStatusTblReimbStatus = "order_status"; // String
-	String csReimbStatusTblReimbStatusDesc = "order_status_desc"; // String
-	String[] csReimbStatus = { "NEW", "HOLD", "PENDING", "PAID", "FINAL" };
-	String[] csReimbStatusDesc = { "NEW: The order has just been created and saved for future processing.", 
+	String csOrderStatusTblOrderStatus = "order_status"; // String
+	String csOrderStatusTblOrderStatusDesc = "order_status_desc"; // String
+	String[] csarrOrderStatus = { "NEW", "HOLD", "PENDING", "PAID", "FINAL" };
+	String[] csarrOrderStatusDesc = { "NEW: The order has just been created and saved for future processing.", 
 									"HOLD: The order is on hold pending further customer action.", 
 									"PENDING: The order is pending waiting on some processing", 
 									"PAID: The order has been paid.", 
@@ -173,7 +179,7 @@ public interface Constants {
 	
 	enum enumOrderStatus {
 		NEW(0), HOLD(1), PENDING(2), PAID(3), FINAL(4);
-		int pos;
+		public int pos;
 		enumOrderStatus(int pos) {
 			this.pos = pos;
 		}
@@ -197,15 +203,15 @@ public interface Constants {
 	String csPhoneNumberTypeTblPhoneNumberTypeId = "phone_number_type_id"; // PK primary key
 	String csPhoneNumberTypeTblPhoneNumberType = "phone_number_type"; // String
 	String csPhoneNumberTypeTblPhoneNumberTypeDesc = "phone_number_type_desc"; // String
-	String[] csPhoneNumberType = { "MOBILE", "HOME", "WORK", "OTHER" };
-	String[] csPhoneNumberTypeDesc = { "MOBILE: Phone number belongs to a mobile device.", 
+	String[] csarrPhoneNumberType = { "MOBILE", "HOME", "WORK", "OTHER" };
+	String[] csarrPhoneNumberTypeDesc = { "MOBILE: Phone number belongs to a mobile device.", 
 									"HOME: Phone number belongs to a traditional landline or device considered their home number.", 
 									"WORK: Phone number belongs to their work location.", 
 									"OTHER: Phone number belongsto some other location or device not listed."};
 	
 	enum enumPhoneNumberType {
 		MOBILE(0), HOME(1), WORK(2), OTHER(3);
-		int pos;
+		public int pos;
 		enumPhoneNumberType(int pos) {
 			this.pos = pos;
 		}
@@ -228,7 +234,7 @@ public interface Constants {
 								"CUSTOMER: This user type is an external customer viewing the catalog and buying merchandise." };
 	enum enumUserType {
 		EMPLOYEE(0), CUSTOMER(1);
-		int pos;
+		public int pos;
 		enumUserType(int pos) {
 			this.pos = pos;
 		}
@@ -249,7 +255,7 @@ public interface Constants {
 			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages." };
 	enum enumUserEmployee {
 		EMPLOYEE(0), CATALOG_ADMIN(1), CATALOG_EMPLOYEE(2);
-		int pos;
+		public int pos;
 		enumUserEmployee(int pos) {
 			this.pos = pos;
 		}
@@ -270,8 +276,10 @@ public interface Constants {
 	String csUserTblFirstName = "first_name";
 	String csUsrTblLastName = "last_name";
 	String csUserTblEmail = "email";
-	String csUserTblRoleId = "role_id";
-	String csUserTblRoleName = csEmployeeRolesTblEmployeeRole;
+	String csUserTblUserTypeId = "user_type_id";
+	String csUserTblUserType = "user_type";
+	//String csUserTblRoleId = "role_id";
+	//String csUserTblRoleName = csEmployeeRolesTblEmployeeRole;
 
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,13 +303,30 @@ public interface Constants {
 	
 
 	// Define program messages to use in the program and for testing
+	////////////////////////////////////////////////////////////////////////////////////
+	String csMsgDB_ErrorAddingAddressType = "Error with database when adding Address Type.";
+	String csMsgDB_ErrorAddingCatalogItemType = "Error with database when adding Catalog Item Type.";
+	String csMsgDB_ErrorAddingEmployeeRole = "Error with database when adding Employee Role.";
+	String csMsgDB_ErrorAddingOrderStatus = "Error with database when adding Order Status.";
+	String csMsgDB_ErrorAddingPhoneNumberType = "Error with database when adding Phone Number Type.";
+	String csMsgDB_ErrorAddingUserType = "Error with database when adding User Type.";
+	String csMsgDB_ErrorAddingUser = "Database error when adding a new user.";
+
+	////////////////////////////////////////////////////////////////////////////////////
+	String csMsgBadParamUserType = "Invalid User Type parameters received.";
+	String csMsgBadParamAddressType = "Invalid Address Type parameters received.";
+	String csMsgBadParamCatalogItemType = "Invalid Catalog Item Type parameters received.";
+	String csMsgBadParamEmployeeRole = "Invalid Employee Role parameters received.";
+	String csMsgBadParamOrderStatus = "Invalid Order Status parameters received.";
+	String csMsgBadParamPhoneNumberType = "Invalid Phone Number Type parameters received.";
+
+	
+	
 	String csMsgDB_ErrorGettingWithLogin = "Error with database during employee login.";
 	String csMsgDB_ErrorAddingReimbursementStatus = "Error with database when adding Reimbursement Status.";
 	String csMsgDB_ErrorGettingAllReimbursementStatus = "Error with database when getting all Reimbursement Status.";
 	String csMsgDB_ErrorGettingReimbursementStatus = "Error with database when getting a Reimbursement Status.";
-	String csMsgDB_ErrorAddingReimbursementType = "Error with database when adding Reimbursement Type.";
 	String csMsgDB_ErrorGettingReimbursementType = "Error with database when getting all Reimbursement Types.";
-	String csMsgDB_ErrorAddingUserRole = "Error with database when adding User Role.";
 	String csMsgDB_ErrorGettingUserRole = "Error with database when getting all User Roles.";
 
 	String csMsgDB_ErrorAddingReimbursement = "Database error when adding reimbursement record.";
@@ -310,7 +335,7 @@ public interface Constants {
 	String csMsgDB_ErrorGettingReimbursementById = "Database error when getting a reimbursement by id.";
 	String csMsgDB_ErrorGettingReimbursementAuthor = "Database error when getting a reimbursement by Athour's username.";
 
-	String csMsgDB_ErrorAddingEmployee = "Database error when adding an employee.";
+	
 	String csMsgDB_ErrorUpdatingEmployee = "Database error when updating employee information.";
 	String csMsgDB_ErrorGettingEmployees = "Database error when getting all employees.";
 	String csMsgDB_ErrorGettingEmployeeById = "Database error when getting an employee by id.";
@@ -321,10 +346,6 @@ public interface Constants {
 
 	String csMsgEmployeeRecordNotFound = "Employee was not found in the database.";
 
-	////////////////////////////////////////////////////////////////////////////////////
-	String csMsgBadParamUserType = "Invalid User Type parameters received.";
-	String csMsgBadParamAddressType = "Invalid Address Type parameters received.";
-	String csMsgBadParamEmployeeRole = "Invalid Employee Role parameters received.";
 
 	
 	

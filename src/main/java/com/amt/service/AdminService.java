@@ -9,61 +9,87 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
-import com.amt.dao.ReimbursementStatusDAOImpl;
+import com.amt.dao.OrderStatusDAOImpl;
+import com.amt.dao.PhoneNumberTypeDAOImpl;
 import com.amt.dao.UserTypeDAOImpl;
+import com.amt.dao.AddressTypeDAOImpl;
+import com.amt.dao.CatalogItemTypeDAOImpl;
 import com.amt.dao.EmployeeRoleDAOImpl;
 import com.amt.dto.OrderStatusDTO;
+import com.amt.dto.PhoneNumberTypeDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.AddressTypeDTO;
+import com.amt.dto.CatalogItemTypeDTO;
 import com.amt.dto.EmployeeRoleDTO;
 import com.amt.exception.*;
 import com.amt.model.OrderStatus;
+import com.amt.model.PhoneNumberType;
 import com.amt.model.UserType;
 import com.amt.model.AddressType;
+import com.amt.model.CatalogItemType;
 import com.amt.model.EmployeeRole;
 import com.amt.util.Validate;
 
 public class AdminService implements Constants {
 	private Logger objLogger = LoggerFactory.getLogger(AdminService.class);
-	private GenericDAO<OrderStatus> objCatalogTypeDAO;
-	private GenericDAO<UserType> objUserTypeDAO;
-	private GenericDAO<EmployeeRole> objEmployeeRoleDAO;
-	private GenericDAO<AddressType> objAddressTypeDAO;
 
-	public AdminService() {
-		this.objCatalogTypeDAO = new ReimbursementStatusDAOImpl();
+	private GenericDAO<AddressType> objAddressTypeDAO;
+	private GenericDAO<CatalogItemType> objCatalogItemTypeDAO;
+	private GenericDAO<EmployeeRole> objEmployeeRoleDAO;
+	private GenericDAO<OrderStatus> objOrderStatusDAO;
+	private GenericDAO<PhoneNumberType> objPhoneNumberTypeDAO;
+	private GenericDAO<UserType> objUserTypeDAO;
+
+	public AdminService() {		
 		this.objUserTypeDAO = new UserTypeDAOImpl();
 		this.objEmployeeRoleDAO = new EmployeeRoleDAOImpl();
+		this.objAddressTypeDAO = new AddressTypeDAOImpl();
+		this.objCatalogItemTypeDAO = new CatalogItemTypeDAOImpl();
+		this.objOrderStatusDAO = new OrderStatusDAOImpl();
+		this.objPhoneNumberTypeDAO = new PhoneNumberTypeDAOImpl();
 	}
 
 	// Cannot overload constructor with different signatures of GenericDAO<T> so
 	// provide get methods
-	public AdminService getMockReimbStatusDAO(GenericDAO<OrderStatus> objMockReimbStatusDAO) {
-		this.objCatalogTypeDAO = objMockReimbStatusDAO;
+	public AdminService getMockAddressTypeAdminService(GenericDAO<AddressType> objMockAddressTypeDAO) {
+		this.objAddressTypeDAO = objMockAddressTypeDAO;
 		return this;
 	}
-
-	public AdminService getMockReimbTypeDAO(GenericDAO<UserType> objMockUserTypeDAO) {
-		this.objUserTypeDAO = objMockUserTypeDAO;
+	public AdminService getMockCatalogItemTypeAdminService(GenericDAO<CatalogItemType> objMockCatalogItemTypeDAO) {
+		this.objCatalogItemTypeDAO = objMockCatalogItemTypeDAO;
 		return this;
 	}
-
-	public AdminService getMockUserRoleDAO(GenericDAO<EmployeeRole> objMockUserRoleDAO) {
-		this.objEmployeeRoleDAO = objMockUserRoleDAO;
+	public AdminService getMockEmployeeRoleAdminService(GenericDAO<EmployeeRole> objMockEmployeeRoleDAO) {
+		this.objEmployeeRoleDAO = objMockEmployeeRoleDAO;
 		return this;
 	}
-
+	public AdminService getMockOrderStatusAdminService(GenericDAO<OrderStatus> objMockOrderStatusDAO) {
+		this.objOrderStatusDAO = objMockOrderStatusDAO;
+		return this;
+	}
+	public AdminService getMockPhoneNumberTypeAdminService(GenericDAO<PhoneNumberType> objMockPhoneNumberTypeDAO) {
+		this.objPhoneNumberTypeDAO = objMockPhoneNumberTypeDAO;
+		return this;
+	}
+	public AdminService getMockUserTypeAdminService(GenericDAO<UserType> objMockUserTypeTypeDAO) {
+		this.objUserTypeDAO = objMockUserTypeTypeDAO;
+		return this;
+	}
+	
+	
+	
+	
 	//
 	// ###
-	public List<OrderStatus> getAllCatalogType() throws DatabaseException {
+	public List<CatalogItemType> getAllCatalogItemType() throws DatabaseException {
 		String sMethod = "getAllCatalogType(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		try {
 
-			List<OrderStatus> lstReimbStatus = objCatalogTypeDAO.getAllRecords();
-			objLogger.debug(sMethod + "lstReimbStatus: [" + lstReimbStatus.toString() + "]");
-			return lstReimbStatus;
+		List<CatalogItemType> lstCatalogItemType = objCatalogItemTypeDAO.getAllRecords();
+			objLogger.debug(sMethod + "lstReimbStatus: [" + lstCatalogItemType.toString() + "]");
+			return lstCatalogItemType;
 
 		} catch (SQLException e) {
 			objLogger.warn(sMethod + "SQLException while getting all Reimbursement Status: [" + e.getMessage() + "]");
@@ -119,24 +145,25 @@ public class AdminService implements Constants {
 
 		if (!bValidUserType || (sType.length() == 0) || (sTypeDesc.length() == 0)) {
 			objLogger.debug(
-					sMethod + "Invalid parameters received sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+					sMethod + csMsgBadParamUserType + " sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
 			throw new BadParameterException(csMsgBadParamUserType);
 		}
 
 		try {
 
+			objLogger.debug(sMethod + "calling addRecord to add: objUserTypeDTO: [" + objUserTypeDTO.toString() + "]");
 			UserType objUserType = objUserTypeDAO.addRecord(objUserTypeDTO);
 			return objUserType;
 
 		} catch (SQLException e) {
-			objLogger.warn(sMethod + "SQLException while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "SQLException: " + csMsgDB_ErrorAddingUserType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingUserType);
 		} catch (HibernateException e) {
-			objLogger.warn(sMethod + "HibernateException while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "HibernateException: " + csMsgDB_ErrorAddingUserType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingUserType);
 		} catch (Exception e) {
-			objLogger.warn(sMethod + "Exception while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "Exception: " + csMsgDB_ErrorAddingUserType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingUserType);
 		}
 
 	}
@@ -160,26 +187,26 @@ public class AdminService implements Constants {
 
 		objLogger.debug(sMethod + "objEmployeeRoleDTO: [" + objEmployeeRoleDTO.toString() + "]");
 		try {
-
+			objLogger.debug(sMethod + "calling addRecord to add: objEmployeeRoleDTO: [" + objEmployeeRoleDTO.toString() + "]");
 			EmployeeRole objEmployeeRole = objEmployeeRoleDAO.addRecord(objEmployeeRoleDTO);
 			return objEmployeeRole;
 
 		} catch (SQLException e) {
-			objLogger.warn(sMethod + "SQLException while adding User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingUserRole);
+			objLogger.warn(sMethod + "SQLException: " + csMsgDB_ErrorAddingEmployeeRole + ": [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingEmployeeRole);
 		} catch (HibernateException e) {
-			objLogger.warn(sMethod + "HibernateException while adding User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingUserRole);
+			objLogger.warn(sMethod + "HibernateException: " + csMsgDB_ErrorAddingEmployeeRole + ": [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingEmployeeRole);
 		} catch (Exception e) {
-			objLogger.warn(sMethod + "Exception while adding User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingUserRole);
+			objLogger.warn(sMethod + "Exception: " + csMsgDB_ErrorAddingEmployeeRole + ": [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingEmployeeRole);
 		}
 
 	}
 
 	
 	//
-	// ### Completed 
+	// ### Completed 20210901
 	public AddressType addAddressType(AddressTypeDTO objAddressTypeDTO) throws DatabaseException, BadParameterException {
 		String sMethod = csCRT + "addAddressType(): ";
 		objLogger.trace(sMethod + "Entered: objAddressTypeDTO: [" + objAddressTypeDTO.toString() + "]");
@@ -197,23 +224,135 @@ public class AdminService implements Constants {
 
 		try {
 
+			objLogger.debug(sMethod + "calling addRecord to add: objAddressTypeDTO: [" + objAddressTypeDTO.toString() + "]");
 			AddressType objAddressType = objAddressTypeDAO.addRecord(objAddressTypeDTO);
 			return objAddressType;
 
 		} catch (SQLException e) {
-			objLogger.warn(sMethod + "SQLException while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "SQLException while adding Address Type: [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingAddressType);
 		} catch (HibernateException e) {
-			objLogger.warn(sMethod + "HibernateException while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "HibernateException while adding Address Type: [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingAddressType);
 		} catch (Exception e) {
-			objLogger.warn(sMethod + "Exception while adding Reimbursement Type: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorAddingReimbursementType);
+			objLogger.warn(sMethod + "Exception while adding Address Type: [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingAddressType);
 		}
 
 	}
 
 
+
+	//
+	// ### Completed 20210901
+	public CatalogItemType addCatalogItemType(CatalogItemTypeDTO objTypeDTO) throws DatabaseException, BadParameterException {
+		String sMethod = csCRT + "addCatalogItemType(): ";
+		objLogger.trace(sMethod + "Entered: objTypeDTO: [" + objTypeDTO.toString() + "]");
+
+		String sType = objTypeDTO.getCatalogItemType();
+		String sTypeDesc = objTypeDTO.getCatalogItemTypeDescription();
+		
+		boolean bValidUserType = Validate.isValidValueInArray(sType,csarrCatalogItemType);
+
+		if (!bValidUserType || (sType.length() == 0) || (sTypeDesc.length() == 0)) {
+			objLogger.debug(
+					sMethod + "Invalid parameters received sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+			throw new BadParameterException(csMsgBadParamCatalogItemType);
+		}
+
+		try {
+
+			objLogger.debug(sMethod + "calling addRecord to add: objTypeDTO: [" + objTypeDTO.toString() + "]");
+			CatalogItemType objCatalogItemType = objCatalogItemTypeDAO.addRecord(objTypeDTO);
+			return objCatalogItemType;
+
+		} catch (SQLException e) {
+			objLogger.warn(sMethod + "SQLException: " + csMsgDB_ErrorAddingCatalogItemType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingCatalogItemType);
+		} catch (HibernateException e) {
+			objLogger.warn(sMethod + "HibernateException: " + csMsgDB_ErrorAddingCatalogItemType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingCatalogItemType);
+		} catch (Exception e) {
+			objLogger.warn(sMethod + "Exception: " + csMsgDB_ErrorAddingCatalogItemType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingCatalogItemType);
+		}
+
+	}
+
+
+	//
+	// ### Completed 20210901
+	public OrderStatus addOrderStatus(OrderStatusDTO objStatusDTO) throws DatabaseException, BadParameterException {
+		String sMethod = csCRT + "addOrderStatus(): ";
+		objLogger.trace(sMethod + "Entered: objStatusDTO: [" + objStatusDTO.toString() + "]");
+
+		String sStatus = objStatusDTO.getOrderStatus();
+		String sStatusDesc = objStatusDTO.getOrderStatusDescription();
+		
+		boolean bValidStatus = Validate.isValidValueInArray(sStatus,csarrOrderStatus);
+
+		if (!bValidStatus || (sStatus.length() == 0) || (sStatusDesc.length() == 0)) {
+			objLogger.debug(
+					sMethod + "Invalid parameters received sStatus: [" + sStatus + "] sStatusDesc: [" + sStatusDesc + "]");
+			throw new BadParameterException(csMsgBadParamOrderStatus);
+		}
+
+		try {
+
+			objLogger.debug(sMethod + "calling addRecord to add: objStatusDTO: [" + objStatusDTO.toString() + "]");
+			OrderStatus objOrderStatus = objOrderStatusDAO.addRecord(objStatusDTO);
+			return objOrderStatus;
+
+		} catch (SQLException e) {
+			objLogger.warn(sMethod + "SQLException: " + csMsgDB_ErrorAddingOrderStatus + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingOrderStatus);
+		} catch (HibernateException e) {
+			objLogger.warn(sMethod + "HibernateException: " + csMsgDB_ErrorAddingOrderStatus + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingOrderStatus);
+		} catch (Exception e) {
+			objLogger.warn(sMethod + "Exception: " + csMsgDB_ErrorAddingOrderStatus + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingOrderStatus);
+		}
+
+	}
+
+	//
+	// ### Completed 20210901
+	public PhoneNumberType addPhoneNumberType(PhoneNumberTypeDTO objTypeDTO) throws DatabaseException, BadParameterException {
+		String sMethod = csCRT + "addPhoneNumberType(): ";
+		objLogger.trace(sMethod + "Entered: objStatusDTO: [" + objTypeDTO.toString() + "]");
+
+		String sType = objTypeDTO.getPhoneNumberType();
+		String sTypeDesc = objTypeDTO.getPhoneNumberTypeDescription();
+		
+		boolean bValidStatus = Validate.isValidValueInArray(sType, csarrPhoneNumberType);
+
+		if (!bValidStatus || (sType.length() == 0) || (sTypeDesc.length() == 0)) {
+			objLogger.debug(
+					sMethod + csMsgBadParamPhoneNumberType + " sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+			throw new BadParameterException(csMsgBadParamPhoneNumberType);
+		}
+
+		try {
+
+			objLogger.debug(sMethod + "calling addRecord to add: objTypeDTO: [" + objTypeDTO.toString() + "]");
+			PhoneNumberType objPhoneNumberType = objPhoneNumberTypeDAO.addRecord(objTypeDTO);
+			return objPhoneNumberType;
+
+		} catch (SQLException e) {
+			objLogger.warn(sMethod + "SQLException: " + csMsgDB_ErrorAddingPhoneNumberType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingPhoneNumberType);
+		} catch (HibernateException e) {
+			objLogger.warn(sMethod + "HibernateException: " + csMsgDB_ErrorAddingPhoneNumberType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingPhoneNumberType);
+		} catch (Exception e) {
+			objLogger.warn(sMethod + "Exception: " + csMsgDB_ErrorAddingPhoneNumberType + " [" + e.getMessage() + "]");
+			throw new DatabaseException(csMsgDB_ErrorAddingPhoneNumberType);
+		}
+
+	}
+	
+	
 	
 	
 }//End Class

@@ -1,4 +1,4 @@
-package com.tlw8253.service;
+package com.amt.test.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +32,8 @@ import com.amt.model.Order;
 import com.amt.model.User;
 import com.amt.service.UserService;
 
-public class ERSUserServiceTest implements Constants {
-	private static Logger objLogger = LoggerFactory.getLogger(ERSUserServiceTest.class);
+public class UserServiceTest implements Constants {
+	private static Logger objLogger = LoggerFactory.getLogger(UserServiceTest.class);
 
 	private UserService objMockERSServiceUser;
 	private UserService objMockERSServiceReimbursement;
@@ -41,7 +41,7 @@ public class ERSUserServiceTest implements Constants {
 	private GenericDAO<User> objMockUserDAO;
 	private GenericDAO<Order> objMockReimbursementDAO;
 
-	public ERSUserServiceTest() {
+	public UserServiceTest() {
 		super();
 	}
 

@@ -16,8 +16,7 @@ import com.amt.dto.AddOrEditDTO;
 import com.amt.model.AddressType;
 import com.amt.util.SessionFactorySingleton;
 
-
-public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants{
+public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(AddressTypeDAOImpl.class);
 
 	public AddressTypeDAOImpl() {
@@ -31,17 +30,17 @@ public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants{
 
 		// load a complete persistent objects into memory
 		String sHQL = "FROM "; // + csHQL_ModelClassReimbType; //fully qualify class name in HQL
-		
+
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
 		List<AddressType> lstReimbursementType = session.createQuery(sHQL).getResultList();
 		objLogger.debug(sMethod + "lstReimbursementType: [" + lstReimbursementType.toString() + "]");
-		
+
 		tx.commit();
 		session.close();
-		
+
 		return lstReimbursementType;
 	}
 
@@ -49,76 +48,74 @@ public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants{
 	public AddressType getByRecordId(int iRecordId) throws SQLException {
 		String sMethod = "\n\t getByRecordId(): ";
 		objLogger.trace(sMethod + "Entered");
-			
+
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
-		
+
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbTypeId = :reimbTypeId"; //this works with using setParameter
-		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: iRecordId: [" + iRecordId +"]");
-		
+		sHQL = "FROM ReimbursementType rt WHERE rt.reimbTypeId = :reimbTypeId"; // this works with using setParameter
+		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: iRecordId: [" + iRecordId + "]");
+
 		try {
-			AddressType ojbReimbursementType = 
-					(AddressType) session.createQuery(sHQL)
-					.setParameter("reimbTypeId", iRecordId)
-					.getSingleResult();
+			AddressType ojbReimbursementType = (AddressType) session.createQuery(sHQL)
+					.setParameter("reimbTypeId", iRecordId).getSingleResult();
 			objLogger.debug(sMethod + "ojbReimbursementType: [" + ojbReimbursementType.toString() + "]");
-			
-			
+
 			tx.commit();
 			return ojbReimbursementType;
-			
-		}catch(Exception e) {
-			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
-			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
+
+		} catch (Exception e) {
+			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName()
+					+ "] [" + e.toString() + "]");
+			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");
 			return null;
-		}finally {
+		} finally {
 			session.close();
-		}	
+		}
 	}
 
 	@Override
-	public AddressType getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
+	public AddressType getByRecordIdentifer(String sRecordIdentifier) throws SQLException {
 		String sMethod = "\n\t getByRecordIdentifer(): ";
 		objLogger.trace(sMethod + "Entered");
-			
+
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
-		
+
 		String sHQL = "";
 
 		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
-		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
-		
+		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier + "]");
+
 		try {
-			AddressType objReimbursementType = 
-					(AddressType) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier)
-					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
-			
+			AddressType objReimbursementType = (AddressType) session.createQuery(sHQL)
+					.setParameter("reimbType", sRecordIdentifier).getSingleResult();
+			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");
+
 			tx.commit();
 			return objReimbursementType;
-			
-		}catch(Exception e) {
-			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
-			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
-			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
+
+		} catch (Exception e) {
+			objLogger.error(
+					sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");
+			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName()
+					+ "] [" + e.toString() + "]");
+			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");
 			return null;
-		}finally {
+		} finally {
 			session.close();
-		}	
+		}
 	}
 
 	//
-	//###
+	// ###
 	@Override
-	public AddressType addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
-		String sMethod = "\n\t addRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+	public AddressType addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException {
+		String sMethod = csCRT + "addRecord(): ";
+		objLogger.trace(sMethod + "Entered: objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -126,20 +123,31 @@ public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants{
 
 		String sType = objAddOrEditDTO.getDataElement(csAddressTypeTblAddressType);
 		String sTypeDesc = objAddOrEditDTO.getDataElement(csAddressTypeTblAddressTypeDesc);
-		
-		AddressType objAddressType = new AddressType(sType, sTypeDesc);
-		
-		session.persist(objAddressType);
-		
-		tx.commit();
-		session.close();
+		objLogger.debug(
+				sMethod + "Extracted from objAddOrEditDTO: sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
 
-		return objAddressType;
+		AddressType objAddressType = new AddressType(sType, sTypeDesc);
+		objLogger.debug(sMethod + "Adding objAddressType: [" + objAddressType.toString() + "]");
+
+		try {
+			session.persist(objAddressType);
+			tx.commit();
+			return objAddressType;
+
+		} catch (Exception e) {
+			objLogger.error(
+					sMethod + csMsgDB_ErrorAddingAddressType + "sType: [" + sType + "] sTypeDesc: [" + sTypeDesc + "]");
+			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName()
+					+ "] [" + e.toString() + "]");
+			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");
+			throw new SQLException(csMsgDB_ErrorAddingAddressType);
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
-	public AddressType editRecord(AddOrEditDTO objAddOrEditDTO)
-			throws SQLException {
+	public AddressType editRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
