@@ -43,8 +43,8 @@ public class User implements Constants {
 	private String email = "";
 
 	@ManyToOne
-	@JoinColumn(name = csUserRolesTblUserRoleId, nullable = false)
-	private UserRole userRole;
+	@JoinColumn(name = csEmployeeRolesTblEmployeeRoleId, nullable = false)
+	private EmployeeRole userRole;
 
 	@ManyToOne
 	@JoinColumn(name = csUserTypeTblUserTypeId, nullable = false)
@@ -53,7 +53,7 @@ public class User implements Constants {
 	
 	public User() {
 		super();
-		setUserRole(new UserRole());
+		setUserRole(new EmployeeRole());
 	}
 	
 	public User(String sUsername, String sPassword, String sFirstName, String sLastName, String sEmail) {
@@ -92,7 +92,7 @@ public class User implements Constants {
 		return email;
 	}
 
-	public UserRole getUserRole() {
+	public EmployeeRole getUserRole() {
 		return userRole;
 	}
 
@@ -124,7 +124,7 @@ public class User implements Constants {
 		this.email = email;
 	}
 
-	public void setUserRole(UserRole userRole) {
+	public void setUserRole(EmployeeRole userRole) {
 		this.userRole = userRole;
 	}
 

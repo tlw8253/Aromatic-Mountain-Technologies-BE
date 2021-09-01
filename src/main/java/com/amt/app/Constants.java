@@ -65,113 +65,28 @@ public interface Constants {
 	int ciReimbRecByIdentifierResolver = 20;
 	int ciUserMinPassword = 8;
 	int ciUserMaxPassword = 15;
+	String csCRT = "\n\t ";
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// database constants
 	String csDatabaseName = "amt_online_sys"; // database name
+	int ciRoleTypeLen = 50;
+	int ciRoleTypeDescLen = 150;
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// table constants these must match the table attributes
 
-	// table: order Status
-	String csOrderStatusTable = "amt_order_status"; // table name
-	String csDBOrderStatusTable = csDatabaseName + "." + csOrderStatusTable; // qualified table name
-
-	String csOrderStatusTblOrderStatusId = "order_status_id"; // PK primary key
-	String csReimbStatusTblReimbStatus = "order_status"; // String
-	String csReimbStatusTblReimbStatusDesc = "order_status_desc"; // String
-	String[] csReimbStatus = { "NEW", "HOLD", "PENDING", "PAID", "FINAL" };
-
-	enum enOrderStatus {
-		NEW(0), HOLD(1), PENDING(2), PAID(3), FINAL(4);
-
-		int pos;
-
-		enOrderStatus(int pos) {
-			this.pos = pos;
-		}
-
-		int pos() {
-			return pos;
-		}
-	};
-
-	// table: order Status
-	String csOrderTable = "amt_order"; // table name
-	String csDBOrderTable = csDatabaseName + "." + csOrderStatusTable; // qualified table name
-	String csOrderTblOrderId = "order_id"; // PK primary key
-	String csOrderTblSubmitted = "order_submitted";
-	String csOrderTblAmount = "order_amount";
-	String csOrderTblOrderItems = "order_items";
-	
-	// table: order items
-	String csOrderItemsTable = "amt_order_items"; // table name
-	String csDBOrderItemsTable = csDatabaseName + "." + csOrderItemsTable; // qualified table name
-	String csOrderItemsTblOrderItemsId = "order_items_id"; // PK primary key
-	String csOrderItemsTblOrderPrice = "order_items_price";
-	String csOrderItemsTblItemQty = "order_items_qty";
-
-
-	// table: Catalog
-	String csCatalogTable = "amt_catalog_item"; // table name
-	String csDBCatalogTable = csDatabaseName + "." + csCatalogTable; // qualified table name
-	String csCatalogTblCatalogId = "catalog_id"; // PK primary key
-	String csCatalogItem = "catalog_item";
-	String csCatalogItemDesc = "catalog_item_description";
-	String csCatalogItemPrice = "catalog_item_price";
-	String csCatalogItemInStockQty = "catalog_item_in_stock_qty";
-	String csCatalogTblCatalogTypeId = "catalog_type_id";
-
-	// table: Catalog Type
-	String csCatalogTypeTable = "amt_catalog_type"; // table name
-	String csDBCatalogTypeTable = csDatabaseName + "." + csCatalogTypeTable; // qualified table name
-	String csCatalogTypeTblCatalogTypeId = "catalog_type_id"; // PK primary key
-	String csCatalogTypeTblCatalogType = "catalog_type"; // String
-	String csCatalogTypeTblCatalogTypeDesc = "catalog_type_desc"; // String
-	String[] csCatalogType = { "BEANS", "GROUND", "SYRUP", "ACCESSORY", "APPAREL" }; // coffee beans, ground coffee,
-																						// syrups, coffee accessory and
-																						// apparel
-
-	enum enCatalogType {
-		BEANS(0), GROUND(1), SYRUP(2), ACCESSORY(3), APPAREL(4);
-
-		int pos;
-
-		enCatalogType(int pos) {
-			this.pos = pos;
-		}
-
-		int pos() {
-			return pos;
-		}
-	};
-
-	// table: User Type
-	String csUserTypeTable = "amt_user_type"; // table name
-	String csDBUserTypeTable = csDatabaseName + "." + csUserTypeTable; // qualified table name
-
-	String csUserTypeTblUserTypeId = "user_type_id"; // PK primary key
-	String csUserTypeTblUserType = "user_type"; // String
-	String csUserTypeTblUserTypeDesc = "user_type_desc"; // String
-	String[] csUserType = { "EMPLOYEE", "CUSTOMER" };
-	int ciUserTypeEmployee = 0;
-	int ciUserTypeCustomer = 1;
-	String[] csUserTypeDesc = { "EMPLOYEE: This user type is an active employee of the AMT system.",
-			"CUSTOMER: This user type is an external customer viewing the catalog and buying merchandise." };
-
-	// table: User Roles
-	String csUserRolesTable = "amt_user_roles"; // table name
-	String csDBUserRolesTable = csDatabaseName + "." + csUserRolesTable; // qualified table name
-
-	String csUserRolesTblUserRoleId = "user_role_id"; // PK primary key
-	String csUserRolesTblUserRole = "user_role"; // String
-	String csUserRolesTblUserRoleDesc = "user_role_desc"; // String
-	String[] csEmployeeRoles = { "EMPLOYEE", "CATALOG ADMIN", "CATALOG EMPLOYEE" };
-	int ciUserRoleEmployee = 0;
-	int ciUserRoleCatalogAmdin = 1;
-	int ciUserRoleCatalogeEmployee = 2;
-	String[] csEmployeeRolesDesc = { "EMPLOYEE: Any person actively employeed by the company with a valid username.",
-			"CATALOG ADMIN: A Catalog Admin controls publishing of Employee catalog items and pages.",
-			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages." };
-
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// table: Address
+	String csAddressTable = "amt_address"; // table name
+	String csDBAddressTable = csDatabaseName + "." + csAddressTable; // qualified table name
+	String csAddressTblAddressId = "address_id"; // PK primary key
+	String csAddressTblAddressLine1 = "address_line_1"; // String
+	String csAddressTblAddressLine2 = "address_line_2"; // String
+	String csAddressTblAddressCity = "address_city";
+	String csAddressTblAddressState = "address_state";
+	String csAddressTblAddressZipCode = "address_zip_code";
+	String csAddressTblAddressCountry = "address_country";
 
 	// table: Address Type
 	String csAddressTypeTable = "amt_address_type"; // table name
@@ -183,25 +98,167 @@ public interface Constants {
 	String[] carrAddressTypeDesc = {"BILLING: The address where the bill of credit card used is mailed.",
 									"SHIPPING: The address where the customer wants the merchandise shipped.",
 									"MAILING: The home or mailing address where the customer resides."};
-
 	enum enumAddressType {
 		BILLING(0), SHIPPING(1), MAILING(2);
-
 		int pos;
-
 		enumAddressType(int pos) {
 			this.pos = pos;
 		}
+		int pos() {
+			return pos;
+		}
+	};
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// table: Catalog Item
+	String csCatalogItemTable = "amt_catalog_item"; // table name
+	String csDBCatalogItemTable = csDatabaseName + "." + csCatalogItemTable; // qualified table name
+	String csCatalogItemTblCatalogItemId = "catalog_id"; // PK primary key
+	String csCatalogItemTblCatalogItem = "catalog_item";
+	String csCatalogItemTblCatalogItemDesc = "catalog_item_description";
+	String csCatalogItemTblCatalogItemPrice = "catalog_item_price";
+	String csCatalogItemTblCatalogItemInStockQty = "catalog_item_in_stock_qty";
+
+	// table: Catalog Item Type
+	String csCatalogItemTypeTable = "amt_catalog_item_type"; // table name
+	String csDBCatalogTypeTable = csDatabaseName + "." + csCatalogItemTypeTable; // qualified table name
+	String csCatalogItemTypeTblCatalogItemTypeId = "catalog_item_type_id"; // PK primary key
+	String csCatalogItemTypeTblCatalogItemType = "catalog_item_type"; // String
+	String csCatalogItemTypeTblCatalogItemTypeDesc = "catalog_item_type_desc"; // String
+	String[] csCatalogType = { "BEANS", "GROUND", "SYRUP", "ACCESSORY", "APPAREL" }; // coffee beans, ground coffee,
+																						// syrups, coffee accessory and
+																						// apparel
+	enum enCatalogType {
+		BEANS(0), GROUND(1), SYRUP(2), ACCESSORY(3), APPAREL(4);
+		int pos;
+		enCatalogType(int pos) {
+			this.pos = pos;
+		}
 		int pos() {
 			return pos;
 		}
 	};
 
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// table: order
+	String csOrderTable = "amt_order"; // table name
+	String csDBOrderTable = csDatabaseName + "." + csOrderTable; // qualified table name
+	String csOrderTblOrderId = "order_id"; // PK primary key
+	String csOrderTblSubmitted = "order_submitted";
+	String csOrderTblSent = "order_sent";
+	String csOrderTblAmount = "order_amount";
+	String csOrderTblOrderItems = "order_items";
 	
+	// table: order items
+	String csOrderItemsTable = "amt_order_items"; // table name
+	String csDBOrderItemsTable = csDatabaseName + "." + csOrderItemsTable; // qualified table name
+	String csOrderItemsTblOrderItemsId = "order_items_id"; // PK primary key
+	String csOrderItemsTblOrderPrice = "order_items_price";
+	String csOrderItemsTblItemQty = "order_items_qty";
+
 	
+	// table: order Status
+	String csOrderStatusTable = "amt_order_status"; // table name
+	String csDBOrderStatusTable = csDatabaseName + "." + csOrderStatusTable; // qualified table name
+	String csOrderStatusTblOrderStatusId = "order_status_id"; // PK primary key
+	String csReimbStatusTblReimbStatus = "order_status"; // String
+	String csReimbStatusTblReimbStatusDesc = "order_status_desc"; // String
+	String[] csReimbStatus = { "NEW", "HOLD", "PENDING", "PAID", "FINAL" };
+	String[] csReimbStatusDesc = { "NEW: The order has just been created and saved for future processing.", 
+									"HOLD: The order is on hold pending further customer action.", 
+									"PENDING: The order is pending waiting on some processing", 
+									"PAID: The order has been paid.", 
+									"FINAL: The order has been paid and sent to fullfilment." };
 	
+	enum enumOrderStatus {
+		NEW(0), HOLD(1), PENDING(2), PAID(3), FINAL(4);
+		int pos;
+		enumOrderStatus(int pos) {
+			this.pos = pos;
+		}
+		int pos() {
+			return pos;
+		}
+	};
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// table: PhoneNumber
+	String csPhoneNumberTable = "amt_phone_numbers"; // table name
+	String csDBPhoneNumberTable = csDatabaseName + "." + csPhoneNumberTable; // qualified table name
+	String csPhoneNumberTblPhoneNumberId = "phone_number_id"; // PK primary key
+	String csPhoneNumberTblPhoneNumberCountryCode = "phone_number_country_code"; // String
+	String csPhoneNumberTblPhoneNumber = "phone_number"; // String	
+
+
+	// table: PhoneNumberType
+	String csPhoneNumberTypeTable = "amt_phone_number_type"; // table name
+	String csDBPhoneNumberTypeTable = csDatabaseName + "." + csPhoneNumberTypeTable; // qualified table name
+	String csPhoneNumberTypeTblPhoneNumberTypeId = "phone_number_type_id"; // PK primary key
+	String csPhoneNumberTypeTblPhoneNumberType = "phone_number_type"; // String
+	String csPhoneNumberTypeTblPhoneNumberTypeDesc = "phone_number_type_desc"; // String
+	String[] csPhoneNumberType = { "MOBILE", "HOME", "WORK", "OTHER" };
+	String[] csPhoneNumberTypeDesc = { "MOBILE: Phone number belongs to a mobile device.", 
+									"HOME: Phone number belongs to a traditional landline or device considered their home number.", 
+									"WORK: Phone number belongs to their work location.", 
+									"OTHER: Phone number belongsto some other location or device not listed."};
+	
+	enum enumPhoneNumberType {
+		MOBILE(0), HOME(1), WORK(2), OTHER(3);
+		int pos;
+		enumPhoneNumberType(int pos) {
+			this.pos = pos;
+		}
+		int pos() {
+			return pos;
+		}
+	};
+
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// table: User Type
+	String csUserTypeTable = "amt_user_type"; // table name
+	String csDBUserTypeTable = csDatabaseName + "." + csUserTypeTable; // qualified table name
+
+	String csUserTypeTblUserTypeId = "user_type_id"; // PK primary key
+	String csUserTypeTblUserType = "user_type"; // String
+	String csUserTypeTblUserTypeDesc = "user_type_desc"; // String
+	String[] csarUserType = { "EMPLOYEE", "CUSTOMER" };
+	String[] csarUserTypeDesc = { "EMPLOYEE: This user type is an active employee of the AMT system.",
+								"CUSTOMER: This user type is an external customer viewing the catalog and buying merchandise." };
+	enum enumUserType {
+		EMPLOYEE(0), CUSTOMER(1);
+		int pos;
+		enumUserType(int pos) {
+			this.pos = pos;
+		}
+		int pos() {
+			return pos;
+		}
+	};
+
+	// table: User Roles
+	String csEmployeeRolesTable = "amt_employee_roles"; // table name
+	String csDBEmployeeRolesTable = csDatabaseName + "." + csEmployeeRolesTable; // qualified table name
+	String csEmployeeRolesTblEmployeeRoleId = "employee_role_id"; // PK primary key
+	String csEmployeeRolesTblEmployeeRole = "employee_role"; // String
+	String csEmployeeRolesTblEmployeeRoleDesc = "employee_role_desc"; // String
+	String[] csarEmployeeRoles = { "EMPLOYEE", "CATALOG_ADMIN", "CATALOG_EMPLOYEE" };
+	String[] csarEmployeeRolesDesc = { "EMPLOYEE: Any person actively employeed by the company with a valid username.",
+			"CATALOG ADMIN: A Catalog Admin controls publishing of Employee catalog items and pages.",
+			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages." };
+	enum enumUserEmployee {
+		EMPLOYEE(0), CATALOG_ADMIN(1), CATALOG_EMPLOYEE(2);
+		int pos;
+		enumUserEmployee(int pos) {
+			this.pos = pos;
+		}
+		int pos() {
+			return pos;
+		}
+	};
+
+		
 	// table: user
 	String csUserTable = "amt_users"; // table name
 	String csDBUserTable = csDatabaseName + "." + csUserTable; // if using JDBC
@@ -214,15 +271,28 @@ public interface Constants {
 	String csUsrTblLastName = "last_name";
 	String csUserTblEmail = "email";
 	String csUserTblRoleId = "role_id";
-	String csUserTblRoleName = csUserRolesTblUserRole;
+	String csUserTblRoleName = csEmployeeRolesTblEmployeeRole;
+
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// HQL fully qualified class names
-	String csHQL_ModelPackage = "com.tlw8253.model";
-	String csHQL_ModelClassReimbStatus = csHQL_ModelPackage + ".ReimbursementStatus";
-	String csHQL_ModelClassReimbType = csHQL_ModelPackage + ".ReimbursementType";
-	String csHQL_ModelClassUserRole = csHQL_ModelPackage + ".UserRole";
-	String csHQL_ModelClassReimbursement = csHQL_ModelPackage + ".Reimbursement";
+	String csHQL_ModelPackage = "com.amt.model";
+
+	String csHQL_ModelAddress = csHQL_ModelPackage + ".Address";
+	String csHQL_ModelAddressType = csHQL_ModelPackage + ".AddressType";
+	String csHQL_ModelCatalogItem = csHQL_ModelPackage + ".CatalogItem";
+	String csHQL_ModelCatalogItemType = csHQL_ModelPackage + ".CatalogItemType";
+	String csHQL_ModelOrder = csHQL_ModelPackage + ".Order";
+	String csHQL_ModelOrderStatus = csHQL_ModelPackage + ".OrderStatus";
+	String csHQL_ModelOrderedItem = csHQL_ModelPackage + ".OrderedItem";
+	String csHQL_ModelPhoneNumber = csHQL_ModelPackage + ".PhoneNumber";
+	String csHQL_ModelPhoneNumberType = csHQL_ModelPackage + ".PhoneNumberType";	
 	String csHQL_ModelClassUser = csHQL_ModelPackage + ".User";
+	String csHQL_ModelClassUserRole = csHQL_ModelPackage + ".UserRole";	
+	
+	
+	
 
 	// Define program messages to use in the program and for testing
 	String csMsgDB_ErrorGettingWithLogin = "Error with database during employee login.";
@@ -251,6 +321,13 @@ public interface Constants {
 
 	String csMsgEmployeeRecordNotFound = "Employee was not found in the database.";
 
+	////////////////////////////////////////////////////////////////////////////////////
+	String csMsgBadParamUserType = "Invalid User Type parameters received.";
+	String csMsgBadParamAddressType = "Invalid Address Type parameters received.";
+	String csMsgBadParamEmployeeRole = "Invalid Employee Role parameters received.";
+
+	
+	
 	String csMsgBadParamNoPathParm = "Parmeter(s) expected. No Path Parameter(s) Received.";
 	String csMsgBadParamNoBodyParm = "Parmeter(s) expected. No Body Parameter(s) Received.";
 	String csMsgBadParamPathParmNotRightNumber = "Parmeter(s) expected. Not right number of Path Parameter(s) received.";
@@ -260,8 +337,7 @@ public interface Constants {
 	String csMsgBadParamQueryParm = "Parmeter(s) expected. Not right number of Query Parameter(s) received.";
 
 	String csMsgBadParamReimbStatus = "Invalid Reimbursement Status parameters received.";
-	String csMsgBadParamReimbType = "Invalid Reimbursement Type parameters received.";
-	String csMsgBadParamUserRole = "Invalid User Role parameters received.";
+	
 
 	String csMsgBadParamAddUser = "One or more add User parameters are invalid.";
 	String csMsgBadParamEditUser = "One or more edit User parameters are invalid.";

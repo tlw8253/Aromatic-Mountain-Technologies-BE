@@ -14,19 +14,19 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
 import com.amt.dto.AddOrEditDTO;
-import com.amt.model.UserRole;
+import com.amt.model.EmployeeRole;
 import com.amt.util.SessionFactorySingleton;
 
 
-public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
-	private Logger objLogger = LoggerFactory.getLogger(UserRoleDAOImpl.class);
+public class EmployeeRoleDAOImpl implements GenericDAO<EmployeeRole>, Constants{
+	private Logger objLogger = LoggerFactory.getLogger(EmployeeRoleDAOImpl.class);
 
-	public UserRoleDAOImpl() {
+	public EmployeeRoleDAOImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public List<UserRole> getAllRecords() throws SQLException {
+	public List<EmployeeRole> getAllRecords() throws SQLException {
 		String sMethod = "\n\t getAllRecords(): ";
 		objLogger.trace(sMethod + "Entered");
 
@@ -37,7 +37,7 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
-		List<UserRole> lstUserRole = session.createQuery(sHQL).getResultList();
+		List<EmployeeRole> lstUserRole = session.createQuery(sHQL).getResultList();
 		objLogger.debug(sMethod + "lstReimbursementType: [" + lstUserRole.toString() + "]");
 		
 		tx.commit();
@@ -47,13 +47,13 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 	}
 
 	@Override
-	public UserRole getByRecordId(int sRecordId) throws SQLException {
+	public EmployeeRole getByRecordId(int sRecordId) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserRole getByRecordIdentifer(String sRecordIdentifier) throws SQLException {
+	public EmployeeRole getByRecordIdentifer(String sRecordIdentifier) throws SQLException {
 		String sMethod = "\n\t getByRecordIdentifer(): ";
 		objLogger.trace(sMethod + "Entered");
 
@@ -71,7 +71,7 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			UserRole objUserRole = (UserRole) session.createQuery(sHQL)
+			EmployeeRole objUserRole = (EmployeeRole) session.createQuery(sHQL)
 					.setParameter("userRole", sRecordIdentifier)
 					.getSingleResult();
 			objLogger.debug(sMethod + "objUserRole: [" + objUserRole.toString() + "]");
@@ -88,9 +88,11 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 		}
 	}
 
+	//
+	//###
 	@Override
-	public UserRole addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
-		String sMethod = "\n\t addRecord(): ";
+	public EmployeeRole addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
+		String sMethod = csCRT + "addRecord(): ";
 		objLogger.trace(sMethod + "Entered");
 
 		objLogger.debug(sMethod + "objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
@@ -99,23 +101,23 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
-		String sStatus = objAddOrEditDTO.getDataElement(csUserRolesTblUserRole);
-		String sStatusDesc = objAddOrEditDTO.getDataElement(csUserRolesTblUserRoleDesc);
+		String sRole = objAddOrEditDTO.getDataElement(csEmployeeRolesTblEmployeeRole);
+		String sRoleDesc = objAddOrEditDTO.getDataElement(csEmployeeRolesTblEmployeeRoleDesc);
 		
-		UserRole objUserRole = new UserRole(sStatus, sStatusDesc);
+		EmployeeRole objEmployeeRole = new EmployeeRole(sRole, sRoleDesc);
 		
-		objLogger.debug(sMethod + "objUserRole: [" + objUserRole.toString() + "]");
+		objLogger.debug(sMethod + "objEmployeeRole: [" + objEmployeeRole.toString() + "]");
 		
-		session.persist(objUserRole);
+		session.persist(objEmployeeRole);
 		
 		tx.commit();
 		session.close();
 
-		return objUserRole;
+		return objEmployeeRole;
 	}
 
 	@Override
-	public UserRole editRecord(AddOrEditDTO objGenericEditDTO) throws SQLException {
+	public EmployeeRole editRecord(AddOrEditDTO objGenericEditDTO) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -127,13 +129,13 @@ public class UserRoleDAOImpl implements GenericDAO<UserRole>, Constants{
 	}
 
 	@Override
-	public UserRole getLogin(String sUsername, String sPassword) throws SQLException {
+	public EmployeeRole getLogin(String sUsername, String sPassword) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<UserRole> getListByRecordIdentifer(int iListId, String sRecordIdentifier) throws SQLException {
+	public List<EmployeeRole> getListByRecordIdentifer(int iListId, String sRecordIdentifier) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

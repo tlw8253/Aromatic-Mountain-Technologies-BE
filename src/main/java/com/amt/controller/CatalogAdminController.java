@@ -83,10 +83,6 @@ public class CatalogAdminController implements Controller, Constants {
 			objLogger.debug(sMethod + "Context query parameter reimbursement status description: [" + sParamReimStatusDesc + "]");
 		}
 
-		if(bContinue) {
-			objReimbStatus = objERSAdminService.addReimbursementStatus(null);
-			objLogger.debug(sMethod + "objReimbStatus: [" + objReimbStatus.toString() + "]");
-		}
 		
 		objCtx.status(ciStatusCodeSuccess);
 		objCtx.json(objReimbStatus);

@@ -12,29 +12,29 @@ import javax.persistence.Table;
 import com.amt.app.Constants;
 
 @Entity
-@Table(name = Constants.csCatalogTypeTable)
+@Table(name = Constants.csCatalogItemTypeTable)
 
 
-public class CatalogType implements Constants {
+public class CatalogItemType implements Constants {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = csCatalogTypeTblCatalogTypeId)
+	@Column(name = csCatalogItemTypeTblCatalogItemTypeId)
 	private int catalogTypeId = 0;
 
-	@Column(name = csCatalogTypeTblCatalogType, length = 50, nullable = false, unique = true)
+	@Column(name = csCatalogItemTypeTblCatalogItemType, length = ciRoleTypeLen, nullable = false, unique = true)
 	private String catalogType = "";
 
-	@Column(name = csCatalogTypeTblCatalogTypeDesc, length = 150, nullable = false)
+	@Column(name = csCatalogItemTypeTblCatalogItemTypeDesc, length = ciRoleTypeDescLen, nullable = false)
 	private String catalogTypeDesc = "";
 
 	
-	public CatalogType() {
+	public CatalogItemType() {
 		super();
 	}
 
 	
-	public CatalogType(String catalogType, String catalogTypeDesc) {
+	public CatalogItemType(String catalogType, String catalogTypeDesc) {
 		this.catalogType = catalogType;
 		this.catalogTypeDesc = catalogTypeDesc;
 	}
@@ -84,7 +84,7 @@ public class CatalogType implements Constants {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CatalogType other = (CatalogType) obj;
+		CatalogItemType other = (CatalogItemType) obj;
 		return Objects.equals(catalogType, other.catalogType) && Objects.equals(catalogTypeDesc, other.catalogTypeDesc)
 				&& catalogTypeId == other.catalogTypeId;
 	}

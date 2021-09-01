@@ -28,21 +28,23 @@
 		the application will not work -->
 		<!-- 4. create-drop - same as create, but will drop all tables once SessionFactory is closed (when our application ends) -->
 
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">validate</property>
 		<!-- <property name="hbm2ddl.auto">validate</property> -->
 		<!-- <property name="hbm2ddl.auto">create</property>  -->	
 		
 		<!-- Specify our entity/class mappings here -->
-		<mapping class="com.amt.model.UserRole"></mapping>
+		<mapping class="com.amt.model.EmployeeRole"></mapping>
 		<mapping class="com.amt.model.UserType"></mapping>
 		<mapping class="com.amt.model.User"></mapping>
-		<mapping class="com.amt.model.CatalogType"></mapping>
-		<mapping class="com.amt.model.CatalogItem"></mapping>
-		<mapping class="com.amt.model.OrderStatus"></mapping>
-		<mapping class="com.amt.model.OrderItems"></mapping>
-		<mapping class="com.amt.model.Order"></mapping>
 		<mapping class="com.amt.model.AddressType"></mapping>
 		<mapping class="com.amt.model.Address"></mapping>
+		<mapping class="com.amt.model.PhoneNumberType"></mapping>
+		<mapping class="com.amt.model.PhoneNumber"></mapping>
+		<mapping class="com.amt.model.CatalogItemType"></mapping>
+		<mapping class="com.amt.model.CatalogItem"></mapping>
+		<mapping class="com.amt.model.OrderStatus"></mapping>
+		<mapping class="com.amt.model.OrderedItem"></mapping>
+		<mapping class="com.amt.model.Order"></mapping>
 <!-- 	
  -->			
 		

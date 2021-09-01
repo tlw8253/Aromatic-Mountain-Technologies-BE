@@ -12,27 +12,27 @@ import javax.persistence.Table;
 import com.amt.app.Constants;
 
 @Entity
-@Table(name = Constants.csUserRolesTable)
+@Table(name = Constants.csEmployeeRolesTable)
 
-public class UserRole implements Constants {
+public class EmployeeRole implements Constants {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = csUserRolesTblUserRoleId)
+	@Column(name = csEmployeeRolesTblEmployeeRoleId)
 	private int userRoleId = 0;
 
-	@Column(name = csUserRolesTblUserRole, length = 50, nullable = false, unique = true)
+	@Column(name = csEmployeeRolesTblEmployeeRole, length = 50, nullable = false, unique = true)
 	private String userRole = "";
 	
-	@Column(name = csUserRolesTblUserRoleDesc, length = 150, nullable = false)
+	@Column(name = csEmployeeRolesTblEmployeeRoleDesc, length = 150, nullable = false)
 	private String userRoleDesc = "";
 
 	
-	public UserRole() {
+	public EmployeeRole() {
 		super();
 	}
 
-	public UserRole(String sUserRole, String sUserRoleDesc) {
+	public EmployeeRole(String sUserRole, String sUserRoleDesc) {
 		this.userRole = sUserRole;
 		this.userRoleDesc = sUserRoleDesc;
 	}
@@ -74,7 +74,7 @@ public class UserRole implements Constants {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserRole other = (UserRole) obj;
+		EmployeeRole other = (EmployeeRole) obj;
 		return Objects.equals(userRole, other.userRole) && Objects.equals(userRoleDesc, other.userRoleDesc)
 				&& userRoleId == other.userRoleId;
 	}

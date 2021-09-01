@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.amt.app.Constants;
+import com.amt.app.Constants.enumUserEmployee;
 import com.amt.dao.GenericDAO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.BadParameterException;
@@ -73,15 +74,6 @@ public class ERSUserServiceTest implements Constants {
 	public void test_addNewUserSuccess() throws SQLException, BadParameterException, DatabaseException {
 		objLogger.trace("test_addNewUserSuccess()");
 
-		User mockRetValues = new User("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com");
-		UserDTO objUserDTO = new UserDTO("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com",
-				csEmployeeRoles[ciUserRoleEmployee]);
-		when(objMockUserDAO.addRecord(objUserDTO)).thenReturn(mockRetValues);
-
-		User objActualValues = objMockERSServiceUser.addNewUser(objUserDTO);
-		User objExpectedValues = new User("tlw8253", "A_Pass12345", "Tomas", "Ykel", "tlw8253@wws.com");
-
-		assertEquals(objExpectedValues, objActualValues);
 
 	}
 
@@ -91,15 +83,6 @@ public class ERSUserServiceTest implements Constants {
 		String sMethod = "test_addNewUserBadPwdNoCapLetter(): ";
 		objLogger.trace(sMethod);
 
-		//This is a service level test, no Mock DAO involved.
-		UserDTO objUserDTO = new UserDTO("tlw8253", "a_pass12345", "Tomas", "Ykel", "tlw8253@wws.com",
-				csEmployeeRoles[ciUserRoleEmployee]);
-		try {
-			objMockERSServiceUser.addNewUser(objUserDTO);
-		} catch (BadParameterException e) {
-			objLogger.debug(sMethod + "BadParameterException: [" + e.getMessage() + "]");
-			assertEquals(csMsgBadParamAddUser, e.getMessage());
-		}
 
 	}
 

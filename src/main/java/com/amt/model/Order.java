@@ -27,32 +27,111 @@ public class Order implements Constants {
 	@Column(name = csOrderTblOrderId)
 	private int orderId = 0;
 
+	@Column(name = csOrderTblAmount, nullable = false)	
+	private double orderAmount = 0.0;
+		
 	//this is set internally
 	@Column(name = csOrderTblSubmitted, nullable = false)
 	private Timestamp orderSubmitted;
 
-	@Column(name = csOrderTblAmount, nullable = false)	
-	private double orderAmount = 0.0;
-		
+	//this is set internally
+	@Column(name = csOrderTblSent)
+	private Timestamp orderSent;
+
 	@ManyToOne
 	@JoinColumn(name = csOrderStatusTblOrderStatusId)	//, nullable = false) // 
 	private OrderStatus orderStatus;
 
 	@ManyToOne
 	@JoinColumn(name = csOrderItemsTblOrderItemsId)	//, nullable = false) // 
-	private OrderItems orderItems;
+	private OrderedItem orderedItem;
 	
-
-
 	
 	public Order() {
 		//use when setting the timestamp values:
 		//Timestamp objTimestamp = Timestamp.valueOf(LocalDateTime.now());
 		
 		orderSubmitted = new Timestamp(0);
+		orderSent = new Timestamp(0);
 	}
 
-	public Order(double dReimAmount, Timestamp tsReimbSubmitted, Timestamp tsReimbResolved, String sReimbDescription, SerialBlob sbReimbReceipt) {
+	public Order(double orderAmount) {
+		this.orderAmount = orderAmount;
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public Timestamp getOrderSubmitted() {
+		return orderSubmitted;
+	}
+
+	public Timestamp getOrderSent() {
+		return orderSent;
+	}
+
+	public double getOrderAmount() {
+		return orderAmount;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public OrderedItem getOrderItems() {
+		return orderedItem;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public void setOrderSubmitted(Timestamp orderSubmitted) {
+		this.orderSubmitted = orderSubmitted;
+	}
+
+	public void setOrderSent(Timestamp orderSent) {
+		this.orderSent = orderSent;
+	}
+
+	public void setOrderAmount(double orderAmount) {
+		this.orderAmount = orderAmount;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public void setOrderItems(OrderedItem orderItems) {
+		this.orderedItem = orderItems;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(orderAmount, orderId, orderSent, orderStatus, orderSubmitted, orderedItem);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		return Double.doubleToLongBits(orderAmount) == Double.doubleToLongBits(other.orderAmount)
+				&& orderId == other.orderId && Objects.equals(orderSent, other.orderSent)
+				&& Objects.equals(orderStatus, other.orderStatus)
+				&& Objects.equals(orderSubmitted, other.orderSubmitted)
+				&& Objects.equals(orderedItem, other.orderedItem);
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", orderAmount=" + orderAmount + ", orderSubmitted=" + orderSubmitted
+				+ ", orderSent=" + orderSent + ", orderStatus=" + orderStatus + ", orderedItem=" + orderedItem + "]";
 	}
 
 

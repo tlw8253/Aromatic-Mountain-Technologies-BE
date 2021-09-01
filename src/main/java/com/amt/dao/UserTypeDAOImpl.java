@@ -30,7 +30,7 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		objLogger.trace(sMethod + "Entered");
 
 		// load a complete persistent objects into memory
-		String sHQL = "FROM " + csHQL_ModelClassReimbType; //fully qualify class name in HQL
+		String sHQL = "FROM "; // + csHQL_ModelClassReimbType; //fully qualify class name in HQL
 		
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -113,6 +113,8 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		}	
 	}
 
+	//
+	//###
 	@Override
 	public UserType addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
 		String sMethod = "\n\t addRecord(): ";
@@ -122,17 +124,17 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 
-		String sStatus = objAddOrEditDTO.getDataElement(csUserTypeTblUserType);
-		String sStatusDesc = objAddOrEditDTO.getDataElement(csUserTypeTblUserTypeDesc);
+		String sType = objAddOrEditDTO.getDataElement(csUserTypeTblUserType);
+		String sTypeDesc = objAddOrEditDTO.getDataElement(csUserTypeTblUserTypeDesc);
 		
-		UserType objReimbStatus = new UserType(sStatus, sStatusDesc);
+		UserType objUserType = new UserType(sType, sTypeDesc);
 		
-		session.persist(objReimbStatus);
+		session.persist(objUserType);
 		
 		tx.commit();
 		session.close();
 
-		return objReimbStatus;
+		return objUserType;
 	}
 
 	@Override

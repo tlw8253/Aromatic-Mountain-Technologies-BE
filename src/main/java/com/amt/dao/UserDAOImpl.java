@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.amt.app.Constants;
 import com.amt.dto.AddOrEditDTO;
 import com.amt.model.User;
-import com.amt.model.UserRole;
+import com.amt.model.EmployeeRole;
 import com.amt.util.SessionFactorySingleton;
 import com.amt.util.PasswordUtil;
 
@@ -157,8 +157,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 
 		try {
 			// get UserRole object
-			UserRoleDAOImpl objUserRoleDAOImpl = new UserRoleDAOImpl();
-			UserRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
+			EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
+			EmployeeRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
 			objUser.setUserRole(objUserRole);
 
 			objLogger.debug(sMethod + "objUserRole: [" + objUser.toString() + "]");
@@ -190,8 +190,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 
 		// get UserRole object
 		String sRoleName = objAddOrEditDTO.getDataElement(csUserTblRoleName);
-		UserRoleDAOImpl objUserRoleDAOImpl = new UserRoleDAOImpl();
-		UserRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
+		EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
+		EmployeeRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(sRoleName);
 
 		// by this time the service layer would have validated the parameters
 		String sUsername = objAddOrEditDTO.getDataElement(csUserTblUsername);

@@ -19,17 +19,17 @@ import org.slf4j.LoggerFactory;
 import com.amt.dao.ReimbursementStatusDAOImpl;
 import com.amt.dao.UserTypeDAOImpl;
 import com.amt.dao.UserDAOImpl;
-import com.amt.dao.UserRoleDAOImpl;
+import com.amt.dao.EmployeeRoleDAOImpl;
 import com.amt.dto.OrderStatusDTO;
 import com.amt.dto.UserTypeDTO;
 import com.amt.dto.UserDTO;
-import com.amt.dto.UserRoleDTO;
+import com.amt.dto.EmployeeRoleDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
 import com.amt.model.OrderStatus;
 import com.amt.model.UserType;
 import com.amt.model.User;
-import com.amt.model.UserRole;
+import com.amt.model.EmployeeRole;
 import com.amt.service.AdminService;
 import com.amt.service.UserService;
 import com.amt.util.*;
@@ -269,10 +269,10 @@ public class UserDriver implements Constants {
 		String sMethod = "\n\t testUserRoleDAOImpl_UserRole_getAllRecords(): ";
 		objLogger.trace(sMethod + "Entered");
 		
-		UserRoleDAOImpl objUserRoleDAOImpl = new UserRoleDAOImpl();
+		EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
 
 		try {
-			List<UserRole> lstUserRole = objUserRoleDAOImpl.getAllRecords();
+			List<EmployeeRole> lstUserRole = objUserRoleDAOImpl.getAllRecords();
 			objLogger.debug(sMethod + "lstUserRole: [" + lstUserRole.toString() + "]");
 		} catch (Exception e) {
 			objLogger.debug(sMethod + "Exception: [" + e.toString() + "] [" + e.getMessage() + "]");		
@@ -286,9 +286,9 @@ public class UserDriver implements Constants {
 		String sMethod = "\n\t testUserRoleDAOImpl_UserRole_getByRecordIdentifer(): ";
 		objLogger.trace(sMethod + "Entered");
 		
-		UserRoleDAOImpl objUserRoleDAOImpl = new UserRoleDAOImpl();
+		EmployeeRoleDAOImpl objUserRoleDAOImpl = new EmployeeRoleDAOImpl();
 		try {
-			UserRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(csEmployeeRoles[ciUserRoleCatalogAmdin]);
+			EmployeeRole objUserRole = objUserRoleDAOImpl.getByRecordIdentifer(csarEmployeeRoles[enumUserEmployee.CATALOG_ADMIN.pos]);
 			objLogger.debug(sMethod + "objUserRole: [" + objUserRole.toString() + "]");
 		} catch (SQLException e) {
 			objLogger.debug(sMethod + "SQLException: [" + e.toString() + "] [" + e.getMessage() + "]");

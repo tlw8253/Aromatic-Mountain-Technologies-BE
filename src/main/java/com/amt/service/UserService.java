@@ -199,7 +199,7 @@ public class UserService implements Constants {
 		
 		boolean bFirstNameIsAlpha = Validate.isAlpha(sFirstName);
 		boolean bLastNameIsAlpha = Validate.isAlphaPlusLastname(sLastName);
-		boolean bUserRoleNameIsValid = Validate.isValidValueInArray(sUserRoleName, csEmployeeRoles);
+		boolean bUserRoleNameIsValid = Validate.isValidValueInArray(sUserRoleName, csarEmployeeRoles);
 		
 		if (bFirstNameIsAlpha && bLastNameIsAlpha && bUserRoleNameIsValid) {
 			isValid=true;
