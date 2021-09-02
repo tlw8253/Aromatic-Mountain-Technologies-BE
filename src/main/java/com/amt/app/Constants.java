@@ -297,7 +297,8 @@ public interface Constants {
 	String csHQL_ModelPhoneNumber = csHQL_ModelPackage + ".PhoneNumber";
 	String csHQL_ModelPhoneNumberType = csHQL_ModelPackage + ".PhoneNumberType";	
 	String csHQL_ModelClassUser = csHQL_ModelPackage + ".User";
-	String csHQL_ModelClassUserRole = csHQL_ModelPackage + ".UserRole";	
+	String csHQL_ModelClassUserType = csHQL_ModelPackage + ".UserType";
+	String csHQL_ModelClassEmployeeRole = csHQL_ModelPackage + ".EmployeeRole";	
 	
 	
 	

@@ -27,11 +27,11 @@ public class EmployeeRoleDAOImpl implements GenericDAO<EmployeeRole>, Constants{
 
 	@Override
 	public List<EmployeeRole> getAllRecords() throws SQLException {
-		String sMethod = "\n\t getAllRecords(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getAllRecords(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		// load a complete persistent objects into memory
-		String sHQL = "FROM " + csHQL_ModelClassUserRole; //fully qualify class name in HQL
+		String sHQL = "FROM " + csHQL_ModelClassEmployeeRole; //fully qualify class name in HQL
 		
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -54,32 +54,29 @@ public class EmployeeRoleDAOImpl implements GenericDAO<EmployeeRole>, Constants{
 
 	@Override
 	public EmployeeRole getByRecordIdentifer(String sRecordIdentifier) throws SQLException {
-		String sMethod = "\n\t getByRecordIdentifer(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getByRecordIdentifer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		// load a complete persistent objects into memory
-		
-		//sHQL: [FROM com.tlw8253.model.UserRole ur WHERE ur.user_role= :rolename] param: sRecordIdentifier: [SUPERMAN]
-		String sHQL = "";
-		
-		sHQL = "FROM UserRole ur WHERE ur.userRole = '" + sRecordIdentifier + "'";	//this works without using setParameter
-		sHQL = "FROM UserRole ur WHERE ur.userRole = :userRole"; //this works with using setParameter
+		// load a complete persistent objects into memory		
+		String sHQL = "";		
+		sHQL = "FROM EmployeeRole er WHERE er.employeeRole = :employeeRole"; //this works with using setParameter
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			EmployeeRole objUserRole = (EmployeeRole) session.createQuery(sHQL)
-					.setParameter("userRole", sRecordIdentifier)
-					.getSingleResult();
-			objLogger.debug(sMethod + "objUserRole: [" + objUserRole.toString() + "]");
+			EmployeeRole objEmployeeRole = (EmployeeRole) session.createQuery(sHQL)
+											.setParameter("employeeRole", sRecordIdentifier)
+											.getSingleResult();
+			objLogger.debug(sMethod + "objEmployeeRole: [" + objEmployeeRole.toString() + "]");
 			
 			tx.commit();
-			return objUserRole;
+			return objEmployeeRole;
 			
 		}catch(Exception e) {
+			objLogger.error(sMethod + "Error getting Employee Role by sRecordIdentifier: [" + sRecordIdentifier + "]");
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
 			return null;
@@ -93,7 +90,7 @@ public class EmployeeRoleDAOImpl implements GenericDAO<EmployeeRole>, Constants{
 	@Override
 	public EmployeeRole addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
 		String sMethod = csCRT + "addRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		objLogger.debug(sMethod + "objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
 		

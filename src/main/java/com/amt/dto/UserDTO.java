@@ -116,15 +116,15 @@ public class UserDTO extends AddOrEditDTO implements Constants {
 		super.setDataElement(csEmployeeRolesTblEmployeeRole, employeeRole.toUpperCase());
 	}
 
-	public String setUserTypeId(String userTypeId) {
-		return super.getDataElement(csUserTblUserType);
+	public void setUserTypeId(String userTypeId) {
+		super.setDataElement(csUserTblUserTypeId, userTypeId);
 	}
-	public String setUserTypeId(int userTypeId) {
-		return super.getDataElement(csUserTblUserType);
+	public void setUserTypeId(int userTypeId) {
+		super.setDataElement(csUserTblUserTypeId, userTypeId);
 	}
 
-	public String setUserType(String userType) {
-		return super.getDataElement(csUserTblUserType);
+	public void setUserType(String userType) {
+		super.setDataElement(csUserTblUserType, userType);
 	}
 
 	

@@ -28,7 +28,7 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 	public List<UserType> getAllRecords() throws SQLException {
 		String sMethod = "\n\t getAllRecords(): ";
 		objLogger.trace(sMethod + "Entered");
-
+/*
 		// load a complete persistent objects into memory
 		String sHQL = "FROM "; // + csHQL_ModelClassReimbType; //fully qualify class name in HQL
 		
@@ -43,13 +43,15 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		session.close();
 		
 		return lstReimbursementType;
+*/
+		return null;
 	}
 
 	@Override
 	public UserType getByRecordId(int iRecordId) throws SQLException {
 		String sMethod = "\n\t getByRecordId(): ";
 		objLogger.trace(sMethod + "Entered");
-			
+/*			
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
@@ -77,12 +79,14 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		}finally {
 			session.close();
 		}	
+*/
+return null;
 	}
 
 	@Override
 	public UserType getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
-		String sMethod = "\n\t getByRecordIdentifer(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getByRecordIdentifer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 			
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -90,21 +94,21 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
+		sHQL = "FROM UserType ut WHERE ut.userType = :userType";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			UserType objReimbursementType = 
+			UserType objUserType = 
 					(UserType) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier)
+					.setParameter("userType", sRecordIdentifier)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
+			objLogger.debug(sMethod + "objUserType: [" + objUserType.toString() + "]");			
 			
 			tx.commit();
-			return objReimbursementType;
+			return objUserType;
 			
 		}catch(Exception e) {
-			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
+			objLogger.error(sMethod + "Error getting User Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
 			return null;
@@ -117,8 +121,8 @@ public class UserTypeDAOImpl implements GenericDAO<UserType>, Constants{
 	//###
 	@Override
 	public UserType addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
-		String sMethod = "\n\t addRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "addRecord(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();

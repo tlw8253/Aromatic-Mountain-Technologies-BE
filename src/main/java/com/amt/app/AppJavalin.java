@@ -7,7 +7,7 @@ import com.amt.controller.Controller;
 import com.amt.controller.CustomerController;
 import com.amt.controller.CatalogAdminController;
 import com.amt.controller.LoginController;
-import com.amt.controller.EmployeeController;
+import com.amt.controller.UserController;
 import com.amt.controller.ExceptionController;
 
 import io.javalin.Javalin;
@@ -40,7 +40,7 @@ public class AppJavalin implements Constants {
 //		objJavalinApp = Javalin.create();		
 		
 		objLogger.debug(sMethod + "mapControllers(new ExceptionController(), new EmployeeController(), new CustomerController(), new CatalogAdminController(), new LoginController() );");
-		mapControllers(/*new TestController(),*/ new ExceptionController(), new EmployeeController(), new CustomerController(), 
+		mapControllers(/*new TestController(),*/ new ExceptionController(), new UserController(), new CustomerController(), 
 				new CatalogAdminController(), new LoginController() );
 		
 		objLogger.info(sMethod + "Starting listening on port: [" + ciListingPort + "]");

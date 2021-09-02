@@ -50,7 +50,7 @@ public final class Utility {
 
 		for(String sName : tsSortedNames) {
 			objLogger.debug(sMethod + "getting element sName: [" + sName + "] from hashmap.");
-			sToString += "[" + sName + "]: [" + hmStringDataElements.get(sName) + "]";
+			sToString += " [" + sName + "]: [" + hmStringDataElements.get(sName) + "]";
 		}
 		
 		objLogger.debug(sMethod + "[" + sToString + "]");
@@ -64,7 +64,7 @@ public final class Utility {
 		TreeSet<String> tsSortedNames = Utility.getHashMapSortedKeys(hmStringDataElements);
 		for(String sName : tsSortedNames) {
 			objLogger.debug(sMethod + "getting element sName: [" + sName + "] from hashmap.");
-			sToString += "[" + sName + "]: [" + hmStringDataElements.get(sName) + "]";
+			sToString += " [" + sName + "]: [" + hmStringDataElements.get(sName) + "]";
 		}
 		
 		objLogger.debug(sMethod + "[" + sToString + "]");

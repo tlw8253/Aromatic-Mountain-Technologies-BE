@@ -104,7 +104,7 @@ public class AddOrEditDTO {
 	//		Only use the String data elements, since all other types should 
 	//		have a string counterpart.
 	public String toStringByKeys(String... sKey) {//Varargs parameter list
-		String sMethod = "\n\t toStringByKeys(): ";
+		String sMethod = "\n\n\t toStringByKeys(): ";
 		String sToString = "";
 
 		sToString = Utility.hashMapToStringByByKeyOrder(hmStringDataElements, sKey);
@@ -118,7 +118,7 @@ public class AddOrEditDTO {
 
 	@Override
 	public String toString() {
-		String sMethod = "\n\t toString(): ";	
+		String sMethod = "\n\n\t toString(): ";	
 		String sToString = "";
 		
 		sToString = Utility.hashMapToStringBySortedKeys(hmStringDataElements);

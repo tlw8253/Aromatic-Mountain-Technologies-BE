@@ -40,8 +40,8 @@ public class UserService implements Constants {
 	//
 	// ###
 	public List<User> getAllUsers() throws DatabaseException {
-		String sMethod = "\n\t getAllUsers(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getAllUsers(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		try {
 			List<User> lstUser = objUserDAO.getAllRecords();
@@ -58,8 +58,8 @@ public class UserService implements Constants {
 	//
 	// ###
 	public User getUsersById(String sUserId) throws DatabaseException, BadParameterException {
-		String sMethod = "\n\t getUsersById(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getUsersById(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		if (Validate.isInt(sUserId) && Integer.parseInt(sUserId) > 0) {
 			int iUserId = Integer.parseInt(sUserId);
@@ -80,8 +80,8 @@ public class UserService implements Constants {
 	}
 	
 	public User getUsersByUsername(String sUsername) throws DatabaseException, BadParameterException {
-		String sMethod = "\n\t getUsersByUsername(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getUsersByUsername(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		if (Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameMinLength) {			
 			try {
@@ -100,38 +100,6 @@ public class UserService implements Constants {
 		}
 	}
 
-	//
-	// ###
-	public User addNewUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
-		String sMethod = "\n\t addNewUser(): ";
-		objLogger.trace(sMethod + "Entered: objUserDTO: [" + objUserDTO.toString() + "]");
-
-		if (isValidUserDTO(objUserDTO)) {
-			try {
-				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");				
-				
-				//Encrypt and set password values
-				String sPwdSalt = PasswordUtil.getSalt(30);
-				String sSecurePassword = PasswordUtil.generateSecurePassword(objUserDTO.getPassword(), sPwdSalt);				
-				objUserDTO.setPassword(sSecurePassword);
-				objUserDTO.setPasswordSalt(sPwdSalt);
-
-				objLogger.debug(sMethod + "calling addRecord with objUserDTO: [" + objUserDTO.toString() + "]");	
-				User objUser = objUserDAO.addRecord(objUserDTO);
-				objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-				return objUser;
-
-			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-				objLogger.error(sMethod + "Exception adding User record with username: [" + objUserDTO.getUsername()
-						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
-				throw new DatabaseException(csMsgDB_ErrorAddingUser);
-			}
-
-		} else {
-			objLogger.warn(sMethod + "objUserDTO is not valid: [" + objUserDTO.toString() + "]");
-			throw new BadParameterException(csMsgBadParamAddUser);
-		}
-	}
 
 	
 	//
@@ -139,8 +107,8 @@ public class UserService implements Constants {
 	//will not update the record id, the company username, or the company email.
 	//also password should be updated through separate process where old pwd and new pwd are entered
 	public User editExistingUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
-		String sMethod = "\n\t EditExistingUser(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "EditExistingUser(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		if (isValidUserDTOEditAttributes(objUserDTO)) {
 			try {
@@ -167,8 +135,8 @@ public class UserService implements Constants {
 	//
 	//###
 	public boolean deleteUserByUsername(String sUsername) throws DatabaseException {
-		String sMethod = "\n\t deleteUserByUsername(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "deleteUserByUsername(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 		boolean isDeleted = false;
 
 		try {
@@ -183,7 +151,40 @@ public class UserService implements Constants {
 		}
 	}
 
-	
+	//
+	// ###
+	public User addNewUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
+		String sMethod = csCRT + "addNewUser(): ";
+		objLogger.trace(csCR + sMethod + "Entered: objUserDTO: [" + objUserDTO.toString() + "]");
+
+		if (isValidUserDTO(objUserDTO)) {
+			try {
+				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");				
+				
+				//Encrypt and set password values
+				String sPwdSalt = PasswordUtil.getSalt(30);
+				String sSecurePassword = PasswordUtil.generateSecurePassword(objUserDTO.getPassword(), sPwdSalt);				
+				objUserDTO.setPassword(sSecurePassword);
+				objUserDTO.setPasswordSalt(sPwdSalt);
+
+				objLogger.debug(sMethod + "calling addRecord with objUserDTO: [" + objUserDTO.toString() + "]");	
+				User objUser = new User();
+				objUser = objUserDAO.addRecord(objUserDTO);
+				objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
+				return objUser;
+
+			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
+				objLogger.error(sMethod + "Exception adding User record with username: [" + objUserDTO.getUsername()
+						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
+				throw new DatabaseException(csMsgDB_ErrorAddingUser);
+			}
+
+		} else {
+			objLogger.warn(sMethod + "objUserDTO is not valid: [" + objUserDTO.toString() + "]");
+			throw new BadParameterException(csMsgBadParamAddUser);
+		}
+	}
+
 
 	////////////////////// Utility Methods for this Class /////////////////////////////////////////
 
@@ -192,8 +193,8 @@ public class UserService implements Constants {
 	//will not update the record id, the company username, or the company email.
 	//also password should be updated through separate process where old pwd and new pwd are entered
 	public boolean isValidUserDTOEditAttributes(UserDTO objUserDTO) {
-		String sMethod = "\n\t isValidUserDTOEditAttributes(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "isValidUserDTOEditAttributes(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 		boolean isValid = false;
 		
 		
@@ -221,8 +222,8 @@ public class UserService implements Constants {
 	
 	//
 	public boolean isValidUserDTO(UserDTO objUserDTO) {
-		String sMethod = "\n\t isValidUserDTO(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "isValidUserDTO(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 		boolean isValid = false;
 
 		String sUsername = objUserDTO.getUsername();

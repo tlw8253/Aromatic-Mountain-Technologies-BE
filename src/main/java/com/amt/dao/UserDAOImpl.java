@@ -32,8 +32,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 	// ###
 	@Override // 20210820 completed
 	public List<User> getAllRecords() throws SQLException {
-		String sMethod = "\n\t getAllRecords(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getAllRecords(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		// load a complete persistent objects into memory
 		String sHQL = "FROM " + csHQL_ModelClassUser; // fully qualify class name in HQL
@@ -100,8 +100,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 	// ###
 	@Override // 20210820 completed
 	public User getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
-		String sMethod = "\n\t getByRecordIdentifer(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getByRecordIdentifer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -137,14 +137,10 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 	@Override // 20210819 1223 working method added user using Admin drive through service
 				// layer
 	public User addRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException, HibernateException {
-		String sMethod = "\n\t addRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "addRecord(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		objLogger.debug(sMethod + "objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
-
-		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
 
 		// by this time the service layer would have validated the parameters
 		String sUsername = objAddOrEditDTO.getDataElement(csUserTblUsername);
@@ -158,27 +154,32 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 
 		User objNewUser = new User(sUsername, sPassword, sPasswordSalt, sFirstName, sLastName, sEmail);
 		objLogger.debug(sMethod + "objNewUser: [" + objNewUser.toString() + "]");
+		
+		// get UserType object
+		UserTypeDAOImpl objUserTypeDAOImpl = new UserTypeDAOImpl();
+		UserType objUserType = objUserTypeDAOImpl.getByRecordIdentifer(sUserType);
+		objNewUser.setUserType(objUserType);
+		objLogger.debug(sMethod + "objUserType: [" + objUserType.toString() + "]");
+		
+		if (objUserType.getUserType().equalsIgnoreCase(csarUserType[enumUserType.EMPLOYEE.pos])) {
+			// get EmployeeRole object
+			EmployeeRoleDAOImpl objEmployeeRoleDAOImpl = new EmployeeRoleDAOImpl();
+			EmployeeRole objEmployeeRole = objEmployeeRoleDAOImpl.getByRecordIdentifer(sEmployeeRole);
+			objNewUser.setEmployeeRole(objEmployeeRole);
+			objLogger.debug(sMethod + "objEmployeeRole: [" + objEmployeeRole.toString() + "]");				
+		} else {
+			objNewUser.setEmployeeRole(new EmployeeRole());
+		}
+
+		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
 
 		try {
-			// get UserType object
-			UserTypeDAOImpl objUserTypeDAOImpl = new UserTypeDAOImpl();
-			UserType objUserType = objUserTypeDAOImpl.getByRecordIdentifer(sUserType);
-			objNewUser.setUserType(objUserType);
-			objLogger.debug(sMethod + "objUserType: [" + objUserType.toString() + "]");
-			
-			if (objUserType.getUserType().equalsIgnoreCase(csarUserType[enumUserType.EMPLOYEE.pos])) {
-				// get EmployeeRole object
-				EmployeeRoleDAOImpl objEmployeeRoleDAOImpl = new EmployeeRoleDAOImpl();
-				EmployeeRole objEmployeeRole = objEmployeeRoleDAOImpl.getByRecordIdentifer(sEmployeeRole);
-				objNewUser.setEmployeeRole(objEmployeeRole);
-				objLogger.debug(sMethod + "objEmployeeRole: [" + objEmployeeRole.toString() + "]");				
-			} else {
-				objNewUser.setEmployeeRole(new EmployeeRole());
-			}
 			
 			objLogger.debug(sMethod + "Adding final objNewUser: [" + objNewUser.toString() + "] to the database.");
 
-			//session.persist(objNewUser);
+			session.persist(objNewUser);
 			tx.commit();
 			return objNewUser;
 
@@ -198,8 +199,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 	// update
 	@Override // 20210820 completed
 	public User editRecord(AddOrEditDTO objAddOrEditDTO) throws SQLException {
-		String sMethod = "\n\t editRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "editRecord(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		objLogger.debug(sMethod + "objAddOrEditDTO: [" + objAddOrEditDTO.toString() + "]");
 
@@ -264,8 +265,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 	//
 	@Override // 20210820 working, deletes fk records in Reimbursement first than user.
 	public boolean deleteRecord(String sRecordIdentifier) throws SQLException {
-		String sMethod = "\n\t deleteRecord(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "deleteRecord(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -309,8 +310,8 @@ public class UserDAOImpl implements GenericDAO<User>, Constants {
 
 	@Override
 	public User getLogin(String sUsername, String sPassword) throws SQLException {
-		String sMethod = "\n\t getLogin(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getLogin(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();

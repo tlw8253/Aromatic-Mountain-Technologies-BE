@@ -19,51 +19,51 @@ public class EmployeeRole implements Constants {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = csEmployeeRolesTblEmployeeRoleId)
-	private int userRoleId = 0;
+	private int employeeRoleId = 0;
 
 	@Column(name = csEmployeeRolesTblEmployeeRole, length = 50, nullable = false, unique = true)
-	private String userRole = "";
+	private String employeeRole = "";
 	
 	@Column(name = csEmployeeRolesTblEmployeeRoleDesc, length = 150, nullable = false)
-	private String userRoleDesc = "";
+	private String employeeRoleDesc = "";
 
 	
 	public EmployeeRole() {
 		super();
 	}
 
-	public EmployeeRole(String sUserRole, String sUserRoleDesc) {
-		this.userRole = sUserRole;
-		this.userRoleDesc = sUserRoleDesc;
+	public EmployeeRole(String employeeRole, String employeeRoleDesc) {
+		this.employeeRole = employeeRole;
+		this.employeeRoleDesc = employeeRoleDesc;
 	}
 
 	public int getUserRoleId() {
-		return userRoleId;
+		return employeeRoleId;
 	}
 
 	public String getUserRole() {
-		return userRole;
+		return employeeRole;
 	}
 
-	public void setUserRoleId(int userRoleId) {
-		this.userRoleId = userRoleId;
+	public void setUserRoleId(int employeeRoleId) {
+		this.employeeRoleId = employeeRoleId;
 	}
 
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
+	public void setUserRole(String employeeRole) {
+		this.employeeRole = employeeRole;
 	}
 
 	public String getUserRoleDesc() {
-		return userRoleDesc;
+		return employeeRoleDesc;
 	}
 
-	public void setUserRoleDesc(String userRoleDesc) {
-		this.userRoleDesc = userRoleDesc;
+	public void setUserRoleDesc(String employeeRoleDesc) {
+		this.employeeRoleDesc = employeeRoleDesc;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userRole, userRoleDesc, userRoleId);
+		return Objects.hash(employeeRole, employeeRoleDesc, employeeRoleId);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class EmployeeRole implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		EmployeeRole other = (EmployeeRole) obj;
-		return Objects.equals(userRole, other.userRole) && Objects.equals(userRoleDesc, other.userRoleDesc)
-				&& userRoleId == other.userRoleId;
+		return Objects.equals(employeeRole, other.employeeRole) && Objects.equals(employeeRoleDesc, other.employeeRoleDesc)
+				&& employeeRoleId == other.employeeRoleId;
 	}
 
 	@Override
 	public String toString() {
-		return "UserRole [userRoleId=" + userRoleId + ", userRole=" + userRole + ", userRoleDesc=" + userRoleDesc + "]";
+		return "UserRole [employeeRoleId=" + employeeRoleId + ", employeeRole=" + employeeRole + ", employeeRoleDesc=" + employeeRoleDesc + "]";
 	}
 
 

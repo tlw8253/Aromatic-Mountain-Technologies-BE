@@ -16,9 +16,9 @@ import com.amt.model.Order;
 import com.amt.model.User;
 import com.amt.service.UserService;
 
-public class EmployeeController implements Controller, Constants {
-	private Logger objLogger = LoggerFactory.getLogger(EmployeeController.class);
-	private UserService objERSUserService;
+public class UserController implements Controller, Constants {
+	private Logger objLogger = LoggerFactory.getLogger(UserController.class);
+	private UserService objUserService;
 
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
@@ -26,8 +26,8 @@ public class EmployeeController implements Controller, Constants {
 	int imQueryParmaMap = 0;
 	boolean bmQueryParmaMapIsEmpty = true;
 
-	public EmployeeController() {		
-		this.objERSUserService = new UserService();
+	public UserController() {		
+		this.objUserService = new UserService();
 	}
 
 	//
@@ -65,7 +65,7 @@ public class EmployeeController implements Controller, Constants {
 
 	//
 	// ### 
-	private Handler getERSUserRole = (objCtx) -> {
+	private Handler getUserRole = (objCtx) -> {
 		String sMethod = "getERSUserRole(): ";
 		boolean bContinue = true;
 		objLogger.trace(sMethod + "Entered");
@@ -99,7 +99,7 @@ public class EmployeeController implements Controller, Constants {
 	// ### 
 	//
 	// ### 
-	private Handler getERSUserById = (objCtx) -> {
+	private Handler getUserById = (objCtx) -> {
 		String sMethod = "getERSUserById(): ";
 		boolean bContinue = true;
 		objLogger.trace(sMethod + "Entered");
@@ -125,7 +125,7 @@ public class EmployeeController implements Controller, Constants {
 		}
 
 		if(bContinue) {
-			objUser = objERSUserService.getUsersById(sParamUserId);
+			objUser = objUserService.getUsersById(sParamUserId);
 			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
 		}
 		
@@ -134,6 +134,43 @@ public class EmployeeController implements Controller, Constants {
 	};
 
 
+	//
+	// ### 
+	private Handler postAddUser = (objCtx) -> {
+		String sMethod = "postAddUser(): ";
+		boolean bContinue = true;
+		objLogger.trace(sMethod + "Entered");
+		User objUser = null;
+		
+		String sParamUserId = "";
+
+		setContextMaps(objCtx);
+		
+		//expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {			
+			//Check for body params before erroring here		
+			
+			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
+			objCtx.status(ciStatusCodeErrorBadRequest);
+			objCtx.json(csMsgBadParamPathParmNotRightNumber);
+			bContinue = false;
+		} else {
+			
+			sParamUserId = objCtx.pathParam(csParamPathUserId);
+			objLogger.debug(sMethod + "Context path parameter user id: [" + sParamUserId + "]");
+			
+		}
+
+		if(bContinue) {
+			objUser = objUserService.getUsersById(sParamUserId);
+			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
+		}
+		
+		objCtx.status(ciStatusCodeSuccess);
+		objCtx.json(objUser);
+	};
+
+	
 
 	
 	@Override
@@ -141,8 +178,10 @@ public class EmployeeController implements Controller, Constants {
 
 		//
 		//app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId, getERSUserRole);
-		app.get("/ers_user_role/:user_id/role", getERSUserRole);
-		app.get("/ers/:user_id", getERSUserById);
+		//app.get("/ers_user_role/:user_id/role", getUserRole);
+		//app.get("/ers/:user_id", getUserById);
+		app.post("/amt_usr_add", postAddUser);
+		
 	}
 
 }
