@@ -10,8 +10,16 @@
 <!--	Try setting this in the SessionFactorySingleton based on system variable
 		config.setProperty("hibernate.connection.url", System.getenv("db_url"));
 		Not sure why we did not do this to start with like the db_username and db_password system variables	 	
+
 		<property name="hibernate.connection.url">jdbc:mariadb://localhost:3306/amt_online_sys</property>
+
+Bach's	<property name="hibernate.connection.url">jdbc:mariadb://database-3.clwebyd8kmnl.us-east-2.rds.amazonaws.com:3306/hibernate_demo</property>
+
+ 		<property name="hibernate.connection.url">jdbc:mariadb://database-1.cdigirn7b0ro.us-east-2.rds.amazonaws.com:3306/amt_online_sys</property>
  -->
+ 		<property name="hibernate.connection.url">jdbc:mariadb://database-1.cdigirn7b0ro.us-east-2.rds.amazonaws.com:3306/amt_online_sys</property>
+ 		<property name="hibernate.connection.username">admin</property>
+ 		<property name="hibernate.connection.password">Black1357Bear</property>
 	
 		<!-- SQL Dialect -->
 		<property name="hibernate.dialect">org.hibernate.dialect.MariaDB103Dialect</property>
