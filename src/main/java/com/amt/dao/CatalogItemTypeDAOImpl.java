@@ -81,8 +81,8 @@ public class CatalogItemTypeDAOImpl implements GenericDAO<CatalogItemType>, Cons
 
 	@Override
 	public CatalogItemType getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
-		String sMethod = "\n\t getByRecordIdentifer(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getByRecordIdentifer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 			
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -90,18 +90,18 @@ public class CatalogItemTypeDAOImpl implements GenericDAO<CatalogItemType>, Cons
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
+		sHQL = "FROM CatalogItemType cit WHERE cit.catalogItemType = :catalogItemType";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			CatalogItemType objReimbursementType = 
+			CatalogItemType objCatalogItemType = 
 					(CatalogItemType) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier)
+					.setParameter("catalogItemType", sRecordIdentifier)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
+			objLogger.debug(sMethod + "objCatalogItemType: [" + objCatalogItemType.toString() + "]");			
 			
 			tx.commit();
-			return objReimbursementType;
+			return objCatalogItemType;
 			
 		}catch(Exception e) {
 			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	

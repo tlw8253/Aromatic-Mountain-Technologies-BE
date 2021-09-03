@@ -65,6 +65,7 @@ public interface Constants {
 	int ciReimbRecByIdentifierResolver = 20;
 	int ciUserMinPassword = 8;
 	int ciUserMaxPassword = 15;
+	int ciDescriptionMaxLen = 255;
 	String csCR = "\n";
 	String csCRT = csCR + "\t ";
 	String csCRCRT = csCR + csCRT;
@@ -315,6 +316,7 @@ public interface Constants {
 	String csMsgDB_ErrorAddingUser = "Database error when adding a new user.";
 	String csMsgDB_ErrorAddingAddress = "Database error when adding a new address.";
 	String csMsgDB_ErrorAddingPhoneNumber = "Error with database when adding Phone Number.";
+	String csMsgDB_ErrorAddingCatalogItem = "Error with database when adding Catalog Item.";
 
 	////////////////////////////////////////////////////////////////////////////////////
 	String csMsgBadParamUserType = "Invalid User Type parameters received.";
@@ -329,7 +331,7 @@ public interface Constants {
 	String csMsgBadParamLoginUsernamePwdBlank = "Username and password must contain values.";
 	String csMsgBadParamLoginUsernamePwdLength = "Username and/or password format is invalid.";
 	String csMsgBadParamAddPhoneNumber = "One or more add Phone Number parameters are invalid.";
-
+	String csMsgBadParamAddCatalogItem = "One or more add Catalog Item parameters are invalid.";
 	
 	
 	String csMsgDB_ErrorGettingWithLogin = "Error with database during employee login.";

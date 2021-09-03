@@ -26,7 +26,7 @@ public class CatalogItem implements Constants {
 	@Column(name = csCatalogItemTblCatalogItem, length = 50, nullable = false)
 	private String catalogItem;
 	
-	@Column(name = csCatalogItemTblCatalogItemDesc, length = 255, nullable = false)
+	@Column(name = csCatalogItemTblCatalogItemDesc, length = ciDescriptionMaxLen, nullable = false)
 	private String catalogItemDescription;
 	
 	@Column(name = csCatalogItemTblCatalogItemPrice, length = 255, nullable = false)

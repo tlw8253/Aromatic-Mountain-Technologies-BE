@@ -20,13 +20,13 @@ public class CatalogItemType implements Constants {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = csCatalogItemTypeTblCatalogItemTypeId)
-	private int catalogTypeId = 0;
+	private int catalogItemTypeId = 0;
 
 	@Column(name = csCatalogItemTypeTblCatalogItemType, length = ciRoleTypeLen, nullable = false, unique = true)
-	private String catalogType = "";
+	private String catalogItemType = "";
 
 	@Column(name = csCatalogItemTypeTblCatalogItemTypeDesc, length = ciRoleTypeDescLen, nullable = false)
-	private String catalogTypeDesc = "";
+	private String catalogItemTypeDesc = "";
 
 	
 	public CatalogItemType() {
@@ -35,44 +35,44 @@ public class CatalogItemType implements Constants {
 
 	
 	public CatalogItemType(String catalogType, String catalogTypeDesc) {
-		this.catalogType = catalogType;
-		this.catalogTypeDesc = catalogTypeDesc;
+		this.catalogItemType = catalogType;
+		this.catalogItemTypeDesc = catalogTypeDesc;
 	}
 
 
 	public int getCatalogTypeId() {
-		return catalogTypeId;
+		return catalogItemTypeId;
 	}
 
 
 	public String getCatalogType() {
-		return catalogType;
+		return catalogItemType;
 	}
 
 
 	public String getCatalogTypeDesc() {
-		return catalogTypeDesc;
+		return catalogItemTypeDesc;
 	}
 
 
 	public void setCatalogTypeId(int catalogTypeId) {
-		this.catalogTypeId = catalogTypeId;
+		this.catalogItemTypeId = catalogTypeId;
 	}
 
 
 	public void setCatalogType(String catalogType) {
-		this.catalogType = catalogType;
+		this.catalogItemType = catalogType;
 	}
 
 
 	public void setCatalogTypeDesc(String catalogTypeDesc) {
-		this.catalogTypeDesc = catalogTypeDesc;
+		this.catalogItemTypeDesc = catalogTypeDesc;
 	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(catalogType, catalogTypeDesc, catalogTypeId);
+		return Objects.hash(catalogItemType, catalogItemTypeDesc, catalogItemTypeId);
 	}
 
 
@@ -85,15 +85,15 @@ public class CatalogItemType implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		CatalogItemType other = (CatalogItemType) obj;
-		return Objects.equals(catalogType, other.catalogType) && Objects.equals(catalogTypeDesc, other.catalogTypeDesc)
-				&& catalogTypeId == other.catalogTypeId;
+		return Objects.equals(catalogItemType, other.catalogItemType) && Objects.equals(catalogItemTypeDesc, other.catalogItemTypeDesc)
+				&& catalogItemTypeId == other.catalogItemTypeId;
 	}
 
 
 	@Override
 	public String toString() {
-		return "CatalogType [catalogTypeId=" + catalogTypeId + ", catalogType=" + catalogType + ", catalogTypeDesc="
-				+ catalogTypeDesc + "]";
+		return "CatalogType [catalogTypeId=" + catalogItemTypeId + ", catalogType=" + catalogItemType + ", catalogTypeDesc="
+				+ catalogItemTypeDesc + "]";
 	}
 
 	
