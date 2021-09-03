@@ -17,42 +17,13 @@ public class SessionFactorySingleton {
 		String sMethod = "SessionFactory(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		boolean bLocalhost = false;
-		boolean bConfigFile = true;
-
 		if (sessionFactory == null) {
 			objLogger.debug(sMethod + "creating session configuration");
 			Configuration config = new Configuration();
-
-			if (!bConfigFile) {
-				// the base database url without the database name
-				String sDbEnv = "";
-				String sUsernameEnv = "";
-				String sPasswordEnv = "";
-
-				sUsernameEnv = "aws_db_username";
-				sPasswordEnv = "aws_db_password";
-				sDbEnv = "aws_db_url";
-
-				if (bLocalhost) {
-					sUsernameEnv = "localhost_db_username";
-					sPasswordEnv = "localhost_db_password";
-					sDbEnv = "localhost_db_url";
-				}
-
-				// get system environment variables either local or remote based on flag
-				String sDbUrl = System.getenv(sDbEnv);
-				String sDbUsername = System.getenv(sUsernameEnv);
-				String sDbPassword = System.getenv(sPasswordEnv);
-
-				// set the project database name in the connection url
-				String sProjectDbName = System.getenv("p2_db_name");
-				String sHibernateConUrl = sDbUrl + sProjectDbName;
-
-				config.setProperty("hibernate.connection.url", System.getenv(sHibernateConUrl));
-				config.setProperty("hibernate.connection.username", System.getenv(sDbUsername));
-				config.setProperty("hibernate.connection.password", System.getenv(sDbPassword));
-			}
+			String sHibernateUrl = System.getenv("aws_db_url") + System.getenv("p2_db_name");
+			config.setProperty("hibernate.connection.url", sHibernateUrl);
+			config.setProperty("hibernate.connection.username", System.getenv("aws_db_username"));
+			config.setProperty("hibernate.connection.password", System.getenv("aws_db_password"));
 
 			config.configure("hibernate.cfg.xml");
 
@@ -63,4 +34,5 @@ public class SessionFactorySingleton {
 
 		return sessionFactory;
 	}
+
 }

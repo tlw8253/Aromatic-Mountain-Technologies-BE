@@ -56,6 +56,7 @@ public class AdminDriver implements Constants {
 		  //createTablesViaHibernate(); //NOTE: change configuration file to create
 		  //amtAdminAddStaticTableValues();
 
+		//adminAddEmployeeRole(csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos], csarEmployeeRolesDesc[enumUserEmployee.CUSTOMER.pos]);
 	}
 
 	//

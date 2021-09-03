@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
+import com.amt.dao.UserDAO;
 import com.amt.dao.UserDAOImpl;
 import com.amt.dto.LoginDTO;
 import com.amt.exception.AuthenticationFailureException;
@@ -17,7 +18,7 @@ import com.amt.model.User;
 
 public class LoginService implements Constants {
 	private Logger objLogger = LoggerFactory.getLogger(LoginService.class);
-	private GenericDAO<User> objUserDAO;
+	private UserDAO objUserDAO;
 
 	public LoginService() {
 		objUserDAO = new UserDAOImpl();

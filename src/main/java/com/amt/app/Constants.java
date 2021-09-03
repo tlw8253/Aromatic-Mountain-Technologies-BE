@@ -60,7 +60,7 @@ public interface Constants {
 
 	// other constants
 	int ciUsernameMinLength = 6;
-	int ciUsernamMaxLength = 15;
+	int ciUsernameMaxLength = 15;
 	int ciReimbRecByIdentifierAuthor = 10;
 	int ciReimbRecByIdentifierResolver = 20;
 	int ciUserMinPassword = 8;
@@ -249,12 +249,13 @@ public interface Constants {
 	String csEmployeeRolesTblEmployeeRoleId = "employee_role_id"; // PK primary key
 	String csEmployeeRolesTblEmployeeRole = "employee_role"; // String
 	String csEmployeeRolesTblEmployeeRoleDesc = "employee_role_desc"; // String
-	String[] csarEmployeeRoles = { "EMPLOYEE", "CATALOG_ADMIN", "CATALOG_EMPLOYEE" };
+	String[] csarEmployeeRoles = { "EMPLOYEE", "CATALOG_ADMIN", "CATALOG_EMPLOYEE", "CUSTOMER" };
 	String[] csarEmployeeRolesDesc = { "EMPLOYEE: Any person actively employeed by the company with a valid username.",
 			"CATALOG ADMIN: A Catalog Admin controls publishing of Employee catalog items and pages.",
-			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages." };
+			"CATALOG EMPLOYEE: A Catalog Employee creates catalog items and pages.",
+			 "CUSTOMER: False role to aid in validation processing." };
 	enum enumUserEmployee {
-		EMPLOYEE(0), CATALOG_ADMIN(1), CATALOG_EMPLOYEE(2);
+		EMPLOYEE(0), CATALOG_ADMIN(1), CATALOG_EMPLOYEE(2), CUSTOMER(3);
 		public int pos;
 		enumUserEmployee(int pos) {
 			this.pos = pos;
@@ -312,6 +313,7 @@ public interface Constants {
 	String csMsgDB_ErrorAddingPhoneNumberType = "Error with database when adding Phone Number Type.";
 	String csMsgDB_ErrorAddingUserType = "Error with database when adding User Type.";
 	String csMsgDB_ErrorAddingUser = "Database error when adding a new user.";
+	String csMsgDB_ErrorAddingAddress = "Database error when adding a new address.";
 
 	////////////////////////////////////////////////////////////////////////////////////
 	String csMsgBadParamUserType = "Invalid User Type parameters received.";
@@ -320,6 +322,9 @@ public interface Constants {
 	String csMsgBadParamEmployeeRole = "Invalid Employee Role parameters received.";
 	String csMsgBadParamOrderStatus = "Invalid Order Status parameters received.";
 	String csMsgBadParamPhoneNumberType = "Invalid Phone Number Type parameters received.";
+	String csMsgBadParamCustomerBodyAsClass = "Failed to parse customer body parameters.";
+	String csMsgBadParamAddUser = "One or more add User parameters are invalid.";
+	String csMsgBadParamAddAddress = "One or more add Address parameters are invalid.";
 
 	
 	
@@ -361,10 +366,10 @@ public interface Constants {
 	String csMsgBadParamReimbStatus = "Invalid Reimbursement Status parameters received.";
 	
 
-	String csMsgBadParamAddUser = "One or more add User parameters are invalid.";
 	String csMsgBadParamEditUser = "One or more edit User parameters are invalid.";
 	String csMsgBadParamGetUserById = "The user id provided was not a number or was zero.";
 	String csMsgBadParamGetUserByUsername = "The user name provided was not alpha numeric or length was invalid.";
+	
 
 	String csMsgBadParamGetReimbursementById = "The reimbursement id provided was not a number or was zero.";
 	String csMsgBadParamGetUserReimbursementById = "The username and/or reimbursement id provided was not valid.";

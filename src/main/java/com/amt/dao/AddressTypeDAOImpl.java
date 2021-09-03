@@ -87,20 +87,20 @@ public class AddressTypeDAOImpl implements GenericDAO<AddressType>, Constants {
 
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
+		sHQL = "FROM AddressType at WHERE at.addressType = :addressType";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier + "]");
 
 		try {
-			AddressType objReimbursementType = (AddressType) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier).getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");
+			AddressType objAddressType = (AddressType) session.createQuery(sHQL)
+						.setParameter("addressType", sRecordIdentifier).getSingleResult();
+			objLogger.debug(sMethod + "objAddressType: [" + objAddressType.toString() + "]");
 
 			tx.commit();
-			return objReimbursementType;
+			return objAddressType;
 
 		} catch (Exception e) {
 			objLogger.error(
-					sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");
+					sMethod + "Error getting Address Type by sRecordIdentifier: [" + sRecordIdentifier + "]");
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName()
 					+ "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");

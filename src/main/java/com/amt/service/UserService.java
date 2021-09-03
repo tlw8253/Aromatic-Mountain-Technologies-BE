@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
 import com.amt.dao.GenericDAO;
+import com.amt.dao.UserDAO;
 import com.amt.dao.UserDAOImpl;
+import com.amt.dto.AddUserDTO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.*;
 import com.amt.model.Order;
@@ -23,13 +25,17 @@ import com.amt.util.Validate;
 
 public class UserService implements Constants {
 	private Logger objLogger = LoggerFactory.getLogger(UserService.class);
-	private GenericDAO<User> objUserDAO;
+	private UserDAO objUserDAO;
 
 	public UserService() {
 		this.objUserDAO = new UserDAOImpl();
 	}
 
-	public UserService getMockUserDAO(GenericDAO<User> objMockUserDAO) {
+	public UserService(UserDAO objMockUserDAO) {
+		this.objUserDAO = objMockUserDAO;
+	}
+	
+	public UserService getMockUserDAO(UserDAO objMockUserDAO) {
 		this.objUserDAO = objMockUserDAO;
 		return this;
 	}
@@ -37,55 +43,18 @@ public class UserService implements Constants {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	//
-	// ###
-	public List<User> getAllUsers() throws DatabaseException {
-		String sMethod = csCRT + "getAllUsers(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
-
-		try {
-			List<User> lstUser = objUserDAO.getAllRecords();
-			objLogger.debug(sMethod + "lstUser: [" + lstUser.toString() + "]");
-			return lstUser;
-
-		} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-			objLogger.error(sMethod + "Exception getting all User records from the database: Exception: ["
-					+ e.toString() + "] [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingEmployees);
-		}
-	}
-
-	//
-	// ###
-	public User getUsersById(String sUserId) throws DatabaseException, BadParameterException {
-		String sMethod = csCRT + "getUsersById(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
-
-		if (Validate.isInt(sUserId) && Integer.parseInt(sUserId) > 0) {
-			int iUserId = Integer.parseInt(sUserId);
-			try {
-				User objUser = objUserDAO.getByRecordId(iUserId);
-				objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
-				return objUser;
-
-			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-				objLogger.error(sMethod + "Exception getting all User records from the database: Exception: ["
-						+ e.toString() + "] [" + e.getMessage() + "]");
-				throw new DatabaseException(csMsgDB_ErrorGettingEmployeeById);
-			}
-		}else {
-			objLogger.debug(sMethod + "Invalid user id received: [" + sUserId + "]");
-			throw new BadParameterException(csMsgBadParamGetUserById);			
-		}
-	}
 	
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
 	public User getUsersByUsername(String sUsername) throws DatabaseException, BadParameterException {
 		String sMethod = csCRT + "getUsersByUsername(): ";
 		objLogger.trace(csCR + sMethod + "Entered");
+		
+		boolean bValidLen = (sUsername.length() >= ciUsernameMinLength && sUsername.length() <= ciUsernameMaxLength);
 
-		if (Validate.isAlphaNumeric(sUsername) && sUsername.length() == ciUsernameMinLength) {			
+		if (bValidLen && Validate.isAlphaNumeric(sUsername)) {			
 			try {
-				User objUser = objUserDAO.getByRecordIdentifer(sUsername);
+				User objUser = objUserDAO.getByUsername(sUsername);
 				objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
 				return objUser;
 
@@ -132,55 +101,38 @@ public class UserService implements Constants {
 		}
 	}
 	
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//###
-	public boolean deleteUserByUsername(String sUsername) throws DatabaseException {
-		String sMethod = csCRT + "deleteUserByUsername(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
-		boolean isDeleted = false;
-
-		try {
-			isDeleted = objUserDAO.deleteRecord(sUsername);
-			objLogger.debug(sMethod + "User with username: [" + sUsername + "] isDeleted: [" + isDeleted + "]");
-			return isDeleted;
-
-		} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-			objLogger.error(sMethod + "Exception getting all User records from the database: Exception: ["
-					+ e.toString() + "] [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorDeletingAnEmployee);
-		}
-	}
-
-	//
-	// ###
-	public User addNewUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
+	public User addNewUser(AddUserDTO objAddUserDTO) throws DatabaseException, BadParameterException {
 		String sMethod = csCRT + "addNewUser(): ";
-		objLogger.trace(csCR + sMethod + "Entered: objUserDTO: [" + objUserDTO.toString() + "]");
+		objLogger.trace(csCR + sMethod + "Entered: objUserDTO: [" + objAddUserDTO.toString() + "]");
 
-		if (isValidUserDTO(objUserDTO)) {
+		if (isValidAddUserDTO(objAddUserDTO)) {
 			try {
-				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");				
+				objLogger.debug(sMethod + "Validated objUserDTO: [" + objAddUserDTO.toString() + "]");				
 				
 				//Encrypt and set password values
 				String sPwdSalt = PasswordUtil.getSalt(30);
-				String sSecurePassword = PasswordUtil.generateSecurePassword(objUserDTO.getPassword(), sPwdSalt);				
-				objUserDTO.setPassword(sSecurePassword);
-				objUserDTO.setPasswordSalt(sPwdSalt);
+				String sSecurePassword = PasswordUtil.generateSecurePassword(objAddUserDTO.getPassword(), sPwdSalt);				
+				objAddUserDTO.setPassword(sSecurePassword);
+				objAddUserDTO.setPasswordSalt(sPwdSalt);
 
-				objLogger.debug(sMethod + "calling addRecord with objUserDTO: [" + objUserDTO.toString() + "]");	
+				//set up the add dto used by the add dao
+				
+				objLogger.debug(sMethod + "calling addRecord with objUserDTO: [" + objAddUserDTO.toString() + "]");	
 				User objUser = new User();
-				objUser = objUserDAO.addRecord(objUserDTO);
+				objUser = objUserDAO.addUser(objAddUserDTO);
 				objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
 				return objUser;
 
 			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-				objLogger.error(sMethod + "Exception adding User record with username: [" + objUserDTO.getUsername()
+				objLogger.error(sMethod + "Exception adding User record with username: [" + objAddUserDTO.getUsername()
 						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
 				throw new DatabaseException(csMsgDB_ErrorAddingUser);
 			}
 
 		} else {
-			objLogger.warn(sMethod + "objUserDTO is not valid: [" + objUserDTO.toString() + "]");
+			objLogger.warn(sMethod + "objAddUserDTO is not valid: [" + objAddUserDTO.toString() + "]");
 			throw new BadParameterException(csMsgBadParamAddUser);
 		}
 	}
@@ -220,34 +172,65 @@ public class UserService implements Constants {
 		return isValid;
 	}
 	
+	/*
+		private String username = "";
+	private String password = "";
+	private String passwordSalt = "";
+	private String firstName = "";
+	private String lastName = "";
+	private String email = "";
+	private String employeeRole = "";
+	private String userType = "";
+*/
 	//
-	public boolean isValidUserDTO(UserDTO objUserDTO) {
+	public boolean isValidAddUserDTO(AddUserDTO objUserDTO) {
 		String sMethod = csCRT + "isValidUserDTO(): ";
 		objLogger.trace(csCR + sMethod + "Entered");
 		boolean isValid = false;
 
 		String sUsername = objUserDTO.getUsername();
 		String sPassword = objUserDTO.getPassword();
+		String sFirstName = objUserDTO.getFirstName();
+		String sLastName = objUserDTO.getLastName();
 		String sEmail = objUserDTO.getEmail();
-
-		isValid = isValidUserDTOEditAttributes(objUserDTO);
+		String sEmployeeRole = objUserDTO.getEmployeeRole();
+		String sUserType = objUserDTO.getUserType();
 		
-		boolean bUsernameIsAlphaNumeric = Validate.isAlphaNumeric(sUsername) 
-											&& sUsername.length() >= ciUsernameMinLength 
-											&& sUsername.length() <= ciUsernamMaxLength;
+		boolean bUsernameIsAlphaNumeric = isValidUsername(sUsername);
 		boolean bPasswordIsInFormat = Validate.isPasswordFormat(sPassword, ciUserMinPassword, ciUserMaxPassword);
+		boolean bFirstNameIsAlpha = Validate.isAlpha(sFirstName);
+		boolean bLastNameIsAlpha = Validate.isAlphaPlusLastname(sLastName);
 		boolean bEmailIsInFormat = Validate.isValidEmailAddress(sEmail);
+		boolean bEmployeeRoleIsValid = Validate.isValidValueInArray(sEmployeeRole, csarEmployeeRoles);
+		boolean bUserTypeIsValid = Validate.isValidValueInArray(sUserType, csarUserType);
+		
+		
+		
 
-		if (bUsernameIsAlphaNumeric &&  bPasswordIsInFormat && bEmailIsInFormat && isValid) {
+		if (bUsernameIsAlphaNumeric &&  bPasswordIsInFormat && bFirstNameIsAlpha && bLastNameIsAlpha &&
+				bEmailIsInFormat && bEmployeeRoleIsValid && bUserTypeIsValid) {
 			isValid = true;
 		} else {
-			objLogger.warn(sMethod + "One or more add User Parameters did not pass validation.:");
+			objLogger.warn(csCR + sMethod + "One or more add User Parameters did not pass validation.:");
 			objLogger.warn(sMethod + "\t username: [" + sUsername + "] is valid: [" + bUsernameIsAlphaNumeric + "]");
 			objLogger.warn(sMethod + "\t password correct format: [" + bPasswordIsInFormat + "]");
+			objLogger.warn(sMethod + "\t first name: [" + sFirstName + "] is valid: [" + bFirstNameIsAlpha + "]");
+			objLogger.warn(sMethod + "\t last name: [" + sLastName + "] is valid: [" + bLastNameIsAlpha + "]");
 			objLogger.warn(sMethod + "\t email: [" + sEmail + "] correct format: [" + bEmailIsInFormat + "]");
+			objLogger.warn(sMethod + "\t employee role name: [" + sEmployeeRole + "] is valid: [" + bEmployeeRoleIsValid + "]");
+			objLogger.warn(sMethod + "\t user type name: [" + sUserType + "] is valid: [" + bUserTypeIsValid + "]");
 		}
 		return isValid;
 	}
 
+	public static boolean isValidUsername(String sUsername) {
+		boolean bValid = true;
+		
+		bValid = Validate.isAlphaNumeric(sUsername) 
+				&& sUsername.length() >= ciUsernameMinLength 
+				&& sUsername.length() <= ciUsernameMaxLength;
+
+		return bValid;
+	}
 
 }

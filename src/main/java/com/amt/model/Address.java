@@ -53,7 +53,7 @@ public class Address implements Constants {
 		super();
 	}
 
-	public Address(String addressLine1, String addressLine2, String addressCity, String addressState, String addressZipCode) {
+	public Address(String addressLine1, String addressLine2, String addressCity, String addressState, String addressZipCode, String addressCountry) {
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
 		this.addressCity = addressCity;

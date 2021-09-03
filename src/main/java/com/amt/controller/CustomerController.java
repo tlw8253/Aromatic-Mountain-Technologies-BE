@@ -126,7 +126,7 @@ public class CustomerController implements Controller, Constants {
 		}
 
 		if(bContinue) {
-			objUser = objERSUserService.getUsersById(sParamUserId);
+//			objUser = objERSUserService.getUsersById(sParamUserId);
 			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
 		}
 		

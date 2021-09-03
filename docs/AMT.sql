@@ -46,6 +46,7 @@ SELECT * FROM amt_order_status;
 SELECT * FROM amt_phone_number_type;
 SELECT * FROM amt_user_type;
 
+SELECT * FROM amt_users;
 
 
 

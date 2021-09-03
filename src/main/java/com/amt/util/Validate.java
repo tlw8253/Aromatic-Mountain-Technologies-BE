@@ -7,6 +7,7 @@ import com.amt.app.Constants;
 
 public final class Validate {
 	private static Logger objLogger = LoggerFactory.getLogger(Validate.class);
+	private static final String[] csStateCodes = {"AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","MP","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VT","VA","VI","WA","WV","WI","WY"}; 
 
 	private Validate() {
 		super();
@@ -257,6 +258,13 @@ public final class Validate {
 		return bValid;
 	}
 	
-	
+	public static boolean isValidStateCode(String sStateCode) {
+		boolean bValid = false;
+		
+		if (sStateCode.length() == 2) {
+			bValid = isValidValueInArray(sStateCode,csStateCodes);
+		}
+		return bValid;
+	}
 
 }

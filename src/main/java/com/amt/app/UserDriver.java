@@ -51,6 +51,7 @@ public class UserDriver implements Constants {
 		UserService objUserService = new UserService();
 		UserDTO objUserDTO = new UserDTO(username, password, firstName, lastName, email, userType, employeeRole);
 		objLogger.debug(sMethod + "adding user with objUserDTO: [" + objUserDTO.toString() + "]");
+/*
 		try {
 			User objUser = objUserService.addNewUser(objUserDTO);
 			objLogger.debug(sMethod + "user object added objUser: [" + objUser.toString() + "]");
@@ -59,7 +60,7 @@ public class UserDriver implements Constants {
 		} catch (BadParameterException e) {
 			objLogger.debug(sMethod + "BadParameterException: [" + e.getMessage() + "]");
 		}
-
+*/
 		
 		
 	}

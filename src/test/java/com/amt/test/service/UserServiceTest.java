@@ -25,6 +25,7 @@ import org.mockito.Mockito;
 import com.amt.app.Constants;
 import com.amt.app.Constants.enumUserEmployee;
 import com.amt.dao.GenericDAO;
+import com.amt.dao.UserDAO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
@@ -35,11 +36,8 @@ import com.amt.service.UserService;
 public class UserServiceTest implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(UserServiceTest.class);
 
-	private UserService objMockERSServiceUser;
-	private UserService objMockERSServiceReimbursement;
-
-	private GenericDAO<User> objMockUserDAO;
-	private GenericDAO<Order> objMockReimbursementDAO;
+	private UserService objMockUserService;
+	private UserDAO objMockUserDAO;
 
 	public UserServiceTest() {
 		super();
@@ -57,13 +55,10 @@ public class UserServiceTest implements Constants {
 
 	@Before
 	public void setUp() throws Exception {
-		objLogger.trace("setUp()");
-		// fake DAO using the GenericDAO<T> interface class
-		this.objMockUserDAO = mock(GenericDAO.class);
-		this.objMockERSServiceUser = new UserService().getMockUserDAO(objMockUserDAO);
-		this.objMockReimbursementDAO = mock(GenericDAO.class);
-//		this.objMockERSServiceReimbursement = new ERSUserService().getMockReimbursementDAO(objMockReimbursementDAO);
-	}
+		objLogger.trace("setUp()");		
+		this.objMockUserDAO = mock(UserDAO.class);
+		this.objMockUserService = new UserService(objMockUserDAO);
+		}
 
 	@After
 	public void tearDown() throws Exception {

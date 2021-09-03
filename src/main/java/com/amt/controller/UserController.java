@@ -12,13 +12,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
+import com.amt.dto.AddAddressDTO;
+import com.amt.dto.AddCustomerDTO;
+import com.amt.dto.AddUserDTO;
+import com.amt.dto.AddressDTO;
+import com.amt.model.Address;
 import com.amt.model.Order;
 import com.amt.model.User;
+import com.amt.service.AddressService;
 import com.amt.service.UserService;
 
 public class UserController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(UserController.class);
 	private UserService objUserService;
+	private AddressService objAddressService;
 
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
@@ -26,12 +33,13 @@ public class UserController implements Controller, Constants {
 	int imQueryParmaMap = 0;
 	boolean bmQueryParmaMapIsEmpty = true;
 
-	public UserController() {		
+	public UserController() {
 		this.objUserService = new UserService();
+		this.objAddressService = new AddressService();
 	}
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ###
 	private void setContextMaps(Context objCtx) {
 		String sMethod = "setContextMaps(): ";
 		objLogger.trace(sMethod + "Entered");
@@ -61,127 +69,127 @@ public class UserController implements Controller, Constants {
 				+ bmQueryParmaMapIsEmpty + "]");
 	}
 
-	
-
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ### 
-	private Handler getUserRole = (objCtx) -> {
-		String sMethod = "getERSUserRole(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		User objUser = null;
-		
-		String sParamUserId = "";
+	private Handler postAddAddress = (objCtx) -> {
+		String sMethod = csCRT + "postAddAddress(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
+		Address objAddress = new Address();
+
+		String sParamUsername = "";
 		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 1) {			
-			//Check for body params before erroring here		
-			
+
+		// expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {
 			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
 			objCtx.status(ciStatusCodeErrorBadRequest);
 			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-		} else {
-			sParamUserId = objCtx.queryParam(csParamPathUserId);
-			objLogger.debug(sMethod + "Context query parameter user id: [" + sParamUserId + "]");
+			return;
 		}
 
-		if(bContinue) {
-		}
+		sParamUsername = objCtx.pathParam(csParamUserName);
+		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
+
+		// preset failure to cover if bodyAsClass fails
+		objCtx.status(ciStatusCodeErrorBadRequest);
+		objCtx.json(csMsgBadParamCustomerBodyAsClass);
+
+		AddAddressDTO objAddAddressDTO = objCtx.bodyAsClass(AddAddressDTO.class);
+		objLogger.debug(sMethod + "objAddAddressDTO: [" + objAddAddressDTO.toString() + "]");
+
+		String sLine1 = objAddAddressDTO.getAddressLine1();
+		String sLine2 = objAddAddressDTO.getAddressLine2();
+		String sCity = objAddAddressDTO.getAddressCity();
+		String sState = objAddAddressDTO.getAddressState();
+		String sZip = objAddAddressDTO.getAddressZipCode();
+		String sType = objAddAddressDTO.getAddressType();
+
+		AddressDTO objAddressDTO = new AddressDTO(sLine1, sLine2, sCity, sState, sZip, sType, sParamUsername);		
+		objLogger.debug(sMethod + "calling add service with objAddressDTO: [" + objAddressDTO.toString() + "]");
+		objAddress = objAddressService.addNewAddress(objAddressDTO);
+		objLogger.debug(sMethod + "objAddress: [" + objAddress.toString() + "]");
+
+		objCtx.status(ciStatusCodeSuccess);
+		objCtx.json(objAddress);
+	};
+
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	private Handler postAddCustomer = (objCtx) -> {
+		String sMethod = csCRT + "postAddCustomer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
+
+		User objUser = new User();
+
+		setContextMaps(objCtx);
+
+		// preset failure to cover if bodyAsClass fails
+		objCtx.status(ciStatusCodeErrorBadRequest);
+		objCtx.json(csMsgBadParamCustomerBodyAsClass);
+
+		AddCustomerDTO objAddCustomerDTO = objCtx.bodyAsClass(AddCustomerDTO.class);
+		objLogger.debug(sMethod + "objAddCustomerDTO: [" + objAddCustomerDTO.toString() + "]");
+
+		String sUsername = objAddCustomerDTO.getUsername();
+		String sPassword = objAddCustomerDTO.getPassword();
+		String sFirstName = objAddCustomerDTO.getFirstName();
+		String sLastName = objAddCustomerDTO.getLastName();
+		String sEmail = objAddCustomerDTO.getEmail();
+		String sEmployeeRole = csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos];
+		String sUserType = csarUserType[enumUserType.CUSTOMER.pos];
+
+		AddUserDTO objAddUserDTO = new AddUserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail, sEmployeeRole,
+				sUserType);
+		objLogger.debug(sMethod + "calling add service with objAddUserDTO: [" + objAddUserDTO.toString() + "]");
+
 		
+		objUser = objUserService.addNewUser(objAddUserDTO);
+		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
+
 		objCtx.status(ciStatusCodeSuccess);
 		objCtx.json(objUser);
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ### 
-	//
-	// ### 
-	private Handler getUserById = (objCtx) -> {
-		String sMethod = "getERSUserById(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		User objUser = null;
-		
-		String sParamUserId = "";
+	private Handler getUserByUsername = (objCtx) -> {
+		String sMethod = csCRT + "getUserByUsername(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
+		User objUser = new User();
 
+		String sParamUsername = "";
 		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 1) {			
-			//Check for body params before erroring here		
-			
+
+		// expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {
 			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
 			objCtx.status(ciStatusCodeErrorBadRequest);
 			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-		} else {
-			
-			sParamUserId = objCtx.pathParam(csParamPathUserId);
-			objLogger.debug(sMethod + "Context path parameter user id: [" + sParamUserId + "]");
-			
+			return;
 		}
 
-		if(bContinue) {
-			objUser = objUserService.getUsersById(sParamUserId);
-			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-		}
-		
+		sParamUsername = objCtx.pathParam(csParamUserName);
+		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
+		objUser = objUserService.getUsersByUsername(sParamUsername);
+		objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
+
 		objCtx.status(ciStatusCodeSuccess);
 		objCtx.json(objUser);
 	};
 
-
-	//
-	// ### 
-	private Handler postAddUser = (objCtx) -> {
-		String sMethod = "postAddUser(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		User objUser = null;
-		
-		String sParamUserId = "";
-
-		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 1) {			
-			//Check for body params before erroring here		
-			
-			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
-			objCtx.status(ciStatusCodeErrorBadRequest);
-			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-		} else {
-			
-			sParamUserId = objCtx.pathParam(csParamPathUserId);
-			objLogger.debug(sMethod + "Context path parameter user id: [" + sParamUserId + "]");
-			
-		}
-
-		if(bContinue) {
-			objUser = objUserService.getUsersById(sParamUserId);
-			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-		}
-		
-		objCtx.status(ciStatusCodeSuccess);
-		objCtx.json(objUser);
-	};
-
-	
-
-	
 	@Override
 	public void mapEndpoints(Javalin app) {
 
 		//
-		//app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId, getERSUserRole);
-		//app.get("/ers_user_role/:user_id/role", getUserRole);
-		//app.get("/ers/:user_id", getUserById);
-		app.post("/amt_usr_add", postAddUser);
-		
+		// app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId,
+		// getERSUserRole);
+		// app.get("/ers_user_role/:user_id/role", getUserRole);
+		// app.get("/ers/:user_id", getUserById);
+		app.post("/amt_customer", postAddCustomer);
+		app.post("/amt_adx/:username", postAddAddress);
+		app.get("/amt_user/:username", getUserByUsername);
+
 	}
 
 }
