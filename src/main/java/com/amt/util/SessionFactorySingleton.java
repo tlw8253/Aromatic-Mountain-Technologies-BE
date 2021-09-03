@@ -20,11 +20,12 @@ public class SessionFactorySingleton {
 		if (sessionFactory == null) {
 			objLogger.debug(sMethod + "creating session configuration");
 			Configuration config = new Configuration();
+			/*
 			String sHibernateUrl = System.getenv("aws_db_url") + System.getenv("p2_db_name");
 			config.setProperty("hibernate.connection.url", sHibernateUrl);
 			config.setProperty("hibernate.connection.username", System.getenv("aws_db_username"));
 			config.setProperty("hibernate.connection.password", System.getenv("aws_db_password"));
-
+			*/
 			config.configure("hibernate.cfg.xml");
 
 			objLogger.debug(sMethod + "building session factory");

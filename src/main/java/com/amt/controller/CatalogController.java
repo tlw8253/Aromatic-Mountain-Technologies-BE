@@ -14,8 +14,8 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
-public class CatalogAdminController implements Controller, Constants {
-	private Logger objLogger = LoggerFactory.getLogger(CatalogAdminController.class);
+public class CatalogController implements Controller, Constants {
+	private Logger objLogger = LoggerFactory.getLogger(CatalogController.class);
 	private AdminService objERSAdminService = new AdminService();
 	
 	Map<String, String> mPathParmaMap;
@@ -24,7 +24,7 @@ public class CatalogAdminController implements Controller, Constants {
 	int imQueryParmaMap = 0;
 	boolean bmQueryParmaMapIsEmpty = true;
 
-	public CatalogAdminController() {
+	public CatalogController() {
 		// TODO Auto-generated constructor stub
 	}
 

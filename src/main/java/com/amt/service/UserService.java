@@ -197,7 +197,7 @@ public class UserService implements Constants {
 		String sUserType = objUserDTO.getUserType();
 		
 		boolean bUsernameIsAlphaNumeric = isValidUsername(sUsername);
-		boolean bPasswordIsInFormat = Validate.isPasswordFormat(sPassword, ciUserMinPassword, ciUserMaxPassword);
+		boolean bPasswordIsInFormat = isValidPassword(sPassword);
 		boolean bFirstNameIsAlpha = Validate.isAlpha(sFirstName);
 		boolean bLastNameIsAlpha = Validate.isAlphaPlusLastname(sLastName);
 		boolean bEmailIsInFormat = Validate.isValidEmailAddress(sEmail);
@@ -233,4 +233,10 @@ public class UserService implements Constants {
 		return bValid;
 	}
 
-}
+	public static boolean isValidPassword(String sPassword) {
+		
+		return Validate.isPasswordFormat(sPassword, ciUserMinPassword, ciUserMaxPassword);		
+	}
+
+	
+}//END Class

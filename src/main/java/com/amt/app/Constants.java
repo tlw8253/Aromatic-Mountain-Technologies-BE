@@ -46,8 +46,8 @@ public interface Constants {
 
 	String csRootEndpointLogin = "/amt_login";
 	String csRootEndpointLogout = "/amt_logout";
-	String csRootEndpointCurrentUser = "/amt_current_user";
-	String csRootEndpointSessionValidate = "/amt_session_user";
+	String csRootEndpointCurrentUser = "/amt_login_user";
+	String csRootEndpointSessionValidate = "/amt_login_session";
 
 	String csRootEndpointAdminStatus = "/amt_admin_status";
 
@@ -314,6 +314,7 @@ public interface Constants {
 	String csMsgDB_ErrorAddingUserType = "Error with database when adding User Type.";
 	String csMsgDB_ErrorAddingUser = "Database error when adding a new user.";
 	String csMsgDB_ErrorAddingAddress = "Database error when adding a new address.";
+	String csMsgDB_ErrorAddingPhoneNumber = "Error with database when adding Phone Number.";
 
 	////////////////////////////////////////////////////////////////////////////////////
 	String csMsgBadParamUserType = "Invalid User Type parameters received.";
@@ -325,6 +326,9 @@ public interface Constants {
 	String csMsgBadParamCustomerBodyAsClass = "Failed to parse customer body parameters.";
 	String csMsgBadParamAddUser = "One or more add User parameters are invalid.";
 	String csMsgBadParamAddAddress = "One or more add Address parameters are invalid.";
+	String csMsgBadParamLoginUsernamePwdBlank = "Username and password must contain values.";
+	String csMsgBadParamLoginUsernamePwdLength = "Username and/or password format is invalid.";
+	String csMsgBadParamAddPhoneNumber = "One or more add Phone Number parameters are invalid.";
 
 	
 	
@@ -379,8 +383,6 @@ public interface Constants {
 	String csMsgBadParamAddReimb = "One or more add Reimbursement parameters are invalid.";
 	String csMsgBadParamUpdateReimb = "One or more update Reimbursement parameters are invalid.";
 
-	String csMsgBadParamLoginUsernamePwdBlank = "Username and password must contain values.";
-	String csMsgBadParamLoginUsernamePwdLength = "Username and/or password length is invalid.";
 
 	String csMsgAutenticationFailed = "Autentication failed for username and password provided.";
 	String csMsgSessionUserNotActive = "The user does not have an active login session.";

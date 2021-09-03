@@ -44,6 +44,10 @@ public class PhoneNumber implements Constants {
 		phoneNumberType = new PhoneNumberType();
 	}
 
+	public PhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+		phoneNumberType = new PhoneNumberType();
+	}
 	
 	public PhoneNumber(String phoneNumber, PhoneNumberType phoneNumberType) {
 		this.phoneNumber = phoneNumber;

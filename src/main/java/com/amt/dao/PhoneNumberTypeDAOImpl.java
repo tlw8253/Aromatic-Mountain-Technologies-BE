@@ -90,21 +90,21 @@ public class PhoneNumberTypeDAOImpl implements GenericDAO<PhoneNumberType>, Cons
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
+		sHQL = "FROM PhoneNumberType pnt WHERE pnt.phoneNumberType = :phoneNumberType";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			PhoneNumberType objReimbursementType = 
+			PhoneNumberType objPhoneNumberType = 
 					(PhoneNumberType) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier)
+					.setParameter("phoneNumberType", sRecordIdentifier)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
+			objLogger.debug(sMethod + "objPhoneNumberType: [" + objPhoneNumberType.toString() + "]");			
 			
 			tx.commit();
-			return objReimbursementType;
+			return objPhoneNumberType;
 			
 		}catch(Exception e) {
-			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
+			objLogger.error(sMethod + "Error getting Phone Number Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
 			return null;

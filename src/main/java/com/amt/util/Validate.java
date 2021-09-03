@@ -55,6 +55,17 @@ public final class Validate {
 		return bIsValid;
 	}
 
+	public static boolean isNumeric(String sValue) {
+		String sMethod = "isNumeric(): ";
+		boolean bIsValid = false;
+
+		bIsValid = sValue.matches("[0-9]+");
+		objLogger.debug(sMethod + "String value of: [" + sValue + "] is Numeric: [" + bIsValid + "]");
+
+		return bIsValid;
+	}
+
+	
 	public static boolean isAlpha(String sValue) {
 		String sMethod = "isAlpha(): ";
 		boolean bIsValid = false;

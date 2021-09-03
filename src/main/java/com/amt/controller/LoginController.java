@@ -3,6 +3,7 @@ package com.amt.controller;
 import javax.servlet.http.HttpSession;
 
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 //import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
@@ -20,8 +21,8 @@ import com.amt.service.LoginService;
 
 public class LoginController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(LoginController.class);
-	private LoginService objERSLoginService = new LoginService();
-	private LoginDTO objLoginDTO = new LoginDTO();
+	private LoginService objLoginService;
+	// private LoginDTO objLoginDTO = new LoginDTO();
 
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
@@ -30,42 +31,41 @@ public class LoginController implements Controller, Constants {
 	boolean bmQueryParmaMapIsEmpty = true;
 
 	public LoginController() {
-		this.objERSLoginService = new LoginService();
+		this.objLoginService = new LoginService();
 	}
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ###
-	private Handler postErsLoginHandler = (objCtx) -> {
-		String sMethod = "\n\t postErsLoginHandler(): ";
+	private Handler postLoginHandler = (objCtx) -> {
+		String sMethod = "\n\t postLoginHandler(): ";
 		objLogger.trace(sMethod + "Entered");
 
+		LoginDTO objLoginDTO = new LoginDTO();
 		objLoginDTO = objCtx.bodyAsClass(LoginDTO.class);
 		objLogger.debug(sMethod + "objLoginDTO: [" + objLoginDTO.toString() + "]");
-		
-		User objUser = objERSLoginService.login(objLoginDTO);		
+
+		User objUser = objLoginService.login(objLoginDTO);
 		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
 
 		HttpSession httpSession = objCtx.req.getSession();
 		httpSession.setAttribute(csSessionCurrentUser, objUser);
-		
+
 		if (httpSession.getAttribute(csSessionCurrentUser) == null) {
 			objLogger.debug(sMethod + csSessionCurrentUser + " is null");
 			objCtx.json(csMsgAutenticationFailed);
 			objCtx.status(401);
-		}else {
+		} else {
 			objLogger.debug(sMethod + csSessionCurrentUser + " is not null");
 			objCtx.json(objUser);
 			objCtx.status(200);
 		}
-
-	
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ###
-	private Handler getERSCurrentUserHandler = (objCtx) -> {
-		String sMethod = "\n\t getERSCurrentUserHandler(): ";
-		objLogger.trace(sMethod + "Entered");
+	private Handler getCurrentUserHandler = (objCtx) -> {
+		String sMethod = csCRT + "getCurrentUserHandler(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		HttpSession httpSession = objCtx.req.getSession();
 		objLogger.debug(sMethod + "Getting session attribute for: [" + csSessionCurrentUser + "]");
@@ -82,30 +82,36 @@ public class LoginController implements Controller, Constants {
 
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ###
-	private Handler getERSValidateSessionUserHandler = (objCtx) -> {
-		String sMethod = "\n\t postERSValidateSessionUserHandler(): ";
-		objLogger.trace(sMethod + "Entered");
+	private Handler postValidateSessionUserHandler = (objCtx) -> {
+		String sMethod = csCRT + "postValidateSessionUserHandler(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		HttpSession httpSession = objCtx.req.getSession();
+
 		if (httpSession.getAttribute(csSessionCurrentUser) == null) {
 			objLogger.debug(sMethod + "there is no active session for any user.");
 			objCtx.json(new MessageDTO(csMsgSessionUserNotActive));
 			objCtx.status(401);
 		} else {
-			User objCurrentUser = (User) httpSession.getAttribute(csSessionCurrentUser);
-			objLogger.debug(sMethod + "objUser: [" + objCurrentUser.toString() + "]");
-			objLoginDTO = objCtx.bodyAsClass(LoginDTO.class);
-			objLogger.debug(sMethod + "objLoginDTO: [" + objLoginDTO.toString() + "]");
 
-			if (objCurrentUser.getUsername().equals(objLoginDTO.getUsername())
-					&& objCurrentUser.getPassword().equals(objLoginDTO.getPassword())) {
-				objCtx.json(objCurrentUser);
+			User objSessionUser = (User) httpSession.getAttribute(csSessionCurrentUser);
+			objLogger.debug(
+					sMethod + "current user from httpSession: objSessionUser: [" + objSessionUser.toString() + "]");
+			LoginDTO objThisDTO = new LoginDTO();
+
+			objThisDTO = objCtx.bodyAsClass(LoginDTO.class);
+			objLogger.debug(sMethod + "bodyAsClass: objThisDTO: [" + objThisDTO.toString() + "]");
+
+			objLogger.debug(sMethod + "calling service to see if session and dto user objects are equal");
+			if (objLoginService.validateSessionUser(objThisDTO, objSessionUser)) {
+				objLogger.debug(sMethod + "service validated DTO and Session users are the same.");
+				objCtx.json(objSessionUser);
 				objCtx.status(200);
 			} else {
-				objLogger.debug(
-						sMethod + "there is no active session for username: [" + objLoginDTO.getUsername() + "]");
+				objLogger
+						.debug(sMethod + "there is no active session for username: [" + objThisDTO.getUsername() + "]");
 				// objCtx.json(new MessageDTO(csMsgSessionUserNotActive));
 				objCtx.json(csMsgSessionUserNotActive);
 				objCtx.status(401);
@@ -114,11 +120,11 @@ public class LoginController implements Controller, Constants {
 
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ###
-	private Handler postErsLogoutHandler = (objCtx) -> {
-		String sMethod = "\n\t postErsLogoutHandler(): ";
-		objLogger.trace(sMethod + "Entered");
+	private Handler postLogoutHandler = (objCtx) -> {
+		String sMethod = csCRT + "postErsLogoutHandler(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		HttpSession httpSession = objCtx.req.getSession();
 		if (httpSession.getAttribute(csSessionCurrentUser) == null) {
@@ -126,36 +132,41 @@ public class LoginController implements Controller, Constants {
 			objCtx.json(new MessageDTO(csMsgSessionUserLoggedOut));
 			objCtx.status(200);
 		} else {
-			User objCurrentUser = (User) httpSession.getAttribute(csSessionCurrentUser);
-			objLogger.debug(sMethod + "objUser: [" + objCurrentUser.toString() + "]");
-			objLoginDTO = objCtx.bodyAsClass(LoginDTO.class);
-			objLogger.debug(sMethod + "objLoginDTO: [" + objLoginDTO.toString() + "]");
+			User objSessionUser = (User) httpSession.getAttribute(csSessionCurrentUser);
+			objLogger.debug(
+					sMethod + "current user from httpSession: objSessionUser: [" + objSessionUser.toString() + "]");
+			LoginDTO objThisDTO = new LoginDTO();
 
-			if (objCurrentUser.getUsername().equals(objLoginDTO.getUsername())
-					&& objCurrentUser.getPassword().equals(objLoginDTO.getPassword())) {				
-				objLogger.debug(sMethod + "username: [" + objLoginDTO.getUsername() + "] is being logged out.");
-					httpSession.setAttribute(csSessionCurrentUser, null);
-					objCtx.json(new MessageDTO(csMsgSessionUserLoggedOut));
-					objCtx.status(200);
-				} else {
-					objLogger.debug(
-							sMethod + "there is no active session for username: [" + objLoginDTO.getUsername() + "]");
-					objCtx.json(new MessageDTO(csMsgSessionUserNotActive));
-					// objCtx.json(csMsgSessionUserNotActive);
-					objCtx.status(401);
+			objThisDTO = objCtx.bodyAsClass(LoginDTO.class);
+			objLogger.debug(sMethod + "bodyAsClass: objThisDTO: [" + objThisDTO.toString() + "]");
+
+			objLogger.debug(sMethod + "calling service to see if session and dto user objects are equal");
+			if (objLoginService.validateSessionUser(objThisDTO, objSessionUser)) {
+				objLogger.debug(sMethod + "service validated DTO and Session users are the same.");
+				objLogger.debug(sMethod + "username: [" + objThisDTO.getUsername() + "] is being logged out.");
+				httpSession.setAttribute(csSessionCurrentUser, null);
+				objCtx.json(new MessageDTO(csMsgSessionUserLoggedOut));
+				objCtx.status(200);
+			} else {
+				objLogger
+						.debug(sMethod + "there is no active session for username: [" + objThisDTO.getUsername() + "]");
+				objCtx.json(new MessageDTO(csMsgSessionUserNotActive));
+				objCtx.status(401);
 			}
 		}
 
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
 	@Override
 	public void mapEndpoints(Javalin app) {
 
 		//
-		app.post(csRootEndpointLogin, postErsLoginHandler);
-		app.post(csRootEndpointLogout, postErsLogoutHandler);
-		app.get(csRootEndpointCurrentUser, getERSCurrentUserHandler);
-		app.get(csRootEndpointSessionValidate, getERSValidateSessionUserHandler);
+		app.post(csRootEndpointLogin, postLoginHandler);
+		app.post(csRootEndpointLogout, postLogoutHandler);
+		app.get(csRootEndpointCurrentUser, getCurrentUserHandler);
+		app.post(csRootEndpointSessionValidate, postValidateSessionUserHandler);
 
 	}
 

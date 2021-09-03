@@ -2,8 +2,12 @@ package com.amt.dto;
 
 import java.util.Objects;
 
+//DTO - Data Transfer Object
+//This is to be used in the controller class to get parameters by body
 public class AddAddressDTO {
 
+	private String loginUsername = "";
+	private String loginPassword = "";
 	private String addressLine1 = "";
 	private String addressLine2 = "";
 	private String addressCity = "";
@@ -15,13 +19,23 @@ public class AddAddressDTO {
 		super();
 	}
 
-	public AddAddressDTO(String addressLine1, String addressLine2, String addressCity, String addressState, String addressZipCode, String addressType) {
+	public AddAddressDTO(String loginUsername, String loginPassword, String addressLine1, String addressLine2, String addressCity, String addressState, String addressZipCode, String addressType) {
+		this.loginUsername = loginUsername;
+		this.loginPassword = loginPassword;
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
 		this.addressCity = addressCity;
 		this.addressState = addressState;
 		this.addressZipCode = addressZipCode;
 		this.addressType = addressType;
+	}
+
+	public String getLoginUsername() {
+		return loginUsername;
+	}
+
+	public String getLoginPassword() {
+		return loginPassword;
 	}
 
 	public String getAddressLine1() {
@@ -46,6 +60,14 @@ public class AddAddressDTO {
 
 	public String getAddressType() {
 		return addressType;
+	}
+
+	public void setLoginUsername(String loginUsername) {
+		this.loginUsername = loginUsername;
+	}
+
+	public void setLoginPassword(String loginPassword) {
+		this.loginPassword = loginPassword;
 	}
 
 	public void setAddressLine1(String addressLine1) {
@@ -74,7 +96,8 @@ public class AddAddressDTO {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(addressCity, addressLine1, addressLine2, addressState, addressType, addressZipCode);
+		return Objects.hash(addressCity, addressLine1, addressLine2, addressState, addressType, addressZipCode,
+				loginPassword, loginUsername);
 	}
 
 	@Override
@@ -89,17 +112,19 @@ public class AddAddressDTO {
 		return Objects.equals(addressCity, other.addressCity) && Objects.equals(addressLine1, other.addressLine1)
 				&& Objects.equals(addressLine2, other.addressLine2) && Objects.equals(addressState, other.addressState)
 				&& Objects.equals(addressType, other.addressType)
-				&& Objects.equals(addressZipCode, other.addressZipCode);
+				&& Objects.equals(addressZipCode, other.addressZipCode)
+				&& Objects.equals(loginPassword, other.loginPassword)
+				&& Objects.equals(loginUsername, other.loginUsername);
 	}
 
 	@Override
 	public String toString() {
-		return "AddAddressDTO [addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", addressCity="
-				+ addressCity + ", addressState=" + addressState + ", addressZipCode=" + addressZipCode
-				+ ", addressType=" + addressType + "]";
+		return "AddAddressDTO [loginUsername=" + loginUsername + ", loginPassword=" + "********" + ", addressLine1="
+				+ addressLine1 + ", addressLine2=" + addressLine2 + ", addressCity=" + addressCity + ", addressState="
+				+ addressState + ", addressZipCode=" + addressZipCode + ", addressType=" + addressType + "]";
 	}
 
-	
+
 	
 	
 	

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.amt.controller.Controller;
 import com.amt.controller.CustomerController;
-import com.amt.controller.CatalogAdminController;
+import com.amt.controller.CatalogController;
 import com.amt.controller.LoginController;
 import com.amt.controller.UserController;
 import com.amt.controller.ExceptionController;
@@ -27,7 +27,7 @@ public class AppJavalin implements Constants {
 	private static Javalin objJavalinApp;
 
 	public static void main(String[] args) {
-		String sMethod = "\n\t main(): ";
+		String sMethod = csCRT + "main(): ";
 		objLogger.trace(sMethod + "Entered");
 		
 		showEnvironmentVariables();
@@ -43,7 +43,7 @@ public class AppJavalin implements Constants {
 		objLogger.debug(sMethod
 				+ "mapControllers(new ExceptionController(), new EmployeeController(), new CustomerController(), new CatalogAdminController(), new LoginController() );");
 		mapControllers(/* new TestController(), */ new ExceptionController(), new UserController(),
-				new CustomerController(), new CatalogAdminController(), new LoginController());
+				new CustomerController(), new CatalogController(), new LoginController());
 
 		objLogger.info(sMethod + "Starting listening on port: [" + ciListingPort + "]");
 		objJavalinApp.start(ciListingPort); // start up our Javalin server on port defined for this program
@@ -61,6 +61,8 @@ public class AppJavalin implements Constants {
 		}
 	}
 
+	//
+	// ###
 	private static void showEnvironmentVariables() {
 		String sMethod = csCRT + "showEnvironmentVariables(): ";
 		objLogger.trace(csCR + sMethod + "Entered");

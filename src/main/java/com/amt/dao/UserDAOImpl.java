@@ -276,10 +276,10 @@ public class UserDAOImpl implements UserDAO, Constants {
 			boolean bPasswordValid = PasswordUtil.verifyUserPassword(sPassword, sEncryptedPwd, sSalt);
 
 			if (bPasswordValid) {
-				objLogger.debug(sMethod + "user: [" + objUser.toString() + "] DID pass encrypted password validation with salt key.");
+				objLogger.debug(sMethod + "user: [" + objUser.toString() + "]" + csCRT + "DID pass encrypted password validation with salt key.");
 				return objUser;
 			} else {
-				objLogger.warn(sMethod + "user: [" + objUser.toString() + "] DID NOT pass encrypted password validation with salt key.");
+				objLogger.warn(sMethod + "user: [" + objUser.toString() + "]" + csCRT + "DID NOT pass encrypted password validation with salt key.");
 				return null;
 			}
 
