@@ -6,8 +6,6 @@ import java.util.Objects;
 //This is to be used in the controller class to get parameters by body
 public class AddPhoneNumberDTO {
 
-	private String loginUsername = "";
-	private String loginPassword = "";
 	private String phoneNumber = "";
 	private String phoneNumberType;
 
@@ -17,19 +15,9 @@ public class AddPhoneNumberDTO {
 		super();
 	}
 
-	public AddPhoneNumberDTO(String loginUsername, String loginPassword, String phoneNumber) {
-		this.loginUsername = loginUsername;
-		this.loginPassword = loginPassword;
+	public AddPhoneNumberDTO(String phoneNumber, String phoneNumberType) {
 		this.phoneNumber = phoneNumber;
 		this.phoneNumberType = phoneNumberType;
-	}
-
-	public String getLoginUsername() {
-		return loginUsername;
-	}
-
-	public String getLoginPassword() {
-		return loginPassword;
 	}
 
 	public String getPhoneNumber() {
@@ -38,14 +26,6 @@ public class AddPhoneNumberDTO {
 
 	public String getPhoneNumberType() {
 		return phoneNumberType;
-	}
-
-	public void setLoginUsername(String loginUsername) {
-		this.loginUsername = loginUsername;
-	}
-
-	public void setLoginPassword(String loginPassword) {
-		this.loginPassword = loginPassword;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -58,7 +38,7 @@ public class AddPhoneNumberDTO {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(loginPassword, loginUsername, phoneNumber, phoneNumberType);
+		return Objects.hash(phoneNumber, phoneNumberType);
 	}
 
 	@Override
@@ -70,17 +50,16 @@ public class AddPhoneNumberDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		AddPhoneNumberDTO other = (AddPhoneNumberDTO) obj;
-		return Objects.equals(loginPassword, other.loginPassword) && Objects.equals(loginUsername, other.loginUsername)
-				&& Objects.equals(phoneNumber, other.phoneNumber)
-				&& Objects.equals(phoneNumberType, other.phoneNumberType);
+		return Objects.equals(phoneNumber, other.phoneNumber) && Objects.equals(phoneNumberType, other.phoneNumberType);
 	}
 
 	@Override
 	public String toString() {
-		return "AddPhoneNumberDTO [loginUsername=" + loginUsername + ", loginPassword=" + "********"
-				+ ", phoneNumber=" + phoneNumber + ", phoneNumberType=" + phoneNumberType + "]";
+		return "AddPhoneNumberDTO [phoneNumber=" + phoneNumber + ", phoneNumberType=" + phoneNumberType + "]";
 	}
 
+
+	
 	
 	
 	

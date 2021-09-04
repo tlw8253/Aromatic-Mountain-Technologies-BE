@@ -135,8 +135,6 @@ public class UserController implements Controller, Constants {
 		setContextMaps(objCtx);
 
 		AddAddressDTO objAddAddressDTO = new AddAddressDTO();
-		User objCurrSessionUser = new User();
-		LoginDTO objDTO = new LoginDTO();
 
 		objCtx.status(ciStatusCodeErrorBadRequest);
 		objCtx.json(csMsgBadParamCustomerBodyAsClass);
@@ -144,43 +142,35 @@ public class UserController implements Controller, Constants {
 		objAddAddressDTO = objCtx.bodyAsClass(AddAddressDTO.class);
 		objLogger.debug(sMethod + "objAddAddressDTO: [" + objAddAddressDTO.toString() + "]");
 
-		objDTO.setUsername(objAddAddressDTO.getLoginUsername());
-		objDTO.setPassword(objAddAddressDTO.getLoginPassword());
+		Address objAddress = new Address();
 
-		boolean isValidUserSession = validateUserSession(objCtx, objCurrSessionUser, objDTO);
+		String sParamUsername = "";
 
-		if (isValidUserSession) {
-
-			Address objAddress = new Address();
-
-			String sParamUsername = "";
-
-			// expect 1 path parameters with user id
-			if (imPathParmaMapSize != 1) {
-				objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
-				objCtx.status(ciStatusCodeErrorBadRequest);
-				objCtx.json(csMsgBadParamPathParmNotRightNumber);
-				return;
-			}
-
-			sParamUsername = objCtx.pathParam(csParamUserName);
-			objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
-
-			String sLine1 = objAddAddressDTO.getAddressLine1();
-			String sLine2 = objAddAddressDTO.getAddressLine2();
-			String sCity = objAddAddressDTO.getAddressCity();
-			String sState = objAddAddressDTO.getAddressState();
-			String sZip = objAddAddressDTO.getAddressZipCode();
-			String sType = objAddAddressDTO.getAddressType();
-
-			AddressDTO objAddressDTO = new AddressDTO(sLine1, sLine2, sCity, sState, sZip, sType, sParamUsername);
-			objLogger.debug(sMethod + "calling add service with objAddressDTO: [" + objAddressDTO.toString() + "]");
-			objAddress = objAddressService.addNewAddress(objAddressDTO);
-			objLogger.debug(sMethod + "objAddress: [" + objAddress.toString() + "]");
-
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(objAddress);
+		// expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {
+			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
+			objCtx.status(ciStatusCodeErrorBadRequest);
+			objCtx.json(csMsgBadParamPathParmNotRightNumber);
+			return;
 		}
+
+		sParamUsername = objCtx.pathParam(csParamUserName);
+		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
+
+		String sLine1 = objAddAddressDTO.getAddressLine1();
+		String sLine2 = objAddAddressDTO.getAddressLine2();
+		String sCity = objAddAddressDTO.getAddressCity();
+		String sState = objAddAddressDTO.getAddressState();
+		String sZip = objAddAddressDTO.getAddressZipCode();
+		String sType = objAddAddressDTO.getAddressType();
+
+		AddressDTO objAddressDTO = new AddressDTO(sLine1, sLine2, sCity, sState, sZip, sType, sParamUsername);
+		objLogger.debug(sMethod + "calling add service with objAddressDTO: [" + objAddressDTO.toString() + "]");
+		objAddress = objAddressService.addNewAddress(objAddressDTO);
+		objLogger.debug(sMethod + "objAddress: [" + objAddress.toString() + "]");
+
+		objCtx.status(ciStatusCodeSuccess);
+		objCtx.json(objAddress);
 	};
 
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,40 +184,29 @@ public class UserController implements Controller, Constants {
 		User objUser = new User();
 		AddCustomerDTO objAddCustomerDTO = new AddCustomerDTO();
 
-		User objCurrSessionUser = new User();
-		LoginDTO objDTO = new LoginDTO();
-
 		objCtx.status(ciStatusCodeErrorBadRequest);
 		objCtx.json(csMsgBadParamCustomerBodyAsClass);
 
 		objAddCustomerDTO = objCtx.bodyAsClass(AddCustomerDTO.class);
 		objLogger.debug(sMethod + "objAddCustomerDTO: [" + objAddCustomerDTO.toString() + "]");
 
-		objDTO.setUsername(objAddCustomerDTO.getLoginUsername());
-		objDTO.setPassword(objAddCustomerDTO.getLoginPassword());
+		String sUsername = objAddCustomerDTO.getUsername();
+		String sPassword = objAddCustomerDTO.getPassword();
+		String sFirstName = objAddCustomerDTO.getFirstName();
+		String sLastName = objAddCustomerDTO.getLastName();
+		String sEmail = objAddCustomerDTO.getEmail();
+		String sEmployeeRole = csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos];
+		String sUserType = csarUserType[enumUserType.CUSTOMER.pos];
 
-		boolean isValidUserSession = validateUserSession(objCtx, objCurrSessionUser, objDTO);
+		AddUserDTO objAddUserDTO = new AddUserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail, sEmployeeRole,
+				sUserType);
+		objLogger.debug(sMethod + "calling add service with objAddUserDTO: [" + objAddUserDTO.toString() + "]");
 
-		if (isValidUserSession) {
-			String sUsername = objAddCustomerDTO.getUsername();
-			String sPassword = objAddCustomerDTO.getPassword();
-			String sFirstName = objAddCustomerDTO.getFirstName();
-			String sLastName = objAddCustomerDTO.getLastName();
-			String sEmail = objAddCustomerDTO.getEmail();
-			String sEmployeeRole = csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos];
-			String sUserType = csarUserType[enumUserType.CUSTOMER.pos];
+		objUser = objUserService.addNewUser(objAddUserDTO);
+		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
 
-			AddUserDTO objAddUserDTO = new AddUserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail,
-					sEmployeeRole, sUserType);
-			objLogger.debug(sMethod + "calling add service with objAddUserDTO: [" + objAddUserDTO.toString() + "]");
-
-			// objUser = objUserService.addNewUser(objAddUserDTO);
-			objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
-
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(objUser);
-
-		}
+		objCtx.status(ciStatusCodeSuccess);
+		objCtx.json(objUser);
 
 	};
 
@@ -258,7 +237,6 @@ public class UserController implements Controller, Constants {
 		objCtx.json(objUser);
 	};
 
-	
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	private Handler postAddPhoneNumber = (objCtx) -> {
@@ -268,52 +246,40 @@ public class UserController implements Controller, Constants {
 		setContextMaps(objCtx);
 
 		AddPhoneNumberDTO objAddPhoneNumberDTO = new AddPhoneNumberDTO();
-		User objCurrSessionUser = new User();
-		LoginDTO objDTO = new LoginDTO();
-
 		objCtx.status(ciStatusCodeErrorBadRequest);
 		objCtx.json(csMsgBadParamCustomerBodyAsClass);
 
 		objAddPhoneNumberDTO = objCtx.bodyAsClass(AddPhoneNumberDTO.class);
 		objLogger.debug(sMethod + "objAddPhoneNumberDTO: [" + objAddPhoneNumberDTO.toString() + "]");
 
-		objDTO.setUsername(objAddPhoneNumberDTO.getLoginUsername());
-		objDTO.setPassword(objAddPhoneNumberDTO.getLoginPassword());
+		PhoneNumber objPhoneNumber = new PhoneNumber();
 
-		boolean isValidUserSession = validateUserSession(objCtx, objCurrSessionUser, objDTO);
+		String sParamUsername = "";
 
-		if (isValidUserSession) {
-
-			PhoneNumber objPhoneNumber = new PhoneNumber();
-
-			String sParamUsername = "";
-
-			// expect 1 path parameters with user id
-			if (imPathParmaMapSize != 1) {
-				objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
-				objCtx.status(ciStatusCodeErrorBadRequest);
-				objCtx.json(csMsgBadParamPathParmNotRightNumber);
-				return;
-			}
-
-			sParamUsername = objCtx.pathParam(csParamUserName);
-			objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
-
-			String sPhoneNumber = objAddPhoneNumberDTO.getPhoneNumber();
-			String sPhoneNumberType = objAddPhoneNumberDTO.getPhoneNumberType();
-
-			PhoneNumberDTO objPhoneNumberDTO = new PhoneNumberDTO(sPhoneNumber, sPhoneNumberType, sParamUsername);
-			objLogger.debug(sMethod + "calling add service with objPhoneNumberDTO: [" + objPhoneNumberDTO.toString() + "]");
-			objPhoneNumber = objPhoneService.addNewPhoneNumber(objPhoneNumberDTO);
-			objLogger.debug(sMethod + "objPhoneNumber: [" + objPhoneNumber.toString() + "]");
-
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(objPhoneNumber);
+		// expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {
+			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
+			objCtx.status(ciStatusCodeErrorBadRequest);
+			objCtx.json(csMsgBadParamPathParmNotRightNumber);
+			return;
 		}
+
+		sParamUsername = objCtx.pathParam(csParamUserName);
+		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
+
+		String sPhoneNumber = objAddPhoneNumberDTO.getPhoneNumber();
+		String sPhoneNumberType = objAddPhoneNumberDTO.getPhoneNumberType();
+
+		PhoneNumberDTO objPhoneNumberDTO = new PhoneNumberDTO(sPhoneNumber, sPhoneNumberType, sParamUsername);
+		objLogger.debug(sMethod + "calling add service with objPhoneNumberDTO: [" + objPhoneNumberDTO.toString() + "]");
+		objPhoneNumber = objPhoneService.addNewPhoneNumber(objPhoneNumberDTO);
+		objLogger.debug(sMethod + "objPhoneNumber: [" + objPhoneNumber.toString() + "]");
+
+		objCtx.status(ciStatusCodeSuccess);
+		objCtx.json(objPhoneNumber);
+
 	};
 
-	
-	
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	@Override

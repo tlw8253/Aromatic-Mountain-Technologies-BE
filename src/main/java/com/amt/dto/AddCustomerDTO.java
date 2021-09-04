@@ -5,8 +5,6 @@ import java.util.Objects;
 //DTO - Data Transfer Object
 // This is to be used in the controller class to get parameters by body
 public class AddCustomerDTO {
-	private String loginUsername = "";
-	private String loginPassword = "";
 	private String username = "";
 	private String password = "";
 	private String firstName = "";
@@ -24,24 +22,14 @@ public class AddCustomerDTO {
 		super();
 	}
 
-	public AddCustomerDTO(String loginUsername, String loginPassword, String username, String password, String firstName, String lastName, String email) {
+	public AddCustomerDTO(String username, String password, String firstName, String lastName, String email) {
 
-		this.loginUsername = loginUsername;
-		this.loginPassword = loginPassword;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 
-	}
-
-	public String getLoginUsername() {
-		return loginUsername;
-	}
-
-	public String getLoginPassword() {
-		return loginPassword;
 	}
 
 	public String getUsername() {
@@ -62,14 +50,6 @@ public class AddCustomerDTO {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public void setLoginUsername(String loginUsername) {
-		this.loginUsername = loginUsername;
-	}
-
-	public void setLoginPassword(String loginPassword) {
-		this.loginPassword = loginPassword;
 	}
 
 	public void setUsername(String username) {
@@ -94,7 +74,7 @@ public class AddCustomerDTO {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, lastName, loginPassword, loginUsername, password, username);
+		return Objects.hash(email, firstName, lastName, password, username);
 	}
 
 	@Override
@@ -107,19 +87,17 @@ public class AddCustomerDTO {
 			return false;
 		AddCustomerDTO other = (AddCustomerDTO) obj;
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(loginPassword, other.loginPassword)
-				&& Objects.equals(loginUsername, other.loginUsername) && Objects.equals(password, other.password)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
 				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
-		return "AddCustomerDTO [loginUsername=" + loginUsername + ", loginPassword=" + "********" + ", username="
-				+ username + ", password=" + "********"  + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + "]";
+		return "AddCustomerDTO [username=" + username + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + "]";
 	}
 
-	
+
 
 
 }// END Class
