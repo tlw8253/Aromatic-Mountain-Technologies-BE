@@ -8,6 +8,7 @@ public class AddCatalogItemDTO {
 
 	private String loginUsername = "";
 	private String loginPassword = "";
+	private String catalogItemName;
 	private String catalogItem;
 	private String catalogItemDescription;
 	private String catalogItemPrice;
@@ -18,11 +19,24 @@ public class AddCatalogItemDTO {
 		super();
 	}
 
-	public AddCatalogItemDTO(String loginUsername, String loginPassword, String catalogItem,
+	public AddCatalogItemDTO(String catalogItemName, String catalogItem,
+			String catalogItemDescription, String catalogItemPrice, String catalogItemInStockQty,
+			String catalogItemType) {
+		this.catalogItemName = catalogItemName;
+		this.catalogItem = catalogItem;
+		this.catalogItemDescription = catalogItemDescription;
+		this.catalogItemPrice = catalogItemPrice;
+		this.catalogItemInStockQty = catalogItemInStockQty;
+		this.catalogItemType = catalogItemType;
+	}
+
+	
+	public AddCatalogItemDTO(String loginUsername, String loginPassword, String catalogItemName, String catalogItem,
 			String catalogItemDescription, String catalogItemPrice, String catalogItemInStockQty,
 			String catalogItemType) {
 		this.loginUsername = loginUsername;
 		this.loginPassword = loginPassword;
+		this.catalogItemName = catalogItemName;
 		this.catalogItem = catalogItem;
 		this.catalogItemDescription = catalogItemDescription;
 		this.catalogItemPrice = catalogItemPrice;
@@ -36,6 +50,10 @@ public class AddCatalogItemDTO {
 
 	public String getLoginPassword() {
 		return loginPassword;
+	}
+
+	public String getCatalogItemName() {
+		return catalogItemName;
 	}
 
 	public String getCatalogItem() {
@@ -66,6 +84,10 @@ public class AddCatalogItemDTO {
 		this.loginPassword = loginPassword;
 	}
 
+	public void setCatalogItemName(String catalogItemName) {
+		this.catalogItemName = catalogItemName;
+	}
+
 	public void setCatalogItem(String catalogItem) {
 		this.catalogItem = catalogItem;
 	}
@@ -88,8 +110,8 @@ public class AddCatalogItemDTO {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(catalogItem, catalogItemDescription, catalogItemInStockQty, catalogItemPrice,
-				catalogItemType, loginPassword, loginUsername);
+		return Objects.hash(catalogItem, catalogItemDescription, catalogItemInStockQty, catalogItemName,
+				catalogItemPrice, catalogItemType, loginPassword, loginUsername);
 	}
 
 	@Override
@@ -104,6 +126,7 @@ public class AddCatalogItemDTO {
 		return Objects.equals(catalogItem, other.catalogItem)
 				&& Objects.equals(catalogItemDescription, other.catalogItemDescription)
 				&& Objects.equals(catalogItemInStockQty, other.catalogItemInStockQty)
+				&& Objects.equals(catalogItemName, other.catalogItemName)
 				&& Objects.equals(catalogItemPrice, other.catalogItemPrice)
 				&& Objects.equals(catalogItemType, other.catalogItemType)
 				&& Objects.equals(loginPassword, other.loginPassword)
@@ -112,11 +135,12 @@ public class AddCatalogItemDTO {
 
 	@Override
 	public String toString() {
-		return "AddCatalogItemDTO [loginUsername=" + loginUsername + ", loginPassword=" + "********"
-				+ ", catalogItem=" + catalogItem + ", catalogItemDescription=" + catalogItemDescription
-				+ ", catalogItemPrice=" + catalogItemPrice + ", catalogItemInStockQty=" + catalogItemInStockQty
-				+ ", catalogItemType=" + catalogItemType + "]";
+		return "AddCatalogItemDTO [loginUsername=" + loginUsername + ", loginPassword=" + loginPassword
+				+ ", catalogItemName=" + catalogItemName + ", catalogItem=" + catalogItem + ", catalogItemDescription="
+				+ catalogItemDescription + ", catalogItemPrice=" + catalogItemPrice + ", catalogItemInStockQty="
+				+ catalogItemInStockQty + ", catalogItemType=" + catalogItemType + "]";
 	}
+
 
 	
 	

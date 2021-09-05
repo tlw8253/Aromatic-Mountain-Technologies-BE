@@ -23,6 +23,9 @@ public class CatalogItem implements Constants {
 	@Column(name = csCatalogItemTblCatalogItemId)
 	private int catalogItemId;
 
+	@Column(name = cscsCatalogItemTblCatalogItemName, length = 20, nullable = false, unique = true)
+	private String catalogItemName;
+
 	@Column(name = csCatalogItemTblCatalogItem, length = 50, nullable = false)
 	private String catalogItem;
 	
@@ -43,6 +46,7 @@ public class CatalogItem implements Constants {
 	public CatalogItem() {
 		super();
 		catalogItemId = 0;
+		catalogItemName = "";
 		catalogItem = "";
 		catalogItemDescription = "";
 		catalogItemPrice = 0.0;
@@ -50,23 +54,20 @@ public class CatalogItem implements Constants {
 		catalogItemType = new CatalogItemType();
 	}
 	
-	public CatalogItem(String catalogItem, String catalogItemDescription, double catalogItemPrice, int catalogItemInStockQty) {
+	public CatalogItem(String catalogItemName, String catalogItem, String catalogItemDescription, double catalogItemPrice, int catalogItemInStockQty) {
+		this.catalogItemName = catalogItemName;
 		this.catalogItem = catalogItem;
 		this.catalogItemDescription = catalogItemDescription;
 		this.catalogItemPrice = catalogItemPrice;
 		this.catalogItemInStockQty = catalogItemInStockQty;
-	}
-
-	public CatalogItem(String catalogItem, String catalogItemDescription, double catalogItemPrice, int catalogItemInStockQty, CatalogItemType catalogItemType) {
-		this.catalogItem = catalogItem;
-		this.catalogItemDescription = catalogItemDescription;
-		this.catalogItemPrice = catalogItemPrice;
-		this.catalogItemInStockQty = catalogItemInStockQty;
-		this.catalogItemType = catalogItemType;
 	}
 
 	public int getCatalogItemId() {
 		return catalogItemId;
+	}
+
+	public String getCatalogItemName() {
+		return catalogItemName;
 	}
 
 	public String getCatalogItem() {
@@ -93,6 +94,10 @@ public class CatalogItem implements Constants {
 		this.catalogItemId = catalogItemId;
 	}
 
+	public void setCatalogItemName(String catalogItemName) {
+		this.catalogItemName = catalogItemName;
+	}
+
 	public void setCatalogItem(String catalogItem) {
 		this.catalogItem = catalogItem;
 	}
@@ -115,8 +120,8 @@ public class CatalogItem implements Constants {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(catalogItem, catalogItemDescription, catalogItemId, catalogItemInStockQty, catalogItemPrice,
-				catalogItemType);
+		return Objects.hash(catalogItem, catalogItemDescription, catalogItemId, catalogItemInStockQty, catalogItemName,
+				catalogItemPrice, catalogItemType);
 	}
 
 	@Override
@@ -131,16 +136,19 @@ public class CatalogItem implements Constants {
 		return Objects.equals(catalogItem, other.catalogItem)
 				&& Objects.equals(catalogItemDescription, other.catalogItemDescription)
 				&& catalogItemId == other.catalogItemId && catalogItemInStockQty == other.catalogItemInStockQty
+				&& Objects.equals(catalogItemName, other.catalogItemName)
 				&& Double.doubleToLongBits(catalogItemPrice) == Double.doubleToLongBits(other.catalogItemPrice)
 				&& Objects.equals(catalogItemType, other.catalogItemType);
 	}
 
 	@Override
 	public String toString() {
-		return "CatalogItem [catalogItemId=" + catalogItemId + ", catalogItem=" + catalogItem
-				+ ", catalogItemDescription=" + catalogItemDescription + ", catalogItemPrice=" + catalogItemPrice
-				+ ", catalogItemInStockQty=" + catalogItemInStockQty + ", catalogItemType=" + catalogItemType + "]";
+		return "CatalogItem [catalogItemId=" + catalogItemId + ", catalogItemName=" + catalogItemName + ", catalogItem="
+				+ catalogItem + ", catalogItemDescription=" + catalogItemDescription + ", catalogItemPrice="
+				+ catalogItemPrice + ", catalogItemInStockQty=" + catalogItemInStockQty + ", catalogItemType="
+				+ catalogItemType + "]";
 	}
+
 
 	
 	

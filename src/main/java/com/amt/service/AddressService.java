@@ -1,5 +1,7 @@
 package com.amt.service;
 
+import javax.persistence.NoResultException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +48,10 @@ public class AddressService implements Constants {
 				objLogger.debug(sMethod + "objAddress: [" + objAddress.toString() + "]");
 				return objAddress;
 
+			} catch (NoResultException e) {
+				objLogger.error(sMethod + "NoResultException adding address record with username: [" + objAddressDTO.getUsername()
+						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
+				throw new DatabaseException(csMsgDB_ErrorAddingAddress);
 			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
 				objLogger.error(sMethod + "Exception adding address record with username: [" + objAddressDTO.getUsername()
 						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");

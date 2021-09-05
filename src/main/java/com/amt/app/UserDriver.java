@@ -3,6 +3,7 @@ package com.amt.app;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.amt.dto.AddUserDTO;
 import com.amt.dto.UserDTO;
 import com.amt.exception.BadParameterException;
 import com.amt.exception.DatabaseException;
@@ -24,12 +25,11 @@ public class UserDriver implements Constants {
 
 	public static void main(String[] args) {
 		String sMethod = csCRT + "main(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
-		
+		objLogger.trace(csCR + sMethod + "Entered");		
 
 		//addProjectMemberUsers();
-		
 	}
+	
 	
 	//
 	//###
@@ -49,18 +49,18 @@ public class UserDriver implements Constants {
 		objLogger.trace(csCR + sMethod + "Entered");
 
 		UserService objUserService = new UserService();
-		UserDTO objUserDTO = new UserDTO(username, password, firstName, lastName, email, userType, employeeRole);
-		objLogger.debug(sMethod + "adding user with objUserDTO: [" + objUserDTO.toString() + "]");
-/*
+		AddUserDTO objAddUserDTO = new AddUserDTO(username, password, firstName, lastName, email, userType, employeeRole);
+		objLogger.debug(sMethod + "adding user with objUserDTO: [" + objAddUserDTO.toString() + "]");
+
 		try {
-			User objUser = objUserService.addNewUser(objUserDTO);
+			User objUser = objUserService.addNewUser(objAddUserDTO);
 			objLogger.debug(sMethod + "user object added objUser: [" + objUser.toString() + "]");
 		} catch (DatabaseException e) {
 			objLogger.debug(sMethod + "DatabaseException: [" + e.getMessage() + "]");
 		} catch (BadParameterException e) {
 			objLogger.debug(sMethod + "BadParameterException: [" + e.getMessage() + "]");
 		}
-*/
+
 		
 		
 	}

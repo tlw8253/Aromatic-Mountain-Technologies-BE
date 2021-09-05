@@ -173,42 +173,6 @@ public class UserController implements Controller, Constants {
 		objCtx.json(objAddress);
 	};
 
-	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	private Handler postAddCustomer = (objCtx) -> {
-		String sMethod = csCRT + "postAddCustomer(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
-
-		setContextMaps(objCtx);
-
-		User objUser = new User();
-		AddCustomerDTO objAddCustomerDTO = new AddCustomerDTO();
-
-		objCtx.status(ciStatusCodeErrorBadRequest);
-		objCtx.json(csMsgBadParamCustomerBodyAsClass);
-
-		objAddCustomerDTO = objCtx.bodyAsClass(AddCustomerDTO.class);
-		objLogger.debug(sMethod + "objAddCustomerDTO: [" + objAddCustomerDTO.toString() + "]");
-
-		String sUsername = objAddCustomerDTO.getUsername();
-		String sPassword = objAddCustomerDTO.getPassword();
-		String sFirstName = objAddCustomerDTO.getFirstName();
-		String sLastName = objAddCustomerDTO.getLastName();
-		String sEmail = objAddCustomerDTO.getEmail();
-		String sEmployeeRole = csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos];
-		String sUserType = csarUserType[enumUserType.CUSTOMER.pos];
-
-		AddUserDTO objAddUserDTO = new AddUserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail, sEmployeeRole,
-				sUserType);
-		objLogger.debug(sMethod + "calling add service with objAddUserDTO: [" + objAddUserDTO.toString() + "]");
-
-		objUser = objUserService.addNewUser(objAddUserDTO);
-		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
-
-		objCtx.status(ciStatusCodeSuccess);
-		objCtx.json(objUser);
-
-	};
 
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -230,7 +194,7 @@ public class UserController implements Controller, Constants {
 
 		sParamUsername = objCtx.pathParam(csParamUserName);
 		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
-		objUser = objUserService.getUsersByUsername(sParamUsername);
+		objUser = objUserService.getUserByUsername(sParamUsername);
 		objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
 
 		objCtx.status(ciStatusCodeSuccess);
@@ -285,16 +249,9 @@ public class UserController implements Controller, Constants {
 	@Override
 	public void mapEndpoints(Javalin app) {
 
-		//
-		// app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId,
-		// getERSUserRole);
-		// app.get("/ers_user_role/:user_id/role", getUserRole);
-		// app.get("/ers/:user_id", getUserById);
-		app.post("/amt_customer", postAddCustomer);
 		app.post("/amt_adx/:username", postAddAddress);
 		app.post("/amt_phone/:username", postAddPhoneNumber);
 		app.get("/amt_user/:username", getUserByUsername);
-
 	}
 
 }

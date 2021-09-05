@@ -46,7 +46,7 @@ public class Address implements Constants {
 	private AddressType addressType;		//
 
 	@ManyToOne
-	@JoinColumn(name = csUserTblId, nullable = false)
+	@JoinColumn(name = csUserTblUserId, nullable = false)
 	private User user;		//
 	
 	public Address() {

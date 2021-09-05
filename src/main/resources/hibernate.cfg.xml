@@ -7,10 +7,6 @@
 		<!-- JDBC database connection settings -->
 		<property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
 
- 		<property name="hibernate.connection.url">jdbc:mariadb://database-1.cdigirn7b0ro.us-east-2.rds.amazonaws.com:3306/amt_online_sys</property>
- 		<property name="hibernate.connection.username">admin</property>
- 		<property name="hibernate.connection.password">Black1357Bear</property>
-
 		<!-- SQL Dialect -->
 		<property name="hibernate.dialect">org.hibernate.dialect.MariaDB103Dialect</property>
 	

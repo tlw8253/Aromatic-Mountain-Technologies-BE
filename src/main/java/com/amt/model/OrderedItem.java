@@ -22,98 +22,87 @@ public class OrderedItem implements Constants {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = csOrderItemsTblOrderItemsId)
-	private int orderItemsId;
+	private int orderItemId;
 
-	@Column(name = csOrderTblOrderId)
-	private int orderId;
-	
 	@Column(name = csOrderItemsTblOrderPrice)
-	private double orderPrice;
+	private double orderItemPrice;
 	
 	@Column(name = csOrderItemsTblItemQty)
-	private int orderQty;
+	private int orderItemQty;
 
 	@ManyToOne
-	@JoinColumn(name = csCatalogItemTblCatalogItemId)	//, nullable = false) // 
+	@JoinColumn(name = csOrderTblOrderId, nullable = false) // 
+	private Order order;
+
+	@ManyToOne
+	@JoinColumn(name = csCatalogItemTblCatalogItemId, nullable = false) // 
 	private CatalogItem catalogItem;
 
-	@ManyToOne
-	@JoinColumn(name = csUserTblId)	//, nullable = false) // 
-	private User customer;
-	
+
 	public OrderedItem() {
 		super();
-		orderItemsId = 0;
-		orderId = 0;
-		orderPrice = 0.0;
-		orderQty = 0;
+		orderItemId = 0;
+		order = new Order();
+		orderItemPrice = 0.0;
+		orderItemQty = 0;
 		catalogItem = new CatalogItem();
-		customer = new User();
 	}
 	
 	public OrderedItem(Double orderPrice, int orderQty) {
-		this.orderPrice = orderPrice;
-		this.orderQty = orderQty;
+		this.orderItemPrice = orderPrice;
+		this.orderItemQty = orderQty;
 	}
 
-	public OrderedItem(Double orderPrice, int orderQty, CatalogItem catalogItem, User customer) {
-		this.orderPrice = orderPrice;
-		this.orderQty = orderQty;
+	public OrderedItem(Double orderPrice, int orderQty, Order order, CatalogItem catalogItem) {
+		this.orderItemPrice = orderPrice;
+		this.orderItemQty = orderQty;
+		this.order = order;
 		this.catalogItem = catalogItem;
-		this.customer = customer;		
 	}
 
-	public int getOrderItemsId() {
-		return orderItemsId;
-	}
-
-	public int getOrderId() {
-		return orderId;
+	public int getOrderItemId() {
+		return orderItemId;
 	}
 
 	public double getOrderPrice() {
-		return orderPrice;
+		return orderItemPrice;
 	}
 
 	public int getOrderQty() {
-		return orderQty;
+		return orderItemQty;
+	}
+
+	public Order getOrder() {
+		return order;
 	}
 
 	public CatalogItem getCatalogItem() {
 		return catalogItem;
 	}
 
-	public User getCustomer() {
-		return customer;
-	}
-
-	public void setOrderItemsId(int orderItemsId) {
-		this.orderItemsId = orderItemsId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setOrderItemId(int orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 
 	public void setOrderPrice(double orderPrice) {
-		this.orderPrice = orderPrice;
+		this.orderItemPrice = orderPrice;
 	}
 
 	public void setOrderQty(int orderQty) {
-		this.orderQty = orderQty;
+		this.orderItemQty = orderQty;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public void setCatalogItem(CatalogItem catalogItem) {
 		this.catalogItem = catalogItem;
 	}
 
-	public void setCustomer(User customer) {
-		this.customer = customer;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(catalogItem, customer, orderId, orderItemsId, orderPrice, orderQty);
+		return Objects.hash(catalogItem, order, orderItemId, orderItemPrice, orderItemQty);
 	}
 
 	@Override
@@ -125,18 +114,21 @@ public class OrderedItem implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		OrderedItem other = (OrderedItem) obj;
-		return Objects.equals(catalogItem, other.catalogItem) && Objects.equals(customer, other.customer)
-				&& orderId == other.orderId && orderItemsId == other.orderItemsId
-				&& Double.doubleToLongBits(orderPrice) == Double.doubleToLongBits(other.orderPrice)
-				&& orderQty == other.orderQty;
+		return Objects.equals(catalogItem, other.catalogItem) && Objects.equals(order, other.order)
+				&& orderItemId == other.orderItemId
+				&& Double.doubleToLongBits(orderItemPrice) == Double.doubleToLongBits(other.orderItemPrice)
+				&& orderItemQty == other.orderItemQty;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderedItem [orderItemsId=" + orderItemsId + ", orderId=" + orderId + ", orderPrice=" + orderPrice
-				+ ", orderQty=" + orderQty + ", catalogItem=" + catalogItem + ", customer=" + customer + "]";
+		return "OrderedItem [orderItemId=" + orderItemId + ", orderPrice=" + orderItemPrice + ", orderQty=" + orderItemQty
+				+ ", order=" + order + ", catalogItem=" + catalogItem + "]";
 	}
+
+
 	
+
 
 	
 	

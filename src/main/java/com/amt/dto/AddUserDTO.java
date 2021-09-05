@@ -22,26 +22,14 @@ public class AddUserDTO {
 		super();
 	}
 
-
-	public AddUserDTO(String username, String password, String firstName, String lastName, String email, String employeeRole, String userType) {
+	public AddUserDTO(String username, String password, String firstName, String lastName, String email, String userType, String employeeRole) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.employeeRole = employeeRole;
 		this.userType = userType;
-	}
-
-	
-	public AddUserDTO(String username, String password, String passwordSalt, String firstName, String lastName, String email, String employeeRole, String userType) {
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
 		this.employeeRole = employeeRole;
-		this.userType = userType;
 	}
 
 	public String getUsername() {

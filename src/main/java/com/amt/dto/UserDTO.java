@@ -32,10 +32,10 @@ public class UserDTO extends AddOrEditDTO implements Constants {
 	}
 
 	public String getUserId() {
-		return super.getDataElement(csUserTblId);
+		return super.getDataElement(csUserTblUserId);
 	}
 	public int getUserIdAsInt() {
-		return super.getIntDataElement(csUserTblId);
+		return super.getIntDataElement(csUserTblUserId);
 	}
 
 	public String getUsername() {
@@ -82,7 +82,7 @@ public class UserDTO extends AddOrEditDTO implements Constants {
 
 	///////////////////////////////////////////////////////////////////////////
 	public void setUserId(int userId) {
-		super.setDataElement(csUserTblId, userId);
+		super.setDataElement(csUserTblUserId, userId);
 	}
 
 	public void setUsername(String username) {

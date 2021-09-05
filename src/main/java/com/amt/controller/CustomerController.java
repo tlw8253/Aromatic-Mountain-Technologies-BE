@@ -12,14 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amt.app.Constants;
+import com.amt.app.Constants.enumUserEmployee;
+import com.amt.app.Constants.enumUserType;
+import com.amt.dto.AddCustomerDTO;
+import com.amt.dto.AddOrderDTO;
+import com.amt.dto.AddOrderedItemDTO;
+import com.amt.dto.AddUserDTO;
 import com.amt.model.Order;
 import com.amt.model.User;
+import com.amt.service.OrderService;
 import com.amt.service.UserService;
 
 public class CustomerController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(CustomerController.class);
-	private UserService objERSUserService;
-	
+	private UserService objUserService;	
+	OrderService objOrderService;
 
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
@@ -28,7 +35,8 @@ public class CustomerController implements Controller, Constants {
 	boolean bmQueryParmaMapIsEmpty = true;
 
 	public CustomerController() {		
-		this.objERSUserService = new UserService();
+		this.objUserService = new UserService();
+		this.objOrderService = new OrderService();
 	}
 
 	//
@@ -63,75 +71,79 @@ public class CustomerController implements Controller, Constants {
 	}
 
 	
-
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ### 
-	private Handler getERSUserRole = (objCtx) -> {
-		String sMethod = "getERSUserRole(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		User objUser = null;
-		
-		String sParamUserId = "";
+	private Handler postAddCustomer = (objCtx) -> {
+		String sMethod = csCRT + "postAddCustomer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 1) {			
-			//Check for body params before erroring here		
-			
-			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
-			objCtx.status(ciStatusCodeErrorBadRequest);
-			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-		} else {
-			sParamUserId = objCtx.queryParam(csParamPathUserId);
-			objLogger.debug(sMethod + "Context query parameter user id: [" + sParamUserId + "]");
-		}
 
-		if(bContinue) {
-		}
-		
+		User objUser = new User();
+		AddCustomerDTO objAddCustomerDTO = new AddCustomerDTO();
+
+		objCtx.status(ciStatusCodeErrorBadRequest);
+		objCtx.json(csMsgBadParamCustomerBodyAsClass);
+
+		objAddCustomerDTO = objCtx.bodyAsClass(AddCustomerDTO.class);
+		objLogger.debug(sMethod + "objAddCustomerDTO: [" + objAddCustomerDTO.toString() + "]");
+
+		String sUsername = objAddCustomerDTO.getUsername();
+		String sPassword = objAddCustomerDTO.getPassword();
+		String sFirstName = objAddCustomerDTO.getFirstName();
+		String sLastName = objAddCustomerDTO.getLastName();
+		String sEmail = objAddCustomerDTO.getEmail();
+		String sEmployeeRole = csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos];
+		String sUserType = csarUserType[enumUserType.CUSTOMER.pos];
+
+		AddUserDTO objAddUserDTO = new AddUserDTO(sUsername, sPassword, sFirstName, sLastName, sEmail, sEmployeeRole,
+				sUserType);
+		objLogger.debug(sMethod + "calling add service with objAddUserDTO: [" + objAddUserDTO.toString() + "]");
+
+		objUser = objUserService.addNewUser(objAddUserDTO);
+		objLogger.debug(sMethod + "objUser: [" + objUser.toString() + "]");
+
 		objCtx.status(ciStatusCodeSuccess);
 		objCtx.json(objUser);
+
 	};
 
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// ### 
-	//
-	// ### 
-	private Handler getERSUserById = (objCtx) -> {
-		String sMethod = "getERSUserById(): ";
-		boolean bContinue = true;
-		objLogger.trace(sMethod + "Entered");
-		User objUser = null;
-		
-		String sParamUserId = "";
+	private Handler postAddCustomerOrder = (objCtx) -> {
+		String sMethod = csCRT + "postAddCustomerOrder(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 
 		setContextMaps(objCtx);
-		
-		//expect 1 path parameters with user id
-		if (imPathParmaMapSize != 1) {			
-			//Check for body params before erroring here		
-			
+		// expect 1 path parameters with user id
+		if (imPathParmaMapSize != 1) {
 			objLogger.debug(sMethod + csMsgBadParamPathParmNotRightNumber);
 			objCtx.status(ciStatusCodeErrorBadRequest);
 			objCtx.json(csMsgBadParamPathParmNotRightNumber);
-			bContinue = false;
-		} else {
-			
-			sParamUserId = objCtx.pathParam(csParamPathUserId);
-			objLogger.debug(sMethod + "Context path parameter user id: [" + sParamUserId + "]");
-			
+			return;
 		}
 
-		if(bContinue) {
-//			objUser = objERSUserService.getUsersById(sParamUserId);
-			objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-		}
+		String sParamUsername = objCtx.pathParam(csParamUserName);
+		objLogger.debug(sMethod + "Context path parameter username: [" + sParamUsername + "]");
+
+		AddOrderDTO objAddOrderDTO = new AddOrderDTO();
+
+		objCtx.status(ciStatusCodeErrorBadRequest);
+		objCtx.json(csMsgBadParamOrderBodyAsClass);
+
+		objAddOrderDTO = objCtx.bodyAsClass(AddOrderDTO.class);
+//		objLogger.debug(sMethod + "objAddOrderDTO: [" + objAddOrderDTO.toString() + "]");
+
+		objLogger.debug(sMethod + "calling add service with objAddOrderDTO: [" + objAddOrderDTO.toString() + "]");
 		
+		Order objOrder = new Order();
+
+		objOrder = objOrderService.addNewOrder(sParamUsername, objAddOrderDTO);
+		objLogger.debug(sMethod + "objOrder: [" + objOrder.toString() + "]");
+
 		objCtx.status(ciStatusCodeSuccess);
-		objCtx.json(objUser);
+		objCtx.json(objOrder);
+
 	};
 
 
@@ -139,13 +151,15 @@ public class CustomerController implements Controller, Constants {
 	
 
 	
+	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
 	@Override
 	public void mapEndpoints(Javalin app) {
 
 		//
 		//app.get(csRootEndpointERS_UserRole + "/:" + csParamPathUserId, getERSUserRole);
-		app.get("/ers_user_role/:user_id/role", getERSUserRole);
-		app.get("/ers/:user_id", getERSUserById);
+		app.post("/amt_customer", postAddCustomer);
+		app.post("/amt_order/:username", postAddCustomerOrder);
 	}
 
 }

@@ -42,10 +42,14 @@ public class Order implements Constants {
 	@JoinColumn(name = csOrderStatusTblOrderStatusId)	//, nullable = false) // 
 	private OrderStatus orderStatus;
 
-	@ManyToOne
-	@JoinColumn(name = csOrderItemsTblOrderItemsId)	//, nullable = false) // 
-	private OrderedItem orderedItem;
+//	@ManyToOne
+//	@JoinColumn(name = csOrderItemsTblOrderItemsId)	//, nullable = false) // 
+//	private OrderedItem orderedItem;
 	
+	@ManyToOne
+	@JoinColumn(name = csUserTblUserId)	//, nullable = false) // 
+	private User customer;
+
 	
 	public Order() {
 		//use when setting the timestamp values:
@@ -55,62 +59,81 @@ public class Order implements Constants {
 		orderSent = new Timestamp(0);
 	}
 
-	public Order(double orderAmount) {
+	public Order(double orderAmount, Timestamp orderSubmitted, Timestamp orderSent, OrderStatus orderStatus, User customer) {
 		this.orderAmount = orderAmount;
+		this.orderSubmitted = orderSubmitted;
+		this.orderSent = orderSent;
+		this.orderStatus = orderStatus;
+		this.customer = customer;
 	}
-
+	
+	
+	
 	public int getOrderId() {
 		return orderId;
 	}
 
-	public Timestamp getOrderSubmitted() {
-		return orderSubmitted;
-	}
-
-	public Timestamp getOrderSent() {
-		return orderSent;
-	}
 
 	public double getOrderAmount() {
 		return orderAmount;
 	}
 
+
+	public Timestamp getOrderSubmitted() {
+		return orderSubmitted;
+	}
+
+
+	public Timestamp getOrderSent() {
+		return orderSent;
+	}
+
+
 	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-	public OrderedItem getOrderItems() {
-		return orderedItem;
+
+	public User getCustomer() {
+		return customer;
 	}
+
 
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 
-	public void setOrderSubmitted(Timestamp orderSubmitted) {
-		this.orderSubmitted = orderSubmitted;
-	}
-
-	public void setOrderSent(Timestamp orderSent) {
-		this.orderSent = orderSent;
-	}
 
 	public void setOrderAmount(double orderAmount) {
 		this.orderAmount = orderAmount;
 	}
 
+
+	public void setOrderSubmitted(Timestamp orderSubmitted) {
+		this.orderSubmitted = orderSubmitted;
+	}
+
+
+	public void setOrderSent(Timestamp orderSent) {
+		this.orderSent = orderSent;
+	}
+
+
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-	public void setOrderItems(OrderedItem orderItems) {
-		this.orderedItem = orderItems;
+
+	public void setCustomer(User customer) {
+		this.customer = customer;
 	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(orderAmount, orderId, orderSent, orderStatus, orderSubmitted, orderedItem);
+		return Objects.hash(customer, orderAmount, orderId, orderSent, orderStatus, orderSubmitted);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -121,18 +144,20 @@ public class Order implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return Double.doubleToLongBits(orderAmount) == Double.doubleToLongBits(other.orderAmount)
+		return Objects.equals(customer, other.customer)
+				&& Double.doubleToLongBits(orderAmount) == Double.doubleToLongBits(other.orderAmount)
 				&& orderId == other.orderId && Objects.equals(orderSent, other.orderSent)
 				&& Objects.equals(orderStatus, other.orderStatus)
-				&& Objects.equals(orderSubmitted, other.orderSubmitted)
-				&& Objects.equals(orderedItem, other.orderedItem);
+				&& Objects.equals(orderSubmitted, other.orderSubmitted);
 	}
+
 
 	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", orderAmount=" + orderAmount + ", orderSubmitted=" + orderSubmitted
-				+ ", orderSent=" + orderSent + ", orderStatus=" + orderStatus + ", orderedItem=" + orderedItem + "]";
+				+ ", orderSent=" + orderSent + ", orderStatus=" + orderStatus + ", customer=" + customer + "]";
 	}
+
 
 
 	

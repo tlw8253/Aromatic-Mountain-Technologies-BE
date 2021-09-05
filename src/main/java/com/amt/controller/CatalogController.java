@@ -33,8 +33,7 @@ public class CatalogController implements Controller, Constants {
 	private Logger objLogger = LoggerFactory.getLogger(CatalogController.class);
 	private LoginService objLoginService;
 	private CatalogItemService objCatalogItemService;
-	
-	
+
 	Map<String, String> mPathParmaMap;
 	Map<String, List<String>> mQueryParmaMap;
 	int imPathParmaMapSize = 0;
@@ -78,7 +77,6 @@ public class CatalogController implements Controller, Constants {
 				+ bmQueryParmaMapIsEmpty + "]");
 	}
 
-	
 	// ###
 	private User getCurrentSessionUser(Context objCtx) {
 		String sMethod = csCRT + "getCurrentSessionUser(): ";
@@ -98,16 +96,17 @@ public class CatalogController implements Controller, Constants {
 		}
 	}
 
-	private boolean validateUserSession(Context objCtx, User objGetFromSession, LoginDTO objDTO)
+	private boolean validateUserSession(Context objCtx, LoginDTO objDTO)
 			throws BadParameterException, AuthenticationFailureException, DatabaseException {
 		String sMethod = csCRT + "validateUserSession(): ";
 		objLogger.trace(csCR + sMethod + "Entered");
 		boolean isValid = false;
 
-		objGetFromSession = getCurrentSessionUser(objCtx);
+		User objGetFromSession = getCurrentSessionUser(objCtx);
 		if (objGetFromSession == null) {
 			objLogger.debug(sMethod + "no active session recorded for any user");
 		} else {
+			objLogger.debug(sMethod + "objGetFromSession: [" + objGetFromSession.toString() + "]");
 			if (objLoginService.validateSessionUser(objDTO, objGetFromSession)) {
 				isValid = true;
 			} else {
@@ -120,8 +119,6 @@ public class CatalogController implements Controller, Constants {
 		return isValid;
 	}
 
-	
-	
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	private Handler postAddCatalogItem = (objCtx) -> {
@@ -131,7 +128,6 @@ public class CatalogController implements Controller, Constants {
 		setContextMaps(objCtx);
 
 		AddCatalogItemDTO objAddCatalogItemDTO = new AddCatalogItemDTO();
-		User objCurrSessionUser = new User();
 		LoginDTO objDTO = new LoginDTO();
 
 		objCtx.status(ciStatusCodeErrorBadRequest);
@@ -143,31 +139,41 @@ public class CatalogController implements Controller, Constants {
 		objDTO.setUsername(objAddCatalogItemDTO.getLoginUsername());
 		objDTO.setPassword(objAddCatalogItemDTO.getLoginPassword());
 
-		boolean isValidUserSession = validateUserSession(objCtx, objCurrSessionUser, objDTO);
+		boolean isValidUserSession = validateUserSession(objCtx, objDTO);
 
 		if (isValidUserSession) {
 
-			CatalogItem objCatalogItem = new CatalogItem();
+			User objCurrSessionUser = getCurrentSessionUser(objCtx);
+			objLogger.debug(sMethod + "validated user session with objCurrSessionUser: ["
+					+ objCurrSessionUser.toString() + "]");
 
-			
-			objLogger.debug(sMethod + "calling add service with objAddCatalogItemDTO: [" + objAddCatalogItemDTO.toString() + "]");
-			objCatalogItem = objCatalogItemService.addNewCatalogItem(objAddCatalogItemDTO);					
-			
-			objLogger.debug(sMethod + "objCatalogItem: [" + objCatalogItem.toString() + "]");			
+			String sEmployeeRole = objCurrSessionUser.getEmployeeRole().getEmployeeRole();
+			if (sEmployeeRole.equalsIgnoreCase(csarEmployeeRoles[enumUserEmployee.CATALOG_ADMIN.pos])
+					|| (sEmployeeRole.equalsIgnoreCase(csarEmployeeRoles[enumUserEmployee.CATALOG_EMPLOYEE.pos]))) {
 
-			objCtx.status(ciStatusCodeSuccess);
-			objCtx.json(objCatalogItem);
+				objLogger.debug(sMethod + "Employee is authorized to add catalog item: [" + objCurrSessionUser.getUsername() + "]");
+				CatalogItem objCatalogItem = new CatalogItem();
+
+				objLogger.debug(sMethod + "calling add service with objAddCatalogItemDTO: ["
+						+ objAddCatalogItemDTO.toString() + "]");
+				objCatalogItem = objCatalogItemService.addNewCatalogItem(objAddCatalogItemDTO);
+
+				objLogger.debug(sMethod + "objCatalogItem: [" + objCatalogItem.toString() + "]");
+
+				objCtx.status(ciStatusCodeSuccess);
+				objCtx.json(objCatalogItem);
+			}else {
+				objCtx.status(ciStatusCodeErrorBadRequest);
+				objCtx.json(csMsgEmployeeNotAuthorizeCatalog);			
+			}
 		}
-
 	};
 
-	
-	
 	@Override
 	public void mapEndpoints(Javalin app) {
 		//
-		app.post("/amt_catalog_item", postAddCatalogItem);		
-		
+		app.post("/amt_catalog_item", postAddCatalogItem);
+
 	}
 
 }

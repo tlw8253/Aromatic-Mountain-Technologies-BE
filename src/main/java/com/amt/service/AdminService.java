@@ -79,54 +79,7 @@ public class AdminService implements Constants {
 	
 	
 	
-	//
-	// ###
-	public List<CatalogItemType> getAllCatalogItemType() throws DatabaseException {
-		String sMethod = "getAllCatalogType(): ";
-		objLogger.trace(sMethod + "Entered");
 
-		try {
-
-		List<CatalogItemType> lstCatalogItemType = objCatalogItemTypeDAO.getAllRecords();
-			objLogger.debug(sMethod + "lstReimbStatus: [" + lstCatalogItemType.toString() + "]");
-			return lstCatalogItemType;
-
-		} catch (SQLException e) {
-			objLogger.warn(sMethod + "SQLException while getting all Reimbursement Status: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingAllReimbursementStatus);
-		} catch (HibernateException e) {
-			objLogger.warn(
-					sMethod + "HibernateException while getting all Reimbursement Status: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingAllReimbursementStatus);
-		} catch (Exception e) {
-			objLogger.warn(sMethod + "Exception while getting all Reimbursement Status: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingAllReimbursementStatus);
-		}
-	}
-
-	//
-	// ###
-	public List<EmployeeRole> getAllEmployeeRole() throws DatabaseException {
-		String sMethod = "getAllUserRole(): ";
-		objLogger.trace(sMethod + "Entered");
-
-		try {
-
-			List<EmployeeRole> lstUserRole = objEmployeeRoleDAO.getAllRecords();
-			objLogger.debug(sMethod + "lstUserRole: [" + lstUserRole.toString() + "]");
-			return lstUserRole;
-
-		} catch (SQLException e) {
-			objLogger.warn(sMethod + "SQLException while getting all User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingUserRole);
-		} catch (HibernateException e) {
-			objLogger.warn(sMethod + "HibernateException while getting all User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingUserRole);
-		} catch (Exception e) {
-			objLogger.warn(sMethod + "Exception while getting all User Role: [" + e.getMessage() + "]");
-			throw new DatabaseException(csMsgDB_ErrorGettingUserRole);
-		}
-	}
 
 
 

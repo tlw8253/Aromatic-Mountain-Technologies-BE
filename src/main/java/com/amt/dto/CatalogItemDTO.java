@@ -8,6 +8,7 @@ import com.amt.app.Constants;
 //This is to be used in passing the full dto to the dao
 public class CatalogItemDTO implements Constants {
 
+	private String catalogItemName;
 	private String catalogItem;
 	private String catalogItemDescription;
 	private double catalogItemPrice;
@@ -18,13 +19,18 @@ public class CatalogItemDTO implements Constants {
 		super();
 	}
 
-	public CatalogItemDTO(String catalogItem, String catalogItemDescription, double catalogItemPrice,
+	public CatalogItemDTO(String catalogItemName, String catalogItem, String catalogItemDescription, double catalogItemPrice,
 			int catalogItemInStockQty, String catalogItemType) {
+		this.catalogItemName = catalogItemName;
 		this.catalogItem = catalogItem;
 		this.catalogItemDescription = catalogItemDescription;
 		this.catalogItemPrice = catalogItemPrice;
 		this.catalogItemInStockQty = catalogItemInStockQty;
 		this.catalogItemType = catalogItemType;		
+	}
+
+	public String getCatalogItemName() {
+		return catalogItemName;
 	}
 
 	public String getCatalogItem() {
@@ -45,6 +51,10 @@ public class CatalogItemDTO implements Constants {
 
 	public String getCatalogItemType() {
 		return catalogItemType;
+	}
+
+	public void setCatalogItemName(String catalogItemName) {
+		this.catalogItemName = catalogItemName;
 	}
 
 	public void setCatalogItem(String catalogItem) {
@@ -69,8 +79,8 @@ public class CatalogItemDTO implements Constants {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(catalogItem, catalogItemDescription, catalogItemInStockQty, catalogItemPrice,
-				catalogItemType);
+		return Objects.hash(catalogItem, catalogItemDescription, catalogItemInStockQty, catalogItemName,
+				catalogItemPrice, catalogItemType);
 	}
 
 	@Override
@@ -85,17 +95,20 @@ public class CatalogItemDTO implements Constants {
 		return Objects.equals(catalogItem, other.catalogItem)
 				&& Objects.equals(catalogItemDescription, other.catalogItemDescription)
 				&& catalogItemInStockQty == other.catalogItemInStockQty
+				&& Objects.equals(catalogItemName, other.catalogItemName)
 				&& Double.doubleToLongBits(catalogItemPrice) == Double.doubleToLongBits(other.catalogItemPrice)
 				&& Objects.equals(catalogItemType, other.catalogItemType);
 	}
 
 	@Override
 	public String toString() {
-		return "CatalogItemDTO [catalogItem=" + catalogItem + ", catalogItemDescription=" + catalogItemDescription
-				+ ", catalogItemPrice=" + catalogItemPrice + ", catalogItemInStockQty=" + catalogItemInStockQty
-				+ ", catalogItemType=" + catalogItemType + "]";
+		return "CatalogItemDTO [catalogItemName=" + catalogItemName + ", catalogItem=" + catalogItem
+				+ ", catalogItemDescription=" + catalogItemDescription + ", catalogItemPrice=" + catalogItemPrice
+				+ ", catalogItemInStockQty=" + catalogItemInStockQty + ", catalogItemType=" + catalogItemType + "]";
 	}
 
+
+	
 	
 	
 	

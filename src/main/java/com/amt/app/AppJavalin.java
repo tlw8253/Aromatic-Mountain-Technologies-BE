@@ -30,7 +30,7 @@ public class AppJavalin implements Constants {
 		String sMethod = csCRT + "main(): ";
 		objLogger.trace(sMethod + "Entered");
 		
-		showEnvironmentVariables();
+		//showEnvironmentVariables();
 
 		// Chrome will not allow sending request without the following config
 		objJavalinApp = Javalin.create((config) -> {

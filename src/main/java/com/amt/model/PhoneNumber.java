@@ -35,7 +35,7 @@ public class PhoneNumber implements Constants {
 
 	
 	@ManyToOne
-	@JoinColumn(name = csUserTblId, nullable = false)
+	@JoinColumn(name = csUserTblUserId, nullable = false)
 	private User user;		//
 
 	

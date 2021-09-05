@@ -11,5 +11,6 @@ import com.amt.model.CatalogItem;
 public interface CatalogItemDAO {
 
 	public abstract CatalogItem addNewCatalogItem(CatalogItemDTO objCatalogItemDTO) throws SQLException;
+	public abstract CatalogItem getCatalogItemByName(String sName) throws SQLException;
 
 }

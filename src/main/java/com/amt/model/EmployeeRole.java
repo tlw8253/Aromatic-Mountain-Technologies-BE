@@ -37,27 +37,27 @@ public class EmployeeRole implements Constants {
 		this.employeeRoleDesc = employeeRoleDesc;
 	}
 
-	public int getUserRoleId() {
+	public int getEmployeeRoleId() {
 		return employeeRoleId;
 	}
 
-	public String getUserRole() {
+	public String getEmployeeRole() {
 		return employeeRole;
 	}
 
-	public void setUserRoleId(int employeeRoleId) {
-		this.employeeRoleId = employeeRoleId;
-	}
-
-	public void setUserRole(String employeeRole) {
-		this.employeeRole = employeeRole;
-	}
-
-	public String getUserRoleDesc() {
+	public String getEmployeeRoleDesc() {
 		return employeeRoleDesc;
 	}
 
-	public void setUserRoleDesc(String employeeRoleDesc) {
+	public void setEmployeeRoleId(int employeeRoleId) {
+		this.employeeRoleId = employeeRoleId;
+	}
+
+	public void setEmployeeRole(String employeeRole) {
+		this.employeeRole = employeeRole;
+	}
+
+	public void setEmployeeRoleDesc(String employeeRoleDesc) {
 		this.employeeRoleDesc = employeeRoleDesc;
 	}
 
@@ -75,16 +75,18 @@ public class EmployeeRole implements Constants {
 		if (getClass() != obj.getClass())
 			return false;
 		EmployeeRole other = (EmployeeRole) obj;
-		return Objects.equals(employeeRole, other.employeeRole) && Objects.equals(employeeRoleDesc, other.employeeRoleDesc)
-				&& employeeRoleId == other.employeeRoleId;
+		return Objects.equals(employeeRole, other.employeeRole)
+				&& Objects.equals(employeeRoleDesc, other.employeeRoleDesc) && employeeRoleId == other.employeeRoleId;
 	}
 
 	@Override
 	public String toString() {
-		return "UserRole [employeeRoleId=" + employeeRoleId + ", employeeRole=" + employeeRole + ", employeeRoleDesc=" + employeeRoleDesc + "]";
+		return "EmployeeRole [employeeRoleId=" + employeeRoleId + ", employeeRole=" + employeeRole
+				+ ", employeeRoleDesc=" + employeeRoleDesc + "]";
 	}
 
 
+	
 	
 	
 	

@@ -21,7 +21,7 @@ public class User implements Constants {
 	// appears primary key must be an integer for hibernate to work
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = csUserTblId)
+	@Column(name = csUserTblUserId)
 	private int userId = 0;
 
 	@Column(name = csUserTblUsername, length = 50, nullable = false, unique = true)
@@ -101,16 +101,14 @@ public class User implements Constants {
 		return email;
 	}
 
-	public UserType getUserType() {
-		return userType;
-	}
-
 	public EmployeeRole getEmployeeRole() {
 		return employeeRole;
 	}
 
-	
-	/////////////////////////////////////////////////////////////////////////////////////////
+	public UserType getUserType() {
+		return userType;
+	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
@@ -139,12 +137,12 @@ public class User implements Constants {
 		this.email = email;
 	}
 
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
-
 	public void setEmployeeRole(EmployeeRole employeeRole) {
 		this.employeeRole = employeeRole;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 
 	@Override
@@ -177,7 +175,7 @@ public class User implements Constants {
 	}
 
 
-
+	
 
 	
 	

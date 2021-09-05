@@ -29,60 +29,22 @@ public class OrderStatusDAOImpl implements GenericDAO<OrderStatus>, Constants{
 		String sMethod = "\n\t getAllRecords(): ";
 		objLogger.trace(sMethod + "Entered");
 
-		// load a complete persistent objects into memory
-		String sHQL = "FROM "; // + csHQL_ModelClassReimbType; //fully qualify class name in HQL
 		
-		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-
-		List<OrderStatus> lstReimbursementType = session.createQuery(sHQL).getResultList();
-		objLogger.debug(sMethod + "lstReimbursementType: [" + lstReimbursementType.toString() + "]");
-		
-		tx.commit();
-		session.close();
-		
-		return lstReimbursementType;
+		return null;
 	}
 
 	@Override
 	public OrderStatus getByRecordId(int iRecordId) throws SQLException {
 		String sMethod = "\n\t getByRecordId(): ";
 		objLogger.trace(sMethod + "Entered");
-			
-		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbTypeId = :reimbTypeId"; //this works with using setParameter
-		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: iRecordId: [" + iRecordId +"]");
-		
-		try {
-			OrderStatus ojbReimbursementType = 
-					(OrderStatus) session.createQuery(sHQL)
-					.setParameter("reimbTypeId", iRecordId)
-					.getSingleResult();
-			objLogger.debug(sMethod + "ojbReimbursementType: [" + ojbReimbursementType.toString() + "]");
-			
-			
-			tx.commit();
-			return ojbReimbursementType;
-			
-		}catch(Exception e) {
-			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
-			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
-			return null;
-		}finally {
-			session.close();
-		}	
+		return null;
 	}
 
 	@Override
 	public OrderStatus getByRecordIdentifer(String sRecordIdentifier) throws SQLException, HibernateException {
-		String sMethod = "\n\t getByRecordIdentifer(): ";
-		objLogger.trace(sMethod + "Entered");
+		String sMethod = csCRT + "getByRecordIdentifer(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
 			
 		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
 		Session session = sf.openSession();
@@ -90,21 +52,21 @@ public class OrderStatusDAOImpl implements GenericDAO<OrderStatus>, Constants{
 		
 		String sHQL = "";
 
-		sHQL = "FROM ReimbursementType rt WHERE rt.reimbType = :reimbType";
+		sHQL = "FROM OrderStatus os WHERE os.orderStatus = :orderStatus";
 		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sRecordIdentifier: [" + sRecordIdentifier +"]");
 		
 		try {
-			OrderStatus objReimbursementType = 
+			OrderStatus objOrderStatus = 
 					(OrderStatus) session.createQuery(sHQL)
-					.setParameter("reimbType", sRecordIdentifier)
+					.setParameter("orderStatus", sRecordIdentifier)
 					.getSingleResult();
-			objLogger.debug(sMethod + "objReimbursementType: [" + objReimbursementType.toString() + "]");			
+			objLogger.debug(sMethod + "objOrderStatus: [" + objOrderStatus.toString() + "]");			
 			
 			tx.commit();
-			return objReimbursementType;
+			return objOrderStatus;
 			
 		}catch(Exception e) {
-			objLogger.error(sMethod + "Error getting Reimbursement Type by sRecordIdentifier: [" + sRecordIdentifier + "]");	
+			objLogger.error(sMethod + "Error getting Order Status by sRecordIdentifier: [" + sRecordIdentifier + "]");	
 			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
 			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
 			return null;

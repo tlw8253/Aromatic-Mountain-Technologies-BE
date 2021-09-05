@@ -51,6 +51,7 @@ public class CatalogItemService implements Constants {
 				
 				//create the DAO layer DTO
 				CatalogItemDTO objCatalogItemDTO = new CatalogItemDTO();
+				objCatalogItemDTO.setCatalogItemName(objAddCatalogItemDTO.getCatalogItemName());
 				objCatalogItemDTO.setCatalogItem(objAddCatalogItemDTO.getCatalogItem());
 				objCatalogItemDTO.setCatalogItemDescription(objAddCatalogItemDTO.getCatalogItemDescription());
 				objCatalogItemDTO.setCatalogItemPrice(Double.parseDouble(objAddCatalogItemDTO.getCatalogItemPrice()));
@@ -82,12 +83,14 @@ public class CatalogItemService implements Constants {
 		objLogger.trace(csCR + sMethod + "Entered: objAddCatalogItemDTO: [" + objAddCatalogItemDTO.toString() + "]");
 		boolean bValid = false;
 		
+		String sCatItemName = objAddCatalogItemDTO.getCatalogItemName();
 		String sCatItem = objAddCatalogItemDTO.getCatalogItem().trim();
 		String sCatItemDesc = objAddCatalogItemDTO.getCatalogItemDescription().trim();
 		String sCatItemPrice = objAddCatalogItemDTO.getCatalogItemPrice();
 		String sCatItemInStock = objAddCatalogItemDTO.getCatalogItemInStockQty();
 		String sCatItemType = objAddCatalogItemDTO.getCatalogItemType().trim();
 		
+		boolean bCatItemName = Validate.isAlphaNumeric(sCatItemName) && sCatItemName.length() >= 6 && sCatItemName.length() < 20;
 		boolean bCatItemValid = sCatItem.length() > 0;
 		boolean bCatItemDescValid = sCatItem.length() > 0 && sCatItem.length() < ciDescriptionMaxLen;
 		boolean bCatItemPriceValid = Validate.isDouble(sCatItemPrice) && Double.parseDouble(sCatItemPrice) > 0;
@@ -95,10 +98,11 @@ public class CatalogItemService implements Constants {
 		boolean bCatItemTypeValid = Validate.isValidValueInArray(sCatItemType, csarrCatalogItemType);
 		
 		
-		if (bCatItemValid && bCatItemDescValid && bCatItemPriceValid && bCatItemInStockValid && bCatItemTypeValid) {
+		if (bCatItemName && bCatItemValid && bCatItemDescValid && bCatItemPriceValid && bCatItemInStockValid && bCatItemTypeValid) {
 			bValid = true;
 		}else {
 			objLogger.trace(csCR + sMethod + "One or more add Catalog Item Parameters did not pass validation.:");
+			objLogger.warn(sMethod + "\t catalog item name: [" + sCatItemName + "] is valid: [" + bCatItemName + "]");
 			objLogger.warn(sMethod + "\t catalog item: [" + sCatItem + "] is valid: [" + bCatItemValid + "]");
 			objLogger.warn(sMethod + "\t catalog item description: [" + sCatItemDesc + "] is valid: [" + bCatItemDescValid + "]");
 			objLogger.warn(sMethod + "\t catalog item price: [" + sCatItemPrice + "] is valid: [" + bCatItemPriceValid + "]");

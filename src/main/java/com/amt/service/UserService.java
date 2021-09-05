@@ -46,7 +46,7 @@ public class UserService implements Constants {
 	
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	public User getUsersByUsername(String sUsername) throws DatabaseException, BadParameterException {
+	public User getUserByUsername(String sUsername) throws DatabaseException, BadParameterException {
 		String sMethod = csCRT + "getUsersByUsername(): ";
 		objLogger.trace(csCR + sMethod + "Entered");
 		
@@ -61,7 +61,7 @@ public class UserService implements Constants {
 			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
 				objLogger.error(sMethod + "Exception getting all User records from the database: Exception: ["
 						+ e.toString() + "] [" + e.getMessage() + "]");
-				throw new DatabaseException(csMsgDB_ErrorGettingEmployeeByUsername);
+				throw new DatabaseException(csMsgDB_ErrorGettingUserByUsername);
 			}
 		}else {
 			objLogger.debug(sMethod + "Invalid user name received: [" + sUsername + "]");
@@ -71,35 +71,7 @@ public class UserService implements Constants {
 
 
 	
-	//
-	// ### Cannot update UserId or the username
-	//will not update the record id, the company username, or the company email.
-	//also password should be updated through separate process where old pwd and new pwd are entered
-	public User editExistingUser(UserDTO objUserDTO) throws DatabaseException, BadParameterException {
-		String sMethod = csCRT + "EditExistingUser(): ";
-		objLogger.trace(csCR + sMethod + "Entered");
 
-		if (isValidUserDTOEditAttributes(objUserDTO)) {
-			try {
-				objLogger.debug(sMethod + "Validated objUserDTO: [" + objUserDTO.toString() + "]");
-
-				User objUser = objUserDAO.editRecord(objUserDTO);
-				objLogger.debug(sMethod + "objEmployee: [" + objUser.toString() + "]");
-				return objUser;
-
-			} catch (Exception e) {// not sure what exception hibernate throws but not SQLException
-				objLogger.error(sMethod + "Exception adding User record with username: [" + objUserDTO.getUsername()
-						+ "] Exception: [" + e.toString() + "] [" + e.getMessage() + "]");
-				throw new DatabaseException(csMsgDB_ErrorGettingEmployees);
-			}
-
-
-		}else {
-			objLogger.warn(sMethod + "objUserDTO to update user is not valid: [" + objUserDTO.toString() + "]");
-			throw new BadParameterException(csMsgBadParamEditUser);
-
-		}
-	}
 	
 	// ###//////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

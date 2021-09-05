@@ -39,7 +39,6 @@ public interface Constants {
 	String csClientStaticFolder = "AMT-Client";
 	int ciListingPort = 3025;
 	String csSessionCurrentUser = "current_user";
-	String csEnvironmentDB_UsernameVarible = "p0_db_username";
 
 	// End Points
 	String csRootEndpoint = "/amt";
@@ -55,8 +54,6 @@ public interface Constants {
 	String csParamPathUserId = "user_id";
 	String csParamUserName = "username";
 	String csParamPassword = "password";
-	String csParamReimStatus = "reim_status";
-	String csParamPathReimbId = "reim_id";
 
 	// other constants
 	int ciUsernameMinLength = 6;
@@ -73,6 +70,29 @@ public interface Constants {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// database constants
 	String csDatabaseName = "amt_online_sys"; // database name
+	
+	String csAWS_DB_URL = "jdbc:mariadb://database-1.cdigirn7b0ro.us-east-2.rds.amazonaws.com:3306/";
+	String csLocalHostURL = "jdbc:mariadb://localhost:3306/";
+
+	String csAWS_Username = "admin";
+	String csLocalHost_Username = "root";
+
+	String csAWS_Pwd = "Black1357Bear";
+	String csLocalHost_Pwd = "tlw8253";
+	
+	String csCurrentDBURL = csAWS_DB_URL;
+	String csCurrentUsername = csAWS_Username;
+	String csCurrentPwd = csAWS_Pwd;
+
+//	String csCurrentDBURL = csLocalHostURL;
+//	String csCurrentUsername = csLocalHost_Username;
+//	String csCurrentPwd = csLocalHost_Pwd;
+
+	
+	String csDatabaseConnectionURL = csCurrentDBURL + csDatabaseName;
+	String csDatabaseConnectionUsername = csCurrentUsername;
+	String csDatabaseConnectionPwd = csCurrentPwd;
+	
 	int ciRoleTypeLen = 50;
 	int ciRoleTypeDescLen = 150;
 
@@ -117,6 +137,7 @@ public interface Constants {
 	String csCatalogItemTable = "amt_catalog_item"; // table name
 	String csDBCatalogItemTable = csDatabaseName + "." + csCatalogItemTable; // qualified table name
 	String csCatalogItemTblCatalogItemId = "catalog_id"; // PK primary key
+	String cscsCatalogItemTblCatalogItemName = "catalog_item_name";		//alternate key, unique
 	String csCatalogItemTblCatalogItem = "catalog_item";
 	String csCatalogItemTblCatalogItemDesc = "catalog_item_description";
 	String csCatalogItemTblCatalogItemPrice = "catalog_item_price";
@@ -160,9 +181,9 @@ public interface Constants {
 	// table: order items
 	String csOrderItemsTable = "amt_order_items"; // table name
 	String csDBOrderItemsTable = csDatabaseName + "." + csOrderItemsTable; // qualified table name
-	String csOrderItemsTblOrderItemsId = "order_items_id"; // PK primary key
-	String csOrderItemsTblOrderPrice = "order_items_price";
-	String csOrderItemsTblItemQty = "order_items_qty";
+	String csOrderItemsTblOrderItemsId = "order_item_id"; // PK primary key
+	String csOrderItemsTblOrderPrice = "order_item_price";
+	String csOrderItemsTblItemQty = "order_item_qty";
 
 	
 	// table: order Status
@@ -271,7 +292,7 @@ public interface Constants {
 	String csUserTable = "amt_users"; // table name
 	String csDBUserTable = csDatabaseName + "." + csUserTable; // if using JDBC
 
-	String csUserTblId = "user_id";
+	String csUserTblUserId = "user_id";
 	String csUserTblUsername = "username";
 	String csUserTblPassword = "password";
 	String csUserTblPasswordSalt = "password_salt";
@@ -280,8 +301,6 @@ public interface Constants {
 	String csUserTblEmail = "email";
 	String csUserTblUserTypeId = "user_type_id";
 	String csUserTblUserType = "user_type";
-	//String csUserTblRoleId = "role_id";
-	//String csUserTblRoleName = csEmployeeRolesTblEmployeeRole;
 
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,7 +336,10 @@ public interface Constants {
 	String csMsgDB_ErrorAddingAddress = "Database error when adding a new address.";
 	String csMsgDB_ErrorAddingPhoneNumber = "Error with database when adding Phone Number.";
 	String csMsgDB_ErrorAddingCatalogItem = "Error with database when adding Catalog Item.";
-
+	String csMsgDB_ErrorGettingUserByUsername = "Database error when getting an user by username.";
+	String csMsgDB_ErrorAuthenticatingUsername = "Database error authenticating a username.";
+	String csMsgDB_ErrorAddingOrder = "Error with database when adding Order.";
+	
 	////////////////////////////////////////////////////////////////////////////////////
 	String csMsgBadParamUserType = "Invalid User Type parameters received.";
 	String csMsgBadParamAddressType = "Invalid Address Type parameters received.";
@@ -332,62 +354,24 @@ public interface Constants {
 	String csMsgBadParamLoginUsernamePwdLength = "Username and/or password format is invalid.";
 	String csMsgBadParamAddPhoneNumber = "One or more add Phone Number parameters are invalid.";
 	String csMsgBadParamAddCatalogItem = "One or more add Catalog Item parameters are invalid.";
-	
-	
-	String csMsgDB_ErrorGettingWithLogin = "Error with database during employee login.";
-	String csMsgDB_ErrorAddingReimbursementStatus = "Error with database when adding Reimbursement Status.";
-	String csMsgDB_ErrorGettingAllReimbursementStatus = "Error with database when getting all Reimbursement Status.";
-	String csMsgDB_ErrorGettingReimbursementStatus = "Error with database when getting a Reimbursement Status.";
-	String csMsgDB_ErrorGettingReimbursementType = "Error with database when getting all Reimbursement Types.";
-	String csMsgDB_ErrorGettingUserRole = "Error with database when getting all User Roles.";
-
-	String csMsgDB_ErrorAddingReimbursement = "Database error when adding reimbursement record.";
-	String csMsgDB_ErrorUpdatingReimbursement = "Database error when updating reimbursement record.";
-	String csMsgDB_ErrorGettingReimbursements = "Database error when getting all reimbursement.";
-	String csMsgDB_ErrorGettingReimbursementById = "Database error when getting a reimbursement by id.";
-	String csMsgDB_ErrorGettingReimbursementAuthor = "Database error when getting a reimbursement by Athour's username.";
-
-	
-	String csMsgDB_ErrorUpdatingEmployee = "Database error when updating employee information.";
-	String csMsgDB_ErrorGettingEmployees = "Database error when getting all employees.";
-	String csMsgDB_ErrorGettingEmployeeById = "Database error when getting an employee by id.";
-	String csMsgDB_ErrorGettingEmployeeByUsername = "Database error when getting an employee by username.";
-	String csMsgDB_ErrorDeletingAnEmployee = "Database error while deleting an employee.";
-
-	String csMsgDB_ErrorAuthenticatingUsername = "Database error authenticating a username.";
-
-	String csMsgEmployeeRecordNotFound = "Employee was not found in the database.";
-
-
+	String csMsgBadParamGetUserByUsername = "The user name provided was not alpha numeric or length was invalid.";
+	String csMsgBadParamAddOrder = "One or more add Order parameters are invalid.";
+	String csMsgBadParamOrderBodyAsClass = "Failed to parse order body parameters.";
 	
 	
 	String csMsgBadParamNoPathParm = "Parmeter(s) expected. No Path Parameter(s) Received.";
 	String csMsgBadParamNoBodyParm = "Parmeter(s) expected. No Body Parameter(s) Received.";
 	String csMsgBadParamPathParmNotRightNumber = "Parmeter(s) expected. Not right number of Path Parameter(s) received.";
 	String csMsgBadParamPathParmNotRightParam = "Parmeter(s) expected. Not right name for Path Parameter(s) received.";
-
 	String csMsgBadParamNoQueryParm = "Parmeter(s) expected. No Query Parameter(s) Received.";
 	String csMsgBadParamQueryParm = "Parmeter(s) expected. Not right number of Query Parameter(s) received.";
 
-	String csMsgBadParamReimbStatus = "Invalid Reimbursement Status parameters received.";
-	
 
-	String csMsgBadParamEditUser = "One or more edit User parameters are invalid.";
-	String csMsgBadParamGetUserById = "The user id provided was not a number or was zero.";
-	String csMsgBadParamGetUserByUsername = "The user name provided was not alpha numeric or length was invalid.";
-	
-
-	String csMsgBadParamGetReimbursementById = "The reimbursement id provided was not a number or was zero.";
-	String csMsgBadParamGetUserReimbursementById = "The username and/or reimbursement id provided was not valid.";
-
-	String csMsgBadParamGetUserReimbByIdDoesNotBelong = "The reimbursement does not belong to the username.";
-
-	String csMsgBadParamAddReimb = "One or more add Reimbursement parameters are invalid.";
-	String csMsgBadParamUpdateReimb = "One or more update Reimbursement parameters are invalid.";
-
-
+	String csMsgEmployeeNotAuthorizeCatalog = "Employee is not authorize to create catalog items.";
 	String csMsgAutenticationFailed = "Autentication failed for username and password provided.";
 	String csMsgSessionUserNotActive = "The user does not have an active login session.";
 	String csMsgSessionUserLoggedOut = "The user is logged out.";
 
+	
+	
 }

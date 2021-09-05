@@ -1,10 +1,5 @@
 package com.amt.app;
 
-import java.sql.SQLException;
-
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,16 +13,13 @@ import com.amt.dto.UserDTO;
 import com.amt.dto.AddressTypeDTO;
 import com.amt.dto.CatalogItemTypeDTO;
 import com.amt.dto.EmployeeRoleDTO;
-import com.amt.exception.BadParameterException;
-import com.amt.exception.DatabaseException;
-import com.amt.model.OrderStatus;
-import com.amt.model.PhoneNumber;
-import com.amt.model.PhoneNumberType;
 import com.amt.model.UserType;
 import com.amt.model.User;
 import com.amt.model.AddressType;
 import com.amt.model.CatalogItemType;
 import com.amt.model.EmployeeRole;
+import com.amt.model.OrderStatus;
+import com.amt.model.PhoneNumberType;
 import com.amt.service.AdminService;
 import com.amt.service.UserService;
 import com.amt.util.*;
@@ -54,9 +46,8 @@ public class AdminDriver implements Constants {
 		objLogger.trace(sMethod + "Entered");
 
 		  //createTablesViaHibernate(); //NOTE: change configuration file to create
-		  //amtAdminAddStaticTableValues();
+		  amtAdminAddStaticTableValues();
 
-		//adminAddEmployeeRole(csarEmployeeRoles[enumUserEmployee.CUSTOMER.pos], csarEmployeeRolesDesc[enumUserEmployee.CUSTOMER.pos]);
 	}
 
 	//

@@ -3,10 +3,12 @@ package com.amt.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.amt.app.Constants;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class SessionFactorySingleton {
+public class SessionFactorySingleton implements Constants {
 	private static Logger objLogger = LoggerFactory.getLogger(SessionFactorySingleton.class);
 	// This is a singleton SessionFactory, which means only a single instance of
 	// SessionFactory will exist
@@ -26,6 +28,14 @@ public class SessionFactorySingleton {
 			config.setProperty("hibernate.connection.username", System.getenv("aws_db_username"));
 			config.setProperty("hibernate.connection.password", System.getenv("aws_db_password"));
 			*/
+			
+			config.setProperty("hibernate.connection.url", csDatabaseConnectionURL);
+			config.setProperty("hibernate.connection.username", csDatabaseConnectionUsername);
+			config.setProperty("hibernate.connection.password", csDatabaseConnectionPwd);
+			
+			
+			
+			
 			config.configure("hibernate.cfg.xml");
 
 			objLogger.debug(sMethod + "building session factory");

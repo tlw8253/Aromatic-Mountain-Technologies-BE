@@ -48,6 +48,42 @@ public class CatalogItemDAOImpl implements CatalogItemDAO, Constants {
 	private int catalogItemInStockQty;
 	private CatalogItemType catalogItemType;
 */
+	
+	
+	@Override
+	public CatalogItem getCatalogItemByName(String sName) throws SQLException{
+		String sMethod = csCRT + "getCatalogItemByName(): ";
+		objLogger.trace(csCR + sMethod + "Entered");
+		
+		
+		SessionFactory sf = SessionFactorySingleton.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		// load a complete persistent objects into memory		
+		String sHQL = "";		
+		sHQL = "FROM CatalogItem ci WHERE ci.catalogItemName = :catalogItemName";
+		objLogger.debug(sMethod + "sHQL: [" + sHQL + "]" + " param: sName: [" + sName +"]");
+		
+		try {
+			CatalogItem objCatalogItem = (CatalogItem) session.createQuery(sHQL)
+											.setParameter("catalogItemName", sName)
+											.getSingleResult();
+			objLogger.debug(sMethod + "objCatalogItem: [" + objCatalogItem.toString() + "]");
+			
+			tx.commit();
+			return objCatalogItem;
+			
+		}catch(Exception e) {
+			objLogger.error(sMethod + "Error getting catalog item by sName: [" + sName + "]");
+			objLogger.error(sMethod + "Exception: cause: [" + e.getCause() + "] class name [" + e.getClass().getName() + "] [" + e.toString() + "]");
+			objLogger.error(sMethod + "Exception: message: [" + e.getMessage() + "]");	
+			return null;
+		}finally {
+			session.close();
+		}
+	}
+	
 	//
 	// ###
 	@Override // 20210819 1223 working method added user using Admin drive through service
@@ -59,6 +95,7 @@ public class CatalogItemDAOImpl implements CatalogItemDAO, Constants {
 		objLogger.debug(sMethod + "objAddCatalogItemDTO: [" + objCatalogItemDTO.toString() + "]");
 
 		// by this time the service layer would have validated the parameters
+		String sCatalogItemName = objCatalogItemDTO.getCatalogItemName();
 		String sCatalogItem = objCatalogItemDTO.getCatalogItem();
 		String sCatalogItemDescription = objCatalogItemDTO.getCatalogItemDescription();
 		double dCatalogItemPrice = objCatalogItemDTO.getCatalogItemPrice();
@@ -66,7 +103,7 @@ public class CatalogItemDAOImpl implements CatalogItemDAO, Constants {
 		String sCatalogItemType = objCatalogItemDTO.getCatalogItemType();
 
 		
-		CatalogItem objCatalogItem = new CatalogItem(sCatalogItem, sCatalogItemDescription, dCatalogItemPrice, iCatalogItemInStockQty);
+		CatalogItem objCatalogItem = new CatalogItem(sCatalogItemName, sCatalogItem, sCatalogItemDescription, dCatalogItemPrice, iCatalogItemInStockQty);
 		objLogger.debug(sMethod + "objCatalogItem: [" + objCatalogItem.toString() + "]");
 		
 		// get Address Type object
